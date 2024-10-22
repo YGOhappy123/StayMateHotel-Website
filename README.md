@@ -79,7 +79,7 @@ This will start the Vite development server and you can view the app by visiting
 ## Suggested VS Code Extensions
 
 | Extension                              | Publisher            | Required? | Supported features                                |
-| :------------------------------------- | :------------------- | :-------: | ------------------------------------------------- |
+| :------------------------------------- | :------------------- | :-------: | :------------------------------------------------ |
 | Auto Rename Tag                        | Jun Han              |    No     | Auto rename paired HTML/XML tag                   |
 | Code Spell Checker                     | Street Side Software |    No     | Spelling checker for source code                  |
 | ES7+ React/Redux/React-Native snippets | dsznajder            |    No     | Code suggestions and snippets for React JS/TS     |
