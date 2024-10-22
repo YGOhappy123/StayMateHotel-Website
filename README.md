@@ -17,6 +17,11 @@ This is the Website portion of our final project of the Service Oriented Softwar
 -   [React](https://reactjs.org/)
 -   [Vite](https://vitejs.dev/)
 -   [TypeScript](https://www.typescriptlang.org/)
+-   [Tailwind CSS](https://tailwindcss.com/)
+-   [Redux Toolkit](https://redux-toolkit.js.org/)
+-   [TanStack React Query](https://tanstack.com/query/latest)
+-   [Axios](https://axios-http.com/)
+-   [Day JS](https://day.js.org/)
 
 ## Required Dependencies
 
@@ -65,6 +70,11 @@ This will start the Vite development server and you can view the app by visiting
 -   **TypeScript** 🛠 for strong typing and better developer experience.
 -   **Hot Module Replacement** 🔄 for instant updates during development.
 -   **Optimized production build** 📦 with Vite's build system.
+-   **Styled with Tailwind CSS** 🎨 for a modern, responsive design.
+-   **State management with Redux Toolkit** 🛠 for efficient state management.
+-   **Data fetching with TanStack React Query** 🔄 for powerful server state management.
+-   **HTTP requests with Axios** 🌐 for easy API integration.
+-   **Date manipulation with Day.js** 📅 for handling dates effectively.
 
 ## Suggested VS Code Extensions
 
