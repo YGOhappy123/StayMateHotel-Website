@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import { signOut } from '@/slices/authSlice'
-import axios from 'axios'
+import { AxiosInstance } from 'axios'
 import toastConfig from '@/configs/toast'
 import cookies from '@/libs/cookies'
 import dayjs from '@/libs/dayjs'
 
-export default function useRefreshTokenFn() {
+export default function useRefreshTokenFn(axiosIns: AxiosInstance) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -19,16 +19,12 @@ export default function useRefreshTokenFn() {
 
     const refreshToken = async () =>
         new Promise<string | null>((resolve, reject) => {
-            axios({
-                url: `${import.meta.env.VITE_SERVER_URL}/auth/refresh`,
+            axiosIns({
+                url: '/auth/refresh',
                 method: 'POST',
                 validateStatus: null,
                 data: {
                     refreshToken: cookies.get('refresh_token') || localStorage.getItem('refresh_token')
-                },
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
                 }
             })
                 .then(res => {

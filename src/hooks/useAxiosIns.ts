@@ -13,7 +13,7 @@ export const axiosIns = axios.create({
 
 const useAxiosIns = () => {
     const getAccessToken = () => cookies.get('access_token') || localStorage.getItem('access_token')
-    const refreshTokenFn = useRefreshTokenFn()
+    const refreshTokenFn = useRefreshTokenFn(axiosIns)
 
     useEffect(() => {
         const requestIntercept = axiosIns.interceptors.request.use(

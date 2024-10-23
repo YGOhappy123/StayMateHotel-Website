@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import RootRoutes from '@/routes/rootRoutes'
+import RootRoutes from '@/routes/RootRoutes'
 
 const developmentRoutes = createBrowserRouter([...RootRoutes])
 const testingRoutes = createBrowserRouter([...RootRoutes])
