@@ -7,6 +7,7 @@ This is the Website portion of our final project of the Service Oriented Softwar
 -   [Technologies Used](#technologies-used)
 -   [Required Dependencies](#required-dependencies)
 -   [Installation](#installation)
+-   [Before You Run](#before-you-run)
 -   [Development](#development)
 -   [Features](#features)
 -   [Suggested VS Code Extensions](#suggested-vs-code-extensions)
@@ -26,7 +27,6 @@ This is the Website portion of our final project of the Service Oriented Softwar
 ## Required Dependencies
 
 -   `Node.js` v20.17 or later: [Download Node.js](https://nodejs.org/en)
--   `npm` (comes with Node.js)
 -   `Vite`: Install with npm or Yarn
 -   `TypeScript`
 
@@ -54,6 +54,22 @@ Follow these steps to set up and run the application locally.
     npm install
     ```
 
+## Before You Run
+
+Before running the project, make sure to set up the environment variables:
+
+1. Create a `.env` file:
+
+    In the root directory of your project (at the same level as `.env.example`), create a `.env` file.
+
+2. Populate the environment variables:
+
+    Copy the variables from `.env.example` into `.env` and replace the placeholder values with your actual configuration.
+
+3. For collaborators:
+
+    If you are a collaborator on this project, please contact the project owner to obtain the values for the environment variables.
+
 ## Development
 
 To start the development server, use:
@@ -62,7 +78,9 @@ To start the development server, use:
 npm run dev
 ```
 
-This will start the Vite development server and you can view the app by visiting `http://localhost:3000` in your browser.
+This will start the Vite development server
+
+You can view the app by visiting `http://localhost:3000` in your browser.
 
 ## Features
 
@@ -78,15 +96,16 @@ This will start the Vite development server and you can view the app by visiting
 
 ## Suggested VS Code Extensions
 
-| Extension                              | Publisher            | Required? | Supported features                                |
-| :------------------------------------- | :------------------- | :-------: | :------------------------------------------------ |
-| Auto Rename Tag                        | Jun Han              |    No     | Auto rename paired HTML/XML tag                   |
-| Code Spell Checker                     | Street Side Software |    No     | Spelling checker for source code                  |
-| ES7+ React/Redux/React-Native snippets | dsznajder            |    No     | Code suggestions and snippets for React JS/TS     |
-| Auto Rename Tag                        | Jun Han              |    No     | Auto rename paired HTML/XML tag                   |
-| Multiple cursor case preserve          | Cardinal90           |    No     | Preserves case when editing with multiple cursors |
-| Prettier - Code formatter              | Prettier             |    No     | Code formatting                                   |
-| Tailwind CSS IntelliSense              | Tailwind Labs        |    No     | Code suggestions for Tailwind CSS                 |
+| Extension                              | Publisher            | Required? | Supported features                                                |
+| :------------------------------------- | :------------------- | :-------: | :---------------------------------------------------------------- |
+| Auto Rename Tag                        | Jun Han              |    No     | Auto rename paired HTML/XML tag                                   |
+| Code Spell Checker                     | Street Side Software |    No     | Spelling checker for source code                                  |
+| ES7+ React/Redux/React-Native snippets | dsznajder            |    No     | Code suggestions and snippets for React JS/TS                     |
+| Auto Rename Tag                        | Jun Han              |    No     | Auto rename paired HTML/XML tag                                   |
+| Multiple cursor case preserve          | Cardinal90           |    No     | Preserves case when editing with multiple cursors                 |
+| Prettier - Code formatter              | Prettier             |    No     | Code formatting                                                   |
+| Tailwind CSS IntelliSense              | Tailwind Labs        |    No     | Code suggestions for Tailwind CSS                                 |
+| TPretty TypeScript Errors              | yoavbls              |    No     | Make TypeScript errors prettier and more human-readable in VSCode |
 
 ## Contributors
 
@@ -94,6 +113,45 @@ Thanks to the following people for contributing to this project ✨:
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/YGOhappy123"><img src="https://avatars.githubusercontent.com/u/90592072?v=4" width="100px;" alt=""/><br /><sub><b>YGOhappy123</b></sub></a></td>
+    <td align="center">
+        <a href="https://github.com/YGOhappy123">
+            <img 
+                src="https://avatars.githubusercontent.com/u/90592072?v=4"
+                alt="YGOhappy123" width="100px;" height="100px;" 
+                style="border-radius: 4px; background: #fff;"
+            /><br />
+            <sub><b>YGOhappy123</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/DinhToanIT2003">
+            <img 
+                src="https://avatars.githubusercontent.com/u/126399422?v=4"
+                alt="DinhToanIT2003" width="100px;" height="100px;"                 
+                style="border-radius: 4px; background: #fff;"
+            /><br />
+            <sub><b>DinhToanIT2003</b></sub>
+        </a>
+    </td>
+        <td align="center">
+        <a href="https://github.com/Nguyen1609">
+            <img 
+                src="https://avatars.githubusercontent.com/u/126648891?v=4"
+                alt="Nguyen1609" width="100px;" height="100px;"
+                style="border-radius: 4px; background: #fff;"
+            /><br />
+            <sub><b>Nguyen1609</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/vthanhdat99">
+            <img
+                src="https://avatars.githubusercontent.com/u/108580228?v=4"
+                alt="vthanhdat99" width="100px;" height="100px;" 
+                style="border-radius: 4px; background: #fff;"
+            /><br />
+            <sub><b>vthanhdat99</b></sub>
+        </a>
+    </td>
   </tr>
 </table>
