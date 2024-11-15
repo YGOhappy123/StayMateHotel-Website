@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { ToastContainer } from 'react-toastify'
 import { store } from '@/store'
 import getRouter from '@/routes'
+import './index.css'
 
 const persistor = persistStore(store)
 const queryClient = new QueryClient()
