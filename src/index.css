@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* CSS Variables */
+:root {
+    --sidebar-logo-height: 70px;
+}
+
+.link {
+    @apply flex cursor-pointer select-none items-center gap-6 rounded-md p-2.5 font-medium duration-300;
+}
+
+.active {
+    @apply bg-blue-100 text-blue-600;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(252, 252, 252, 0.6);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-image: linear-gradient(to bottom, #344e41, #588157);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    opacity: 90;
+}
+
+/* Prevent Autofill CSS */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #588157;
+    transition: background-color 5000s ease-in-out 0s;
+}
