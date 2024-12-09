@@ -5,7 +5,7 @@ export default (type: TypeOptions): ToastOptions => ({
     position: 'top-right',
     hideProgressBar: true,
     progress: undefined,
-    theme: 'dark',
+    theme: 'light',
     pauseOnHover: false,
     autoClose: 2000
 })

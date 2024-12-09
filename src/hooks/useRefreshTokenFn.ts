@@ -7,7 +7,7 @@ import toastConfig from '@/configs/toast'
 import cookies from '@/libs/cookies'
 import dayjs from '@/libs/dayjs'
 
-export default function useRefreshTokenFn(axiosIns: AxiosInstance) {
+const useRefreshTokenFn = (axiosIns: AxiosInstance) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -17,14 +17,14 @@ export default function useRefreshTokenFn(axiosIns: AxiosInstance) {
         navigate('/auth')
     }
 
-    const refreshToken = async () =>
+    const refreshTokenFn = async (refreshToken: string) =>
         new Promise<string | null>((resolve, reject) => {
             axiosIns({
                 url: '/auth/refresh',
                 method: 'POST',
                 validateStatus: null,
                 data: {
-                    refreshToken: cookies.get('refresh_token') || localStorage.getItem('refresh_token')
+                    refreshToken: refreshToken
                 }
             })
                 .then(res => {
@@ -46,5 +46,7 @@ export default function useRefreshTokenFn(axiosIns: AxiosInstance) {
                 })
         })
 
-    return refreshToken
+    return refreshTokenFn
 }
+
+export default useRefreshTokenFn
