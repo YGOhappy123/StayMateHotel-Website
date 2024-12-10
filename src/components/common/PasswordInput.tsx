@@ -16,7 +16,7 @@ const PasswordInput = ({ placeholder, fieldName, error, value, onChange, onFocus
     const toggleShowPw = () => setShowPassword(prev => !prev)
 
     return (
-        <div className="relative mb-10">
+        <div className="relative">
             <input
                 type={showPassword ? 'text' : 'password'}
                 className="peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-2 pr-12 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none"
@@ -34,11 +34,7 @@ const PasswordInput = ({ placeholder, fieldName, error, value, onChange, onFocus
                 {placeholder}
             </label>
 
-            <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary"
-                onClick={toggleShowPw}
-            >
+            <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-primary" onClick={toggleShowPw}>
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} size="lg" className="mt-1" />
             </button>
             {error && <p className="absolute px-3 text-sm font-medium text-red-600">{error}</p>}

@@ -24,8 +24,10 @@ const SidebarSubMenu = ({ label, Icon, items }: SubMenuProps) => {
                 <div className="flex w-6 justify-center">
                     <FontAwesomeIcon icon={Icon} className="min-w-max" size="lg" />
                 </div>
-                <p className="flex-1">{label}</p>
-                <FontAwesomeIcon icon={faChevronDown} className={` ${isSubMenuOpen && 'rotate-180'} duration-200`} />
+                <div className="flex flex-1 items-center">
+                    <p className="flex-1">{label}</p>
+                    <FontAwesomeIcon icon={faChevronDown} className={` ${isSubMenuOpen && 'rotate-180'} duration-200`} />
+                </div>
             </li>
 
             <motion.ul

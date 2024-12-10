@@ -8,6 +8,7 @@ import { faBuilding, faChartLine, faChevronRight, faConciergeBell, faHome, faTas
 import { RootState } from '@/store'
 import { signOut } from '@/slices/authSlice'
 import SidebarSubMenu from '@/components/layout/SidebarSubMenu'
+import Button from '@/components/common/Button'
 
 const SUB_MENU_LIST = [
     {
@@ -53,6 +54,10 @@ const SUB_MENU_LIST = [
             {
                 label: 'Dịch vụ',
                 navigation: 'services'
+            },
+            {
+                label: 'Đơn đặt dịch vụ',
+                navigation: 'service-bookings'
             }
         ]
     }
@@ -63,7 +68,7 @@ export const MOTION_EFFECTS = {
     closeSubMenu: { height: 0 },
     wideScreenVariants: {
         open: {
-            width: '17rem',
+            width: '16rem',
             transition: {
                 damping: 40
             }
@@ -92,7 +97,7 @@ const Sidebar = () => {
                 variants={MOTION_EFFECTS.wideScreenVariants}
                 animate={isOpen ? 'open' : 'closed'}
                 initial={{ x: 0 }}
-                className="sticky top-0 z-[999] flex h-screen w-64 max-w-[17rem] flex-col overflow-hidden bg-white shadow-xl"
+                className="sticky top-0 flex h-screen w-64 max-w-[16rem] flex-col overflow-hidden bg-white shadow-xl"
             >
                 <div
                     className="mx-3 flex cursor-pointer items-center justify-center gap-2.5 border-b border-slate-300 py-3 font-medium"
@@ -164,12 +169,12 @@ const Sidebar = () => {
                                     </p>
                                     <small>Mã admin: {user.id}</small>
                                 </div>
-                                <button
-                                    className="cursor-pointer rounded-2xl bg-gradient-to-r from-accent to-primary px-3 py-1.5 text-xs text-white"
+                                <Button
+                                    text="Đăng xuất"
+                                    variant="gradient"
+                                    className="min-w-fit rounded-2xl px-3 py-1.5 text-xs"
                                     onClick={() => dispatch(signOut())}
-                                >
-                                    Đăng xuất
-                                </button>
+                                />
                             </div>
                         )}
 
