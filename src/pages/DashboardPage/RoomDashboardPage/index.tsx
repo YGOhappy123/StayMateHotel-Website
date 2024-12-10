@@ -5,6 +5,7 @@ import { Popover, PopoverTrigger } from '@/components/ui/Popover'
 import dayjs from 'dayjs'
 
 import { exportToCSV } from '@/utils/exportCsvFile'
+import { getMappedStatus } from '@/utils/roomStatusMapping'
 import Button from '@/components/common/Button'
 import RoomTable from '@/pages/DashboardPage/RoomDashboardPage/RoomTable'
 import CreateRoomDialog from '@/pages/DashboardPage/RoomDashboardPage/CreateRoomDialog'
@@ -58,16 +59,28 @@ const RoomDashboardPage = () => {
     }, [isAddModalOpen, isUpdateModalOpen])
 
     const exportCsvFile = () => {
-        exportToCSV(rooms, `SMH_Danh_sách_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+        const formattedRooms = rooms.map(room => ({
+            ['Mã Phòng']: room.id,
+            ['Số Phòng']: room.roomNumber,
+            ['Tầng']: room.floor?.floorNumber,
+            ['Loại Phòng']: room.roomClass?.className,
+            ['Giá Phòng Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+                room.roomClass?.basePrice as number
+            ),
+            ['Trạng Thái Phòng']: getMappedStatus(room.status),
+            ['Ngày Tạo']: dayjs(room.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+            ['Người Tạo']: `${room.createdBy?.lastName} ${room.createdBy?.firstName}`
+        }))
+
+        exportToCSV(formattedRooms, `SMH_Danh_sách_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
             { wch: 10 },
             { wch: 20 },
-            { wch: 40 },
-            { wch: 40 },
-            { wch: 100 },
-            { wch: 100 },
-            { wch: 40 },
-            { wch: 25 },
-            { wch: 15 }
+            { wch: 20 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 },
+            { wch: 30 }
         ])
     }
 

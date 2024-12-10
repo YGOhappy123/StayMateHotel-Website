@@ -187,6 +187,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
         onFilterSearch,
         onResetFilterSearch,
         buildQuery,
+
         searchRoomsQuery,
         getAllRoomsQuery,
         createNewRoomMutation,
