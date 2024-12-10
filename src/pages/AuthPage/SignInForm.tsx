@@ -3,6 +3,7 @@ import { FormType } from '@/pages/AuthPage'
 import TextInput from '@/components/common/TextInput'
 import PasswordInput from '@/components/common/PasswordInput'
 import authService from '@/services/authService'
+import Button from '@/components/common/Button'
 
 type SignInFormProps = {
     changeFormType: (type: FormType) => void
@@ -40,9 +41,9 @@ const SignInForm = ({ changeFormType }: SignInFormProps) => {
         const { username, password } = formValues
         const formErrors = { ...errors }
 
-        if (!username) formErrors.username = formErrors.username || 'Tên đăng nhập không được để trống.'
+        if (!username.trim()) formErrors.username = formErrors.username || 'Tên đăng nhập không được để trống.'
         if (username.length < 8 || username.length > 20) formErrors.username = formErrors.username || 'Tên đăng nhập phải dài từ 8 đến 20 ký tự.'
-        if (!password) formErrors.password = formErrors.password || 'Mật khẩu không được để trống.'
+        if (!password.trim()) formErrors.password = formErrors.password || 'Mật khẩu không được để trống.'
         if (password.length < 8 || password.length > 20) formErrors.password = formErrors.password || 'Mật khẩu phải dài từ 8 đến 20 ký tự.'
 
         return formErrors
@@ -51,7 +52,7 @@ const SignInForm = ({ changeFormType }: SignInFormProps) => {
     return (
         <form onSubmit={handleSubmit} className="flex h-full flex-col p-10">
             <h2 className="mb-14 text-center text-4xl font-medium">Đăng Nhập Tài Khoản</h2>
-            <div>
+            <div className="mb-10">
                 <TextInput
                     fieldName="username"
                     placeholder="Tên đăng nhập"
@@ -61,7 +62,7 @@ const SignInForm = ({ changeFormType }: SignInFormProps) => {
                     onFocus={() => setErrors(prev => ({ ...prev, username: '' }))}
                 />
             </div>
-            <div>
+            <div className="mb-10">
                 <PasswordInput
                     fieldName="password"
                     placeholder="Mật khẩu"
@@ -72,12 +73,7 @@ const SignInForm = ({ changeFormType }: SignInFormProps) => {
                 />
             </div>
             <div className="flex flex-col items-center">
-                <button
-                    type="submit"
-                    className="w-full rounded bg-gradient-to-r from-accent to-primary py-[14px] font-semibold capitalize text-white hover:opacity-90"
-                >
-                    Đăng Nhập
-                </button>
+                <Button text="Đăng Nhập" type="submit" variant="gradient" className="w-full rounded font-semibold capitalize" />
                 <div className="mt-6">
                     <span className="font-medium">Chưa có tài khoản? </span>
                     <span className="cursor-pointer font-bold text-primary hover:underline" onClick={() => changeFormType('signUp')}>

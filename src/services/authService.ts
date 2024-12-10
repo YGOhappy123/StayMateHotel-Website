@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 

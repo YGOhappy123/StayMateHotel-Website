@@ -1,31 +1,36 @@
 import { twMerge } from 'tailwind-merge'
 
-type TextInputProps = {
+type SelectInputProps = {
     fieldName: string
     placeholder: string
-    value: string
+    value: string | number
     error: string
-    onChange: (value: string) => void
+    options: { value: string | number; label: string }[]
+    onChange: (value: string | number) => void
     onFocus: () => void
-    inputClassName?: string
+    selectClassName?: string
     labelClassName?: string
 }
 
-const TextInput = ({ fieldName, placeholder, error, value, onChange, onFocus, inputClassName, labelClassName }: TextInputProps) => {
+const SelectInput = ({ fieldName, placeholder, value, error, options, onChange, onFocus, selectClassName, labelClassName }: SelectInputProps) => {
     return (
         <div className="relative">
-            <input
-                type="text"
+            <select
                 className={twMerge(
-                    `peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-2 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${inputClassName}`
+                    `peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-3.5 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${selectClassName}`
                 )}
                 id={fieldName}
-                placeholder=" "
-                spellCheck={false}
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 onFocus={onFocus}
-            />
+            >
+                <option value="">--</option>
+                {options.map(option => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
             <label
                 htmlFor={fieldName}
                 className={twMerge(
@@ -39,4 +44,4 @@ const TextInput = ({ fieldName, placeholder, error, value, onChange, onFocus, in
     )
 }
 
-export default TextInput
+export default SelectInput
