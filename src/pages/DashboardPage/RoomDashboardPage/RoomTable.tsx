@@ -6,7 +6,6 @@ import dayjs from '@/libs/dayjs'
 
 import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
-import roomService from '@/services/roomService'
 import fileService from '@/services/fileService'
 
 type RoomTableProps = {
@@ -16,10 +15,22 @@ type RoomTableProps = {
     limit: number
     setPage: (page: number) => void
     onSelectRoom: (room: IRoom) => void
+    deleteRoomMutation: any
+    toggleMaintenanceMutation: any
+    markCleaningDoneMutation: any
 }
 
-const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTableProps) => {
-    const { deleteRoomMutation, toggleMaintenanceMutation, markCleaningDoneMutation } = roomService({ enableFetching: false })
+const RoomTable = ({
+    rooms,
+    total,
+    page,
+    limit,
+    setPage,
+    onSelectRoom,
+    deleteRoomMutation,
+    toggleMaintenanceMutation,
+    markCleaningDoneMutation
+}: RoomTableProps) => {
     const { deleteMutation } = fileService()
 
     const columns: ColumnDef<IRoom>[] = [

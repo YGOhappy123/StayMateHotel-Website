@@ -16,7 +16,21 @@ import RoomFilter from '@/pages/DashboardPage/RoomDashboardPage/RoomFilter'
 
 const RoomDashboardPage = () => {
     const axios = useAxiosIns()
-    const { rooms, total, page, limit, setPage, buildQuery, onFilterSearch, onResetFilterSearch } = roomService({ enableFetching: true })
+    const {
+        rooms,
+        total,
+        page,
+        limit,
+        setPage,
+        buildQuery,
+        onFilterSearch,
+        onResetFilterSearch,
+        createNewRoomMutation,
+        updateRoomMutation,
+        deleteRoomMutation,
+        toggleMaintenanceMutation,
+        markCleaningDoneMutation
+    } = roomService({ enableFetching: true })
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -117,6 +131,7 @@ const RoomDashboardPage = () => {
                             closeDialog={() => setIsAddModalOpen(false)}
                             floors={floors}
                             roomClasses={roomClasses}
+                            createNewRoomMutation={createNewRoomMutation}
                         />
                     </Dialog>
 
@@ -127,6 +142,7 @@ const RoomDashboardPage = () => {
                             closeDialog={() => setIsUpdateModalOpen(false)}
                             floors={floors}
                             roomClasses={roomClasses}
+                            updateRoomMutation={updateRoomMutation}
                         />
                     </Dialog>
 
@@ -144,6 +160,9 @@ const RoomDashboardPage = () => {
                     setSelectedRoom(room)
                     setIsUpdateModalOpen(true)
                 }}
+                deleteRoomMutation={deleteRoomMutation}
+                toggleMaintenanceMutation={toggleMaintenanceMutation}
+                markCleaningDoneMutation={markCleaningDoneMutation}
             />
         </div>
     )
