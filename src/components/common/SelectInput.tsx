@@ -8,23 +8,35 @@ type SelectInputProps = {
     options: { value: string | number; label: string }[]
     onChange: (value: string | number) => void
     onFocus: () => void
+    havingDefaultOptions?: boolean
     selectClassName?: string
     labelClassName?: string
 }
 
-const SelectInput = ({ fieldName, placeholder, value, error, options, onChange, onFocus, selectClassName, labelClassName }: SelectInputProps) => {
+const SelectInput = ({
+    fieldName,
+    placeholder,
+    value,
+    error,
+    options,
+    onChange,
+    onFocus,
+    havingDefaultOptions = true,
+    selectClassName,
+    labelClassName
+}: SelectInputProps) => {
     return (
         <div className="relative">
             <select
                 className={twMerge(
-                    `peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-3.5 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${selectClassName}`
+                    `peer block min-h-[auto] w-full cursor-pointer rounded border-2 border-neutral-500 bg-transparent px-3 py-3.5 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${selectClassName}`
                 )}
                 id={fieldName}
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 onFocus={onFocus}
             >
-                <option value="">--</option>
+                {havingDefaultOptions && <option value="">--</option>}
                 {options.map(option => (
                     <option key={option.value} value={option.value}>
                         {option.label}
