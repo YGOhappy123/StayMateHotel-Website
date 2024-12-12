@@ -13,6 +13,7 @@ export type RoomClassSortAndFilterParams = {
     searchClassName: string
     searchPriceQuery: string
     searchCapacityQuery: string
+    searchFeatures: number[]
     sort: string
     range: string[] | any[] | undefined
 }
@@ -29,7 +30,7 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchClassName, searchPriceQuery, searchCapacityQuery, sort, range }: RoomClassSortAndFilterParams) => {
+    const buildQuery = ({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range }: RoomClassSortAndFilterParams) => {
         const query: any = {}
         if (searchClassName) query.className = searchClassName.trim()
         if (searchPriceQuery) {
@@ -42,18 +43,13 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
             if (parsedCapacityQuery['$gte']) query.minCapacity = parsedCapacityQuery['$gte']
             if (parsedCapacityQuery['$lte']) query.maxCapacity = parsedCapacityQuery['$lte']
         }
+        if (searchFeatures.length > 0) query.features = searchFeatures
         if (range) {
-            query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
-            query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
-        }
-        if (range) {
-            if (range) {
-                if (range[0]) {
-                    query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
-                }
-                if (range[1]) {
-                    query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
-                }
+            if (range[0]) {
+                query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            }
+            if (range[1]) {
+                query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
         setQuery(JSON.stringify(query))

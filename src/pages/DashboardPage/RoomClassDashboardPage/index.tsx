@@ -1,28 +1,55 @@
 import { useEffect, useState } from 'react'
-
+import { useQuery } from 'react-query'
 import { Dialog, DialogTrigger } from '@/components/ui/Dialog'
 import { Popover, PopoverTrigger } from '@/components/ui/Popover'
 import dayjs from 'dayjs'
 
 import { exportToCSV } from '@/utils/exportCsvFile'
-
 import Button from '@/components/common/Button'
 import RoomClassTable from '@/pages/DashboardPage/RoomClassDashboardPage/RoomClassTable'
 import CreateRoomClassDialog from '@/pages/DashboardPage/RoomClassDashboardPage/CreateRoomClassDialog'
 import UpdateRoomClassDialog from '@/pages/DashboardPage/RoomClassDashboardPage/UpdateRoomClassDialog'
-import useAxiosIns from '@/hooks/useAxiosIns'
-import roomClassService from '@/services/roomClassService'
 import RoomClassFilter from '@/pages/DashboardPage/RoomClassDashboardPage/RoomClassFilter'
+import roomClassService from '@/services/roomClassService'
+import useAxiosIns from '@/hooks/useAxiosIns'
 
 const RoomClassDashboardPage = () => {
     const axios = useAxiosIns()
-    const { roomClasses, total, page, limit, setPage, buildQuery, onFilterSearch, onResetFilterSearch, createNewRoomClassMutation, updateRoomClassMutation, deleteRoomClassMutation } = roomClassService({ enableFetching: true })
+    const {
+        roomClasses,
+        total,
+        page,
+        limit,
+        setPage,
+        buildQuery,
+        onFilterSearch,
+        onResetFilterSearch,
+        createNewRoomClassMutation,
+        updateRoomClassMutation,
+        deleteRoomClassMutation
+    } = roomClassService({ enableFetching: true })
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [selectedRoomClass, setSelectedRoomClass] = useState<IRoomClass | null>(null)
     const [havingFilters, setHavingFilters] = useState(false)
 
+    const fetchAllFeaturesQuery = useQuery(['room-classes-all'], {
+        queryFn: () => {
+            return axios.get<IResponseData<IFeature[]>>(`/features`)
+        },
+        refetchOnWindowFocus: false,
+        enabled: true,
+        select: res => res.data
+    })
+
+    const features = fetchAllFeaturesQuery.data?.data || []
+
+    useEffect(() => {
+        if (isAddModalOpen || isUpdateModalOpen) {
+            fetchAllFeaturesQuery.refetch()
+        }
+    }, [isAddModalOpen, isUpdateModalOpen])
 
     const exportCsvFile = () => {
         const formattedRoomClasss = roomClasses.map(roomClass => ({
@@ -60,8 +87,7 @@ const RoomClassDashboardPage = () => {
                             </div>
                         </PopoverTrigger>
                         <RoomClassFilter
-                            
-                            
+                            features={features}
                             setHavingFilters={setHavingFilters}
                             onChange={buildQuery}
                             onSearch={onFilterSearch}
@@ -76,6 +102,7 @@ const RoomClassDashboardPage = () => {
                             </div>
                         </DialogTrigger>
                         <CreateRoomClassDialog
+                            features={features}
                             isOpen={isAddModalOpen}
                             closeDialog={() => setIsAddModalOpen(false)}
                             createNewRoomClassMutation={createNewRoomClassMutation}
@@ -84,11 +111,11 @@ const RoomClassDashboardPage = () => {
 
                     <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
                         <UpdateRoomClassDialog
+                            features={features}
                             selectedRoomClass={selectedRoomClass}
                             isOpen={isUpdateModalOpen}
                             closeDialog={() => setIsUpdateModalOpen(false)}
                             updateRoomClassMutation={updateRoomClassMutation}
-                            
                         />
                     </Dialog>
 
