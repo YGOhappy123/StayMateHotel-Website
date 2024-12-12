@@ -108,7 +108,7 @@ const RoomClassFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Room
                         placeholder="Lọc theo giá tiền"
                         error=""
                         value={searchPrice}
-                        onChange={(value: string) => setSearchPrice(value)}
+                        onChange={(value: string) => setSearchPrice(Number.parseInt(value) >= 0 ? value : '')}
                         onFocus={() => {}}
                         type="number"
                         wrapperClassName="flex-1"
@@ -137,7 +137,7 @@ const RoomClassFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Room
                         placeholder="Lọc theo sức chứa"
                         error=""
                         value={searchCapacity}
-                        onChange={(value: string) => setSearchCapacity(value)}
+                        onChange={(value: string) => setSearchCapacity(Number.parseInt(value) >= 0 ? value : '')}
                         onFocus={() => {}}
                         type="number"
                         wrapperClassName="flex-1"

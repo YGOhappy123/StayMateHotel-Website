@@ -106,7 +106,7 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
                                     </button>
                                 }
                                 title="Xác nhận xóa loại phòng"
-                                body="Bạn có chắc muốn xóa loạiloại phòng này không? Thao tác này sẽ không thể hoàn tác."
+                                body="Bạn có chắc muốn xóa loại phòng này không? Thao tác này sẽ không thể hoàn tác."
                                 onConfirm={async () => {
                                     await deleteRoomClassMutation.mutateAsync(roomClass.id)
                                 }}

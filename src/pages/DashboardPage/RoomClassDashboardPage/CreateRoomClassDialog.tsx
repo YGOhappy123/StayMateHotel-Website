@@ -78,7 +78,7 @@ const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation
             </DialogHeader>
             <div className="border-b-2"></div>
             <div className="grid grid-cols-2 gap-4">
-                <div>images carousel</div>
+                
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-10">
