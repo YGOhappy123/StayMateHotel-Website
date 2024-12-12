@@ -9,7 +9,7 @@ declare global {
 
         floor?: Partial<IFloor>
         roomClass?: Partial<IRoomClass>
-        features?: Partial<IFeature>[]
+        features?: Partial<IFeature> & { quantity: number }[]
         createdBy?: Partial<IAdmin>
         images?: string[]
     }
@@ -33,6 +33,7 @@ declare global {
 
         createdById?: number
         createdBy?: Partial<IAdmin>
+        features?: Partial<IFeature> & { quantity: number }[]
         rooms?: Partial<IRoom>[]
     }
 

@@ -40,7 +40,7 @@ const UpdateFloorDialog = ({ selectedFloor, isOpen, closeDialog, updateFloorMuta
         const formErrors = { ...errors }
 
         if (!floorNumber.trim()) formErrors.floorNumber = formErrors.floorNumber || 'Mã tầng không được để trống.'
-        
+
         return formErrors
     }
 
@@ -56,17 +56,15 @@ const UpdateFloorDialog = ({ selectedFloor, isOpen, closeDialog, updateFloorMuta
     }, [isOpen])
 
     return (
-        <DialogContent className="max-w-[1000px] bg-white">
+        <DialogContent className="max-w-[500px] bg-white">
             <DialogHeader>
                 <DialogTitle>Cập nhật thông tin tầng</DialogTitle>
                 <DialogDescription></DialogDescription>
             </DialogHeader>
             <div className="border-b-2"></div>
-            <div className="grid grid-cols-2 gap-4">
-                <div>images carousel</div>
-
+            <div className="grid grid-cols-1 gap-4">
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-10">
+                    <div>
                         <TextInput
                             fieldName="floorNumber"
                             placeholder="Số tầng"

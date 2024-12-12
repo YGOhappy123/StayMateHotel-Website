@@ -45,13 +45,15 @@ const RoomClassFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Room
             setSearchCapacityQuery('')
         }
     }, [searchCapacity, capacitySort])
-    
+
     useEffect(() => {
         if (date) {
             const dateRange = [date.from]
             if (date.to) dateRange.push(date.to)
 
             setRange(dateRange)
+        } else {
+            setRange([])
         }
     }, [date])
 
@@ -78,7 +80,6 @@ const RoomClassFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Room
         setHavingFilters(false)
         onReset()
     }
-    
 
     return (
         <PopoverContent className="w-[400px] bg-white">

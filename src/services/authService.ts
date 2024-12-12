@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 
 import { onError } from '@/utils/errorsHandler'
 import { setLogged, setUser } from '@/slices/authSlice'
+import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import cookies from '@/libs/cookies'
 import toastConfig from '@/configs/toast'
@@ -33,7 +34,7 @@ const authService = () => {
             navigate(redirectPath as string)
             dispatch(setLogged(true))
             dispatch(setUser(user))
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
