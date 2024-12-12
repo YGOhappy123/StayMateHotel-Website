@@ -33,7 +33,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
     const handleSubmit = async () => {
         const formErrors = validateFormValues()
 
-        if (!formErrors.className) {
+        if (!formErrors.className && !formErrors.basePrice && !formErrors.capacity) {
             await updateRoomClassMutation
                 .mutateAsync({
                     roomClassId: selectedRoomClass?.id!,
@@ -46,11 +46,14 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
     }
 
     const validateFormValues = () => {
-        const { className} = formValues
+        const { className, basePrice, capacity} = formValues
         const formErrors = { ...errors }
 
         if (!className.trim()) formErrors.className = formErrors.className || 'Tên loại phòng không được để trống.'
-       
+        if (basePrice < 0) formErrors.basePrice = formErrors.basePrice || 'Giá tiền không được âm.'
+        if (basePrice > 2147483647) formErrors.basePrice = formErrors.basePrice || 'Giá tiền vượt mức quy định.'
+        if (capacity < 0) formErrors.capacity = formErrors.capacity || 'Số lượng không được âm.'
+        if (capacity > 2147483647) formErrors.capacity = formErrors.capacity || 'Số lượng vượt mức quy định.'
 
         return formErrors
     }
@@ -107,6 +110,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
                             onFocus={() => 
                                 setErrors(prev => ({ ...prev, basePrice: '' }))
                             }
+                            type='number'
                             labelClassName="bg-white"
                         />
                     </div>
@@ -123,6 +127,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
                             onFocus={() => 
                                 setErrors(prev => ({ ...prev, capacity: '' }))
                             }
+                            type='number'
                             labelClassName="bg-white"
                         />
                     </div>
