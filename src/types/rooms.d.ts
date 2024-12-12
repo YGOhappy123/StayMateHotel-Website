@@ -9,7 +9,7 @@ declare global {
 
         floor?: Partial<IFloor>
         roomClass?: Partial<IRoomClass>
-        features?: Partial<IFeature> & { quantity: number }[]
+        features?: Partial<IRoomClassFeature>[]
         createdBy?: Partial<IAdmin>
         images?: string[]
     }
@@ -33,7 +33,7 @@ declare global {
 
         createdById?: number
         createdBy?: Partial<IAdmin>
-        features?: Partial<IFeature> & { quantity: number }[]
+        features?: Partial<IRoomClassFeature>[]
         rooms?: Partial<IRoom>[]
     }
 
@@ -44,6 +44,15 @@ declare global {
 
         createdById?: number
         createdBy?: Partial<IAdmin>
+    }
+
+    interface IRoomClassFeature {
+        featureId: number
+        roomClassId?: number
+        quantity: number
+
+        name?: string
+        feature?: Partial<IFeature>
     }
 
     type RoomStatus = 'Available' | 'Reserved' | 'Occupied' | 'UnderCleaning' | 'OutOfService'
