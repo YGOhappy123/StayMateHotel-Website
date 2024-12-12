@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { PopoverContent } from '@/components/ui/Popover'
 import { FloorSortAndFilterParams } from '@/services/floorService'
+import { DateRange } from 'react-day-picker'
+
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 import SelectInput from '@/components/common/SelectInput'
+import DateRangePicker from '@/components/common/DateRangePicker'
 
 type FloorFilterProps = {
     setHavingFilters: (value: boolean) => void
@@ -16,8 +19,16 @@ const FloorFilter = ({ setHavingFilters, onChange, onSearch, onReset }: FloorFil
     const [searchFloorNumber, setSearchFloorNumber] = useState<string>('')
     const [range, setRange] = useState<string[] | any[]>()
     const [sort, setSort] = useState<string>('-createdAt')
-    
-    const [rangePickerDate, setRangePickerDate] = useState<any[]>([])
+    const [date, setDate] = useState<DateRange | undefined>(undefined)
+
+    useEffect(() => {
+        if (date) {
+            const dateRange = [date.from]
+            if (date.to) dateRange.push(date.to)
+
+            setRange(dateRange)
+        }
+    }, [date])
 
     useEffect(() => {
         onChange({ searchFloorNumber, sort, range })
@@ -36,7 +47,7 @@ const FloorFilter = ({ setHavingFilters, onChange, onSearch, onReset }: FloorFil
     const handleReset = () => {
         setSearchFloorNumber('')
         setSort('-createdAt')
-        setRangePickerDate([])
+        setDate(undefined)
         setHavingFilters(false)
         onReset()
     }
@@ -60,9 +71,12 @@ const FloorFilter = ({ setHavingFilters, onChange, onSearch, onReset }: FloorFil
                         inputClassName="leading-2"
                     />
                 </div>
+                <div className="mb-4">
+                    <DateRangePicker date={date} setDate={setDate} triggerClassName="leading-normal" />
+                </div>
                 <div>
                     <SelectInput
-                        fieldName="floorClassId"
+                        fieldName="sort"
                         placeholder="Sắp xếp theo"
                         options={[
                             { value: '-createdAt', label: 'Ngày tạo giảm dần' },

@@ -31,7 +31,9 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
         if (searchFloorNumber) query.floorNumber = searchFloorNumber.trim()
         if (range) {
             query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
-            query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
+            if (range[1]) {
+                query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
+            }
         }
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
@@ -71,8 +73,8 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
     })
 
     const onFilterSearch = () => {
-        searchFloorsQuery.refetch()
         setIsSearching(true)
+        searchFloorsQuery.refetch()
     }
 
     const onResetFilterSearch = () => {

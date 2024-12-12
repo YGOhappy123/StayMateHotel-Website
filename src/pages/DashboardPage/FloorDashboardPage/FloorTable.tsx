@@ -2,8 +2,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { DataTable } from '@/components/ui/DataTable'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from '@/libs/dayjs'
+
+import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
-import floorService from '@/services/floorService'
 
 type FloorTableProps = {
     floors: IFloor[]
@@ -12,11 +13,10 @@ type FloorTableProps = {
     limit: number
     setPage: (page: number) => void
     onSelectFloor: (floor: IFloor) => void
+    deleteFloorMutation: any
 }
 
-const FloorTable = ({ floors, total, page, limit, setPage, onSelectFloor }: FloorTableProps) => {
-    const { deleteFloorMutation } = floorService({ enableFetching: false })
-
+const FloorTable = ({ floors, total, page, limit, setPage, onSelectFloor, deleteFloorMutation }: FloorTableProps) => {
     const columns: ColumnDef<IFloor>[] = [
         {
             accessorKey: 'id',
@@ -31,8 +31,8 @@ const FloorTable = ({ floors, total, page, limit, setPage, onSelectFloor }: Floo
             header: 'Ngày Và Người Tạo',
             enableHiding: true,
             cell: ({ row }) => {
-                const createdAt = row.original.createdAt as IFloor['createdAt']
-                const createdBy = row.original.createdBy as IFloor['createdBy']
+                const createdAt = row.original.createdAt
+                const createdBy = row.original.createdBy
 
                 return (
                     <div>
@@ -62,11 +62,17 @@ const FloorTable = ({ floors, total, page, limit, setPage, onSelectFloor }: Floo
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
                             onClick={() => onSelectFloor(floor)}
                         />
-                        <Button
-                            text="Xóa tầng"
-                            variant="danger"
-                            className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            onClick={() => deleteFloorMutation.mutate(floor.id)}
+                        <ConfirmationDialog
+                            Trigger={
+                                <button className="min-w-fit rounded border-2 border-solid border-red-600 bg-red-100 px-3 py-1.5 text-xs font-medium text-red-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50">
+                                    Xóa tầng
+                                </button>
+                            }
+                            title="Xác nhận xóa tầng"
+                            body="Bạn có chắc muốn xóa tầng này không? Thao tác này sẽ không thể hoàn tác."
+                            onConfirm={async () => {
+                                await deleteFloorMutation.mutateAsync(floor.id)
+                            }}
                         />
                     </div>
                 )

@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog'
+
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
-import floorService from '@/services/floorService'
 
 type UpdateFloorDialogProps = {
     selectedFloor: IFloor | null
     isOpen: boolean
     closeDialog: () => void
+    updateFloorMutation: any
 }
 
-const UpdateFloorDialog = ({ selectedFloor, isOpen, closeDialog }: UpdateFloorDialogProps) => {
-    const { updateFloorMutation } = floorService({ enableFetching: false })
-
+const UpdateFloorDialog = ({ selectedFloor, isOpen, closeDialog, updateFloorMutation }: UpdateFloorDialogProps) => {
     const [formValues, setFormValues] = useState({
         floorNumber: ''
     })

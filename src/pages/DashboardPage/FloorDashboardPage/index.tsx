@@ -12,7 +12,19 @@ import floorService from '@/services/floorService'
 import FloorFilter from '@/pages/DashboardPage/FloorDashboardPage/FloorFilter'
 
 const FloorDashboardPage = () => {
-    const { floors, total, page, limit, setPage, buildQuery, onFilterSearch, onResetFilterSearch } = floorService({ enableFetching: true })
+    const {
+        floors,
+        total,
+        page,
+        limit,
+        setPage,
+        buildQuery,
+        onFilterSearch,
+        onResetFilterSearch,
+        createNewFloorMutation,
+        updateFloorMutation,
+        deleteFloorMutation
+    } = floorService({ enableFetching: true })
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
@@ -64,6 +76,7 @@ const FloorDashboardPage = () => {
                         <CreateFloorDialog
                             isOpen={isAddModalOpen}
                             closeDialog={() => setIsAddModalOpen(false)}
+                            createNewFloorMutation={createNewFloorMutation}
                         />
                     </Dialog>
 
@@ -72,6 +85,7 @@ const FloorDashboardPage = () => {
                             selectedFloor={selectedFloor}
                             isOpen={isUpdateModalOpen}
                             closeDialog={() => setIsUpdateModalOpen(false)}
+                            updateFloorMutation={updateFloorMutation}
                         />
                     </Dialog>
 
@@ -89,6 +103,7 @@ const FloorDashboardPage = () => {
                     setSelectedFloor(floor)
                     setIsUpdateModalOpen(true)
                 }}
+                deleteFloorMutation={deleteFloorMutation}
             />
         </div>
     )
