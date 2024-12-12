@@ -7,15 +7,28 @@ type TextInputProps = {
     error: string
     onChange: (value: string) => void
     onFocus: () => void
+    type?: 'text' | 'number'
+    wrapperClassName?: string
     inputClassName?: string
     labelClassName?: string
 }
 
-const TextInput = ({ fieldName, placeholder, error, value, onChange, onFocus, inputClassName, labelClassName }: TextInputProps) => {
+const TextInput = ({
+    fieldName,
+    placeholder,
+    error,
+    value,
+    onChange,
+    onFocus,
+    type = 'text',
+    wrapperClassName,
+    inputClassName,
+    labelClassName
+}: TextInputProps) => {
     return (
-        <div className="relative">
+        <div className={twMerge(`relative ${wrapperClassName}`)}>
             <input
-                type="text"
+                type={type}
                 className={twMerge(
                     `peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-2 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${inputClassName}`
                 )}

@@ -8,7 +8,6 @@ import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 import SelectInput from '@/components/common/SelectInput'
 import ImageUploader from '@/components/common/ImageUploader'
-import roomService from '@/services/roomService'
 import fileService from '@/services/fileService'
 
 type UpdateRoomDialogProps = {
@@ -17,10 +16,10 @@ type UpdateRoomDialogProps = {
     closeDialog: () => void
     floors: IFloor[]
     roomClasses: IRoomClass[]
+    updateRoomMutation: any
 }
 
-const UpdateRoomDialog = ({ selectedRoom, isOpen, closeDialog, floors, roomClasses }: UpdateRoomDialogProps) => {
-    const { updateRoomMutation } = roomService({ enableFetching: false })
+const UpdateRoomDialog = ({ selectedRoom, isOpen, closeDialog, floors, roomClasses, updateRoomMutation }: UpdateRoomDialogProps) => {
     const { uploadMutation, deleteMutation } = fileService()
     const [images, setImages] = useState<string[]>([])
     const [imagesToBeDeleted, setImagesToBeDeleted] = useState<string[]>([])

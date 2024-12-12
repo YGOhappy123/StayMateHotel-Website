@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { PopoverContent } from '@/components/ui/Popover'
 import { RoomSortAndFilterParams } from '@/services/roomService'
+import { DateRange } from 'react-day-picker'
+
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 import SelectInput from '@/components/common/SelectInput'
+import DateRangePicker from '@/components/common/DateRangePicker'
 
 type RoomFilterProps = {
     floors: IFloor[]
@@ -24,7 +27,7 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
 
     const [searchPrice, setSearchPrice] = useState<string>('')
     const [priceSort, setPriceSort] = useState<string>('$lte')
-    const [rangePickerDate, setRangePickerDate] = useState<any[]>([])
+    const [date, setDate] = useState<DateRange | undefined>(undefined)
 
     useEffect(() => {
         if (searchPrice) {
@@ -34,6 +37,15 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
             setSearchPriceQuery('')
         }
     }, [searchPrice, priceSort])
+
+    useEffect(() => {
+        if (date) {
+            const dateRange = [date.from]
+            if (date.to) dateRange.push(date.to)
+
+            setRange(dateRange)
+        }
+    }, [date])
 
     useEffect(() => {
         onChange({ searchRoomNumber, searchPriceQuery, searchFloor, searchRoomClass, sort, range })
@@ -55,7 +67,7 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
         setSearchFloor(0)
         setSearchRoomClass(0)
         setSort('-createdAt')
-        setRangePickerDate([])
+        setDate(undefined)
         setHavingFilters(false)
         onReset()
     }
@@ -105,9 +117,41 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
                         selectClassName="py-[9px]"
                     />
                 </div>
+                <div className="mb-4">
+                    <DateRangePicker date={date} setDate={setDate} triggerClassName="leading-normal" />
+                </div>
+                <div className="mb-4 flex gap-2">
+                    <TextInput
+                        fieldName="price"
+                        placeholder="Lọc theo giá tiền"
+                        error=""
+                        value={searchPrice}
+                        onChange={(value: string) => setSearchPrice(value)}
+                        onFocus={() => {}}
+                        type="number"
+                        wrapperClassName="flex-1"
+                        labelClassName="bg-white"
+                        inputClassName="leading-2"
+                    />
+                    <SelectInput
+                        fieldName="priceSort"
+                        placeholder="Chọn mốc"
+                        options={[
+                            { value: '$lte', label: 'Bé hơn hoặc bằng' },
+                            { value: '$gte', label: 'Lớn hơn hoặc bằng' }
+                        ]}
+                        error=""
+                        value={priceSort}
+                        onChange={(value: string | number) => setPriceSort(value as string)}
+                        onFocus={() => {}}
+                        havingDefaultOptions={false}
+                        labelClassName="bg-white"
+                        selectClassName="py-[9px]"
+                    />
+                </div>
                 <div>
                     <SelectInput
-                        fieldName="roomClassId"
+                        fieldName="sort"
                         placeholder="Sắp xếp theo"
                         options={[
                             { value: '-createdAt', label: 'Ngày tạo giảm dần' },
