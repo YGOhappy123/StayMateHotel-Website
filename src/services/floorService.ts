@@ -30,7 +30,9 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
         const query: any = {}
         if (searchFloorNumber) query.floorNumber = searchFloorNumber.trim()
         if (range) {
-            query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            if (range[0]) {
+                query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            }
             if (range[1]) {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }

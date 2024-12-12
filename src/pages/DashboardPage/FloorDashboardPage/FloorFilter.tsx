@@ -27,6 +27,8 @@ const FloorFilter = ({ setHavingFilters, onChange, onSearch, onReset }: FloorFil
             if (date.to) dateRange.push(date.to)
 
             setRange(dateRange)
+        } else {
+            setRange([])
         }
     }, [date])
 
