@@ -10,6 +10,8 @@ import { getMappedSort } from '@/utils/apiSortMapping'
 
 export type RoomClassSortAndFilterParams = {
     searchClassName: string
+    searchPriceQuery: string
+    searchCapacityQuery: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -26,13 +28,29 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchClassName, sort, range }: RoomClassSortAndFilterParams) => {
+    const buildQuery = ({ searchClassName, searchPriceQuery, searchCapacityQuery, sort, range }: RoomClassSortAndFilterParams) => {
         const query: any = {}
         if (searchClassName) query.className = searchClassName.trim()
+        if (searchPriceQuery) {
+            const parsedPriceQuery = JSON.parse(searchPriceQuery)
+            if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
+            if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
+        } 
+        if (searchCapacityQuery) {
+            const parsedCapacityQuery = JSON.parse(searchCapacityQuery)
+            if (parsedCapacityQuery['$gte']) query.minCapacity = parsedCapacityQuery['$gte']
+            if (parsedCapacityQuery['$lte']) query.maxCapacity = parsedCapacityQuery['$lte']
+        }    
         if (range) {
             query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
             query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
         }
+        if (range) {
+                    query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+                    if (range[1]) {
+                        query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
+                    }
+                }
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
     }
@@ -71,8 +89,8 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     })
 
     const onFilterSearch = () => {
-        searchRoomClassesQuery.refetch()
         setIsSearching(true)
+        searchRoomClassesQuery.refetch()
     }
 
     const onResetFilterSearch = () => {

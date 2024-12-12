@@ -3,17 +3,18 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 
-import roomClassService from '@/services/roomClassService'
+
 
 type UpdateRoomClassDialogProps = {
     selectedRoomClass: IRoomClass | null
     isOpen: boolean
     closeDialog: () => void
+    updateRoomClassMutation: any
     
 }
 
-const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog}: UpdateRoomClassDialogProps) => {
-    const { updateRoomClassMutation } = roomClassService({ enableFetching: false })
+const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateRoomClassMutation}: UpdateRoomClassDialogProps) => {
+    
     
 
     const [formValues, setFormValues] = useState({

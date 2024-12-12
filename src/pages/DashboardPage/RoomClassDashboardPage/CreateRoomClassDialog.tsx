@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/Carousel'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 
@@ -8,11 +11,11 @@ import roomClassService from '@/services/roomClassService'
 type CreateRoomClassDialogProps = {
     isOpen: boolean
     closeDialog: () => void
+    createNewRoomClassMutation: any
 }
 
-const CreateRoomClassDialog = ({ isOpen, closeDialog }: CreateRoomClassDialogProps) => {
-    const { createNewRoomClassMutation } = roomClassService({ enableFetching: false })
-    
+const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation }: CreateRoomClassDialogProps) => {
+
 
     const [formValues, setFormValues] = useState({
         className: '',

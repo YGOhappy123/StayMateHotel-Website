@@ -3,8 +3,10 @@ import { DataTable } from '@/components/ui/DataTable'
 import { getMappedStatus } from '@/utils/roomStatusMapping'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from '@/libs/dayjs'
+
+import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
-import roomService from '@/services/roomService'
+import fileService from '@/services/fileService'
 
 type RoomTableProps = {
     rooms: IRoom[]
@@ -13,10 +15,23 @@ type RoomTableProps = {
     limit: number
     setPage: (page: number) => void
     onSelectRoom: (room: IRoom) => void
+    deleteRoomMutation: any
+    toggleMaintenanceMutation: any
+    markCleaningDoneMutation: any
 }
 
-const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTableProps) => {
-    const { deleteRoomMutation, toggleMaintenanceMutation, markCleaningDoneMutation } = roomService({ enableFetching: false })
+const RoomTable = ({
+    rooms,
+    total,
+    page,
+    limit,
+    setPage,
+    onSelectRoom,
+    deleteRoomMutation,
+    toggleMaintenanceMutation,
+    markCleaningDoneMutation
+}: RoomTableProps) => {
+    const { deleteMutation } = fileService()
 
     const columns: ColumnDef<IRoom>[] = [
         {
@@ -31,7 +46,7 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
             accessorKey: 'floor',
             header: 'Tầng',
             cell: ({ row }) => {
-                const floor = row.original.floor as IRoom['floor']
+                const floor = row.original.floor
                 return <div>{floor?.floorNumber}</div>
             }
         },
@@ -39,7 +54,7 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
             accessorKey: 'roomClass',
             header: () => <div className="text-center">Loại Phòng</div>,
             cell: ({ row }) => {
-                const roomClass = row.original.roomClass as IRoom['roomClass']
+                const roomClass = row.original.roomClass
                 return (
                     <div className="flex justify-center">
                         <div className="table-tag-blue">{roomClass?.className}</div>
@@ -51,7 +66,7 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
             accessorKey: 'basePrice',
             header: () => <div className="text-center">Giá Phòng Theo Ngày</div>,
             cell: ({ row }) => {
-                const roomClass = row.original.roomClass as IRoom['roomClass']
+                const roomClass = row.original.roomClass
 
                 return (
                     <div className="flex justify-center">
@@ -66,7 +81,7 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
             accessorKey: 'status',
             header: () => <div className="text-center">Trạng Thái Phòng</div>,
             cell: ({ row }) => {
-                const status = row.original.status as IRoom['status']
+                const status = row.original.status
 
                 return (
                     <div className="flex justify-center">
@@ -76,12 +91,20 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
             }
         },
         {
+            accessorKey: 'images',
+            header: () => <div className="text-center">Hình Ảnh</div>,
+            cell: ({ row }) => {
+                const images = row.original.images
+                return <div className="flex justify-center">{(images?.length ?? 0).toString().padStart(2, '0')}</div>
+            }
+        },
+        {
             accessorKey: 'createdAt',
             header: 'Ngày Và Người Tạo',
             enableHiding: true,
             cell: ({ row }) => {
-                const createdAt = row.original.createdAt as IRoom['createdAt']
-                const createdBy = row.original.createdBy as IRoom['createdBy']
+                const createdAt = row.original.createdAt
+                const createdBy = row.original.createdBy
 
                 return (
                     <div>
@@ -119,18 +142,37 @@ const RoomTable = ({ rooms, total, page, limit, setPage, onSelectRoom }: RoomTab
                             disabled={room.status !== 'UnderCleaning'}
                             onClick={() => markCleaningDoneMutation.mutate(room.id)}
                         />
-                        <Button
-                            text={room.status === 'OutOfService' ? 'Mở phòng' : 'Bảo trì'}
-                            variant="warning"
-                            className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            disabled={room.status === 'Occupied' || room.status === 'Reserved'}
-                            onClick={() => toggleMaintenanceMutation.mutate(room.id)}
+                        <ConfirmationDialog
+                            Trigger={
+                                <button
+                                    disabled={room.status === 'Occupied' || room.status === 'Reserved'}
+                                    className="min-w-fit rounded border-2 border-solid border-yellow-600 bg-yellow-100 px-3 py-1.5 text-xs font-medium text-yellow-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50"
+                                >
+                                    {room.status === 'OutOfService' ? 'Mở phòng' : 'Bảo trì'}
+                                </button>
+                            }
+                            title={room.status === 'OutOfService' ? 'Xác nhận mở lại phòng' : 'Xác nhận bảo trì phòng'}
+                            body={
+                                room.status === 'OutOfService'
+                                    ? 'Bạn có chắc muốn mở lại phòng này không? Khách hàng sẽ có thể đặt phòng này sau khi mở lại.'
+                                    : 'Bạn có chắc muốn bảo trì phòng này không? Khách hàng sẽ không thể đặt phòng này trong khi bảo trì.'
+                            }
+                            onConfirm={async () => {
+                                await toggleMaintenanceMutation.mutateAsync(room.id)
+                            }}
                         />
-                        <Button
-                            text="Xóa phòng"
-                            variant="danger"
-                            className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            onClick={() => deleteRoomMutation.mutate(room.id)}
+                        <ConfirmationDialog
+                            Trigger={
+                                <button className="min-w-fit rounded border-2 border-solid border-red-600 bg-red-100 px-3 py-1.5 text-xs font-medium text-red-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50">
+                                    Xóa phòng
+                                </button>
+                            }
+                            title="Xác nhận xóa phòng"
+                            body="Bạn có chắc muốn xóa phòng này không? Thao tác này sẽ không thể hoàn tác."
+                            onConfirm={async () => {
+                                await deleteRoomMutation.mutateAsync(room.id)
+                                await Promise.all((room.images ?? []).map(async img => await deleteMutation.mutateAsync(img)))
+                            }}
                         />
                     </div>
                 )

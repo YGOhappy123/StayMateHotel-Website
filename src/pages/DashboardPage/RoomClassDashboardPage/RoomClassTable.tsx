@@ -3,8 +3,10 @@ import { DataTable } from '@/components/ui/DataTable'
 
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from '@/libs/dayjs'
+import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
 import roomClassService from '@/services/roomClassService'
+import fileService from '@/services/fileService'
 
 type RoomClassTableProps = {
     roomClasses: IRoomClass[]
@@ -13,10 +15,11 @@ type RoomClassTableProps = {
     limit: number
     setPage: (page: number) => void
     onSelectRoomClass: (roomClass: IRoomClass) => void
+    deleteRoomClassMutation: any
 }
 
-const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoomClass }: RoomClassTableProps) => {
-    const { deleteRoomClassMutation } = roomClassService({ enableFetching: false })
+const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoomClass, deleteRoomClassMutation }: RoomClassTableProps) => {
+   
 
     const columns: ColumnDef<IRoomClass>[] = [
         {
@@ -31,7 +34,7 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
             accessorKey: 'basePrice',
             header: () => <div className="text-center">Giá Loại Phòng Theo Ngày</div>,
             cell: ({ row }) => {
-                const basePrice = row.original.basePrice as IRoomClass['basePrice']
+                const basePrice = row.original.basePrice
 
                 return (
                     <div className="flex justify-center">
@@ -47,7 +50,7 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
             accessorKey: 'capacity',
             header: () => <div className="text-center">Số Lượng Người</div>,
             cell: ({ row }) => {
-                const capacity = row.original.capacity as IRoomClass['capacity']
+                const capacity = row.original.capacity
 
                 return (
                     <div className="flex justify-center">
@@ -65,8 +68,8 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
             header: 'Ngày Và Người Tạo',
             enableHiding: true,
             cell: ({ row }) => {
-                const createdAt = row.original.createdAt as IRoomClass['createdAt']
-                const createdBy = row.original.createdBy as IRoomClass['createdBy']
+                const createdAt = row.original.createdAt 
+                const createdBy = row.original.createdBy 
 
                 return (
                     <div>
@@ -95,13 +98,19 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
                             variant="success"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
                             onClick={() => onSelectRoomClass(roomClass)}
-                        />
-                        <Button
-                            text="Xóa loại phòng"
-                            variant="danger"
-                            className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            onClick={() => deleteRoomClassMutation.mutate(roomClass.id)}
-                        />
+                            />
+                            <ConfirmationDialog
+                                Trigger={
+                                    <button className="min-w-fit rounded border-2 border-solid border-red-600 bg-red-100 px-3 py-1.5 text-xs font-medium text-red-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50">
+                                        Xóa loại phòng
+                                    </button>
+                                }
+                                title="Xác nhận xóa loại phòng"
+                                body="Bạn có chắc muốn xóa loạiloại phòng này không? Thao tác này sẽ không thể hoàn tác."
+                                onConfirm={async () => {
+                                    await deleteRoomClassMutation.mutateAsync(roomClass.id)
+                                }}
+                            />
                     </div>
                 )
             }
