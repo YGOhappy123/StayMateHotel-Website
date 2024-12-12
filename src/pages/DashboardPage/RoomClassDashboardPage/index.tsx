@@ -39,7 +39,7 @@ const RoomClassDashboardPage = () => {
             return axios.get<IResponseData<IFeature[]>>(`/features`)
         },
         refetchOnWindowFocus: false,
-        enabled: false,
+        enabled: true,
         select: res => res.data
     })
 
@@ -87,6 +87,7 @@ const RoomClassDashboardPage = () => {
                             </div>
                         </PopoverTrigger>
                         <RoomClassFilter
+                            features={features}
                             setHavingFilters={setHavingFilters}
                             onChange={buildQuery}
                             onSearch={onFilterSearch}
