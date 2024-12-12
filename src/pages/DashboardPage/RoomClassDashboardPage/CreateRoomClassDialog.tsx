@@ -15,25 +15,23 @@ type CreateRoomClassDialogProps = {
 }
 
 const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation }: CreateRoomClassDialogProps) => {
-
-
     const [formValues, setFormValues] = useState({
         className: '',
         basePrice: 0,
-        capacity: 0,
+        capacity: 0
     })
 
     const [errors, setErrors] = useState({
         className: '',
         basePrice: '',
-        capacity: '',
+        capacity: ''
     })
 
     const handleSubmit = async () => {
         const formErrors = validateFormValues()
 
         if (!formErrors.className && !formErrors.basePrice && !formErrors.capacity) {
-            await createNewRoomClassMutation.mutateAsync({ ...formValues}).then(() => closeDialog())
+            await createNewRoomClassMutation.mutateAsync({ ...formValues }).then(() => closeDialog())
         } else {
             setErrors(formErrors)
         }
@@ -57,15 +55,13 @@ const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation
             setFormValues({
                 className: '',
                 basePrice: 0,
-                capacity: 0,
-             
+                capacity: 0
             })
-            
+
             setErrors({
                 className: '',
                 basePrice: '',
-                capacity: '',
-                
+                capacity: ''
             })
         }
     }, [isOpen])
@@ -78,7 +74,7 @@ const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation
             </DialogHeader>
             <div className="border-b-2"></div>
             <div className="grid grid-cols-2 gap-4">
-                
+                <div></div>
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-10">
@@ -98,34 +94,25 @@ const CreateRoomClassDialog = ({ isOpen, closeDialog, createNewRoomClassMutation
                             placeholder="Giá Loại phòng"
                             error={errors.basePrice}
                             value={formValues.basePrice.toString()}
-                            onChange={(value: string) => 
-                                setFormValues(prev => ({ ...prev, basePrice: Number(value) }))
-                            }
-                            onFocus={() => 
-                                setErrors(prev => ({ ...prev, basePrice: '' }))
-                            }
-                            type='number'
+                            onChange={(value: string) => setFormValues(prev => ({ ...prev, basePrice: Number(value) }))}
+                            onFocus={() => setErrors(prev => ({ ...prev, basePrice: '' }))}
+                            type="number"
                             labelClassName="bg-white"
                         />
                     </div>
 
-                    <div className="mb-10">
+                    <div>
                         <TextInput
                             fieldName="capacity"
                             placeholder="Số Lượng Người"
                             error={errors.capacity}
                             value={formValues.capacity.toString()}
-                            onChange={(value: string) => 
-                                setFormValues(prev => ({ ...prev, capacity: Number(value) }))
-                            }
-                            onFocus={() => 
-                                setErrors(prev => ({ ...prev, capacity: '' }))
-                            }
-                            type='number'
+                            onChange={(value: string) => setFormValues(prev => ({ ...prev, capacity: Number(value) }))}
+                            onFocus={() => setErrors(prev => ({ ...prev, capacity: '' }))}
+                            type="number"
                             labelClassName="bg-white"
                         />
                     </div>
-
                 </form>
             </div>
             <div className="border-b-2"></div>

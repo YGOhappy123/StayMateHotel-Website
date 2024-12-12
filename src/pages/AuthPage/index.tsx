@@ -23,7 +23,7 @@ const AuthPage = () => {
     const [formType, setFormType] = useState<FormType>('signIn')
 
     if (isLogged) {
-        toast('Bạn đã đăng nhập rồi', toastConfig('info'))
+        toast('Bạn đã đăng nhập rồi. Nếu bạn muốn sử dụng một tài khoản khác, vui lòng đăng xuất khỏi tài khoản hiện tại.', toastConfig('info'))
         return <Navigate to="/" />
     } else {
         return (

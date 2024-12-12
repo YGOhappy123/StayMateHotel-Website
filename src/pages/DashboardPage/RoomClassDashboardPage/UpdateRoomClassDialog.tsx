@@ -3,31 +3,24 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 
-
-
 type UpdateRoomClassDialogProps = {
     selectedRoomClass: IRoomClass | null
     isOpen: boolean
     closeDialog: () => void
     updateRoomClassMutation: any
-    
 }
 
-const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateRoomClassMutation}: UpdateRoomClassDialogProps) => {
-    
-    
-
+const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateRoomClassMutation }: UpdateRoomClassDialogProps) => {
     const [formValues, setFormValues] = useState({
         className: '',
         basePrice: 0,
-        capacity: 0,
-    
+        capacity: 0
     })
 
     const [errors, setErrors] = useState({
         className: '',
         basePrice: '',
-        capacity: '',
+        capacity: ''
     })
 
     const handleSubmit = async () => {
@@ -37,7 +30,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
             await updateRoomClassMutation
                 .mutateAsync({
                     roomClassId: selectedRoomClass?.id!,
-                    data: { ...formValues}
+                    data: { ...formValues }
                 })
                 .then(() => closeDialog())
         } else {
@@ -46,7 +39,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
     }
 
     const validateFormValues = () => {
-        const { className, basePrice, capacity} = formValues
+        const { className, basePrice, capacity } = formValues
         const formErrors = { ...errors }
 
         if (!className.trim()) formErrors.className = formErrors.className || 'Tên loại phòng không được để trống.'
@@ -63,14 +56,13 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
             setFormValues({
                 className: selectedRoomClass.className,
                 basePrice: selectedRoomClass.basePrice,
-                capacity: selectedRoomClass.capacity,
+                capacity: selectedRoomClass.capacity
             })
-            
+
             setErrors({
                 className: '',
                 basePrice: '',
-                capacity: '',
-                
+                capacity: ''
             })
         }
     }, [isOpen])
@@ -83,7 +75,7 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
             </DialogHeader>
             <div className="border-b-2"></div>
             <div className="grid grid-cols-2 gap-4">
-                
+                <div></div>
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-10">
@@ -97,37 +89,29 @@ const UpdateRoomClassDialog = ({ selectedRoomClass, isOpen, closeDialog, updateR
                             labelClassName="bg-white"
                         />
                     </div>
-                    
+
                     <div className="mb-10">
                         <TextInput
                             fieldName="basePrice"
                             placeholder="Giá Loại phòng"
                             error={errors.basePrice}
                             value={formValues.basePrice.toString()}
-                            onChange={(value: string) => 
-                                setFormValues(prev => ({ ...prev, basePrice: Number(value) }))
-                            }
-                            onFocus={() => 
-                                setErrors(prev => ({ ...prev, basePrice: '' }))
-                            }
-                            type='number'
+                            onChange={(value: string) => setFormValues(prev => ({ ...prev, basePrice: Number(value) }))}
+                            onFocus={() => setErrors(prev => ({ ...prev, basePrice: '' }))}
+                            type="number"
                             labelClassName="bg-white"
                         />
                     </div>
 
-                    <div className="mb-10">
+                    <div>
                         <TextInput
                             fieldName="capacity"
                             placeholder="Số Lượng Người"
                             error={errors.capacity}
                             value={formValues.capacity.toString()}
-                            onChange={(value: string) => 
-                                setFormValues(prev => ({ ...prev, capacity: Number(value) }))
-                            }
-                            onFocus={() => 
-                                setErrors(prev => ({ ...prev, capacity: '' }))
-                            }
-                            type='number'
+                            onChange={(value: string) => setFormValues(prev => ({ ...prev, capacity: Number(value) }))}
+                            onFocus={() => setErrors(prev => ({ ...prev, capacity: '' }))}
+                            type="number"
                             labelClassName="bg-white"
                         />
                     </div>

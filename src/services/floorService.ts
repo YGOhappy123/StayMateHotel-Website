@@ -4,9 +4,10 @@ import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 
 import { onError } from '@/utils/errorsHandler'
+import { getMappedSort } from '@/utils/apiSortMapping'
+import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import toastConfig from '@/configs/toast'
-import { getMappedSort } from '@/utils/apiSortMapping'
 
 export type FloorSortAndFilterParams = {
     searchFloorNumber: string
@@ -104,7 +105,7 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('floors')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -120,7 +121,7 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('floors')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -136,7 +137,7 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('floors')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 

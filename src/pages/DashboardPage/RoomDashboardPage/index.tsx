@@ -48,22 +48,15 @@ const RoomDashboardPage = () => {
 
     const fetchAllRoomClassesQuery = useQuery(['room-classes-all'], {
         queryFn: () => {
-            return axios.get<IResponseData<IRoomClass[]>>(`/room-classes`)
+            return axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`)
         },
         refetchOnWindowFocus: false,
         enabled: false,
         select: res => res.data
     })
 
-    const floors = fetchAllFloorsQuery.data?.data || [
-        { id: 1, floorNumber: '101', createdAt: '' },
-        { id: 2, floorNumber: '102', createdAt: '' }
-    ]
-    const roomClasses = fetchAllRoomClassesQuery.data?.data || [
-        { id: 1, className: 'Family', createdAt: '', basePrice: 500000, capacity: 10 },
-        { id: 2, className: 'VIP', createdAt: '', basePrice: 500000, capacity: 10 },
-        { id: 3, className: 'Super VIP', createdAt: '', basePrice: 500000, capacity: 10 }
-    ]
+    const floors = fetchAllFloorsQuery.data?.data || []
+    const roomClasses = fetchAllRoomClassesQuery.data?.data || []
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen) {

@@ -4,9 +4,10 @@ import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 
 import { onError } from '@/utils/errorsHandler'
+import { getMappedSort } from '@/utils/apiSortMapping'
+import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import toastConfig from '@/configs/toast'
-import { getMappedSort } from '@/utils/apiSortMapping'
 
 export type RoomSortAndFilterParams = {
     searchRoomNumber: string
@@ -40,7 +41,9 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
         }
         if (range) {
-            query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            if (range[0]) {
+                query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            }
             if (range[1]) {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
@@ -112,7 +115,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('rooms')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -128,7 +131,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('rooms')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -144,7 +147,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('rooms')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -160,7 +163,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('rooms')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
@@ -176,7 +179,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
             } else {
                 queryClient.invalidateQueries('rooms')
             }
-            toast(res.data.message, toastConfig('success'))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 

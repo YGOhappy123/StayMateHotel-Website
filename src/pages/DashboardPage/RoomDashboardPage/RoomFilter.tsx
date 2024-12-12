@@ -44,6 +44,8 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
             if (date.to) dateRange.push(date.to)
 
             setRange(dateRange)
+        } else {
+            setRange([])
         }
     }, [date])
 
@@ -126,7 +128,7 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
                         placeholder="Lọc theo giá tiền"
                         error=""
                         value={searchPrice}
-                        onChange={(value: string) => setSearchPrice(value)}
+                        onChange={(value: string) => setSearchPrice(Number.parseInt(value) >= 0 ? value : '')}
                         onFocus={() => {}}
                         type="number"
                         wrapperClassName="flex-1"

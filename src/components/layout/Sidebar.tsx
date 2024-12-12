@@ -122,7 +122,7 @@ const Sidebar = () => {
                         </li>
 
                         <li>
-                            <NavLink to={'/dashboard'} className="link">
+                            <NavLink to={'/dashboard'} end className="link">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faTasks} className="min-w-max" size="xl" />
                                 </div>
