@@ -19,8 +19,6 @@ type RoomClassTableProps = {
 }
 
 const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoomClass, deleteRoomClassMutation }: RoomClassTableProps) => {
-   
-
     const columns: ColumnDef<IRoomClass>[] = [
         {
             accessorKey: 'id',
@@ -54,9 +52,7 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
 
                 return (
                     <div className="flex justify-center">
-                        <div className="table-tag-green">
-                            {capacity} Người
-                        </div>
+                        <div className="table-tag-blue">{capacity} Người</div>
                     </div>
                 )
             }
@@ -66,34 +62,28 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
             accessorKey: 'features',
             header: () => <div className="text-center">Tiện ích</div>,
             cell: ({ row }) => {
-                const features = row.original.features;
-            
+                const features = row.original.features
+
                 return (
                     <div className="flex flex-col items-start space-y-2">
                         {features?.map((feature, index) => (
                             <div key={index} className="flex items-center space-x-2">
-                                <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs">
-                                    {feature.quantity}x
-                                </span>
-                                <span className="text-gray-700 font-medium">
-                                    {feature.name}
-                                </span>
+                                <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">{feature.quantity}x</span>
+                                <span className="text-gray-700">{feature.name}</span>
                             </div>
                         ))}
                     </div>
-                );
+                )
             }
         },
-        
-        
-            
+
         {
             accessorKey: 'createdAt',
             header: 'Ngày Và Người Tạo',
             enableHiding: true,
             cell: ({ row }) => {
-                const createdAt = row.original.createdAt 
-                const createdBy = row.original.createdBy 
+                const createdAt = row.original.createdAt
+                const createdBy = row.original.createdBy
 
                 return (
                     <div>
@@ -116,25 +106,25 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
                 const roomClass = row.original
 
                 return (
-                    <div className="grid grid-cols-1 gap-2 xl:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-2">
                         <Button
                             text="Cập nhật"
                             variant="success"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
                             onClick={() => onSelectRoomClass(roomClass)}
-                            />
-                            <ConfirmationDialog
-                                Trigger={
-                                    <button className="min-w-fit rounded border-2 border-solid border-red-600 bg-red-100 px-3 py-1.5 text-xs font-medium text-red-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50">
-                                        Xóa loại phòng
-                                    </button>
-                                }
-                                title="Xác nhận xóa loại phòng"
-                                body="Bạn có chắc muốn xóa loại phòng này không? Thao tác này sẽ không thể hoàn tác."
-                                onConfirm={async () => {
-                                    await deleteRoomClassMutation.mutateAsync(roomClass.id)
-                                }}
-                            />
+                        />
+                        <ConfirmationDialog
+                            Trigger={
+                                <button className="min-w-fit rounded border-2 border-solid border-red-600 bg-red-100 px-3 py-1.5 text-xs font-medium text-red-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50">
+                                    Xóa loại phòng
+                                </button>
+                            }
+                            title="Xác nhận xóa loại phòng"
+                            body="Bạn có chắc muốn xóa loại phòng này không? Thao tác này sẽ không thể hoàn tác."
+                            onConfirm={async () => {
+                                await deleteRoomClassMutation.mutateAsync(roomClass.id)
+                            }}
+                        />
                     </div>
                 )
             }

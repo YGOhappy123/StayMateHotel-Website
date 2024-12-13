@@ -55,9 +55,7 @@ const RoomClassDashboardPage = () => {
         const formattedRoomClasss = roomClasses.map(roomClass => ({
             ['Mã Loại Phòng']: roomClass.id,
             ['Tên Loại Phòng']: roomClass.className,
-            ['Giá Loại Phòng Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-                roomClass.basePrice as number
-            ),
+            ['Giá Thuê Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomClass.basePrice as number),
             ['Ngày Tạo']: dayjs(roomClass.createdAt).format('DD/MM/YYYY HH:mm:ss'),
             ['Người Tạo']: `${roomClass.createdBy?.lastName} ${roomClass.createdBy?.firstName}`
         }))
