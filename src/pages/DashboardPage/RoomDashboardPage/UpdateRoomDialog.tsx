@@ -160,7 +160,7 @@ const UpdateRoomDialog = ({ selectedRoom, isOpen, closeDialog, floors, roomClass
                             labelClassName="bg-white"
                         />
                     </div>
-                    <div>
+                    <div className="mb-5">
                         <SelectInput
                             fieldName="roomClassId"
                             placeholder="Loại phòng"
