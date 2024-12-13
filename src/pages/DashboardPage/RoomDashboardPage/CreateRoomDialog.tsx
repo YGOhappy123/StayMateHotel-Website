@@ -154,7 +154,7 @@ const CreateRoomDialog = ({ isOpen, closeDialog, floors, roomClasses, createNewR
                             labelClassName="bg-white"
                         />
                     </div>
-                    <div>
+                    <div className="mb-5">
                         <SelectInput
                             fieldName="roomClassId"
                             placeholder="Loại phòng"
