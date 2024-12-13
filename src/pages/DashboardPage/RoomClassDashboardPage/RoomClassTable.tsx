@@ -61,6 +61,30 @@ const RoomClassTable = ({ roomClasses, total, page, limit, setPage, onSelectRoom
                 )
             }
         },
+
+        {
+            accessorKey: 'features',
+            header: () => <div className="text-center">Tiện ích</div>,
+            cell: ({ row }) => {
+                const features = row.original.features;
+            
+                return (
+                    <div className="flex flex-col items-start space-y-2">
+                        {features?.map((feature, index) => (
+                            <div key={index} className="flex items-center space-x-2">
+                                <span className="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs">
+                                    {feature.quantity}x
+                                </span>
+                                <span className="text-gray-700 font-medium">
+                                    {feature.name}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                );
+            }
+        },
+        
         
             
         {
