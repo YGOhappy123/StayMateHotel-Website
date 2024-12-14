@@ -16,6 +16,8 @@ export type RoomClassSortAndFilterParams = {
     searchFeatures: number[]
     sort: string
     range: string[] | any[] | undefined
+    searchPrice1: string
+    searchPrice2: string
 }
 
 const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
@@ -30,19 +32,30 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range }: RoomClassSortAndFilterParams) => {
+    const buildQuery = ({
+        searchClassName,
+        searchPriceQuery,
+        searchCapacityQuery,
+        searchFeatures,
+        sort,
+        range,
+        searchPrice1,
+        searchPrice2
+    }: RoomClassSortAndFilterParams) => {
         const query: any = {}
         if (searchClassName) query.className = searchClassName.trim()
-        if (searchPriceQuery) {
-            const parsedPriceQuery = JSON.parse(searchPriceQuery)
-            if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
-            if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
-        }
+        // if (searchPriceQuery) {
+        //     const parsedPriceQuery = JSON.parse(searchPriceQuery)
+        //     if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
+        //     if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
+        // }
         if (searchCapacityQuery) {
             const parsedCapacityQuery = JSON.parse(searchCapacityQuery)
             if (parsedCapacityQuery['$gte']) query.minCapacity = parsedCapacityQuery['$gte']
             if (parsedCapacityQuery['$lte']) query.maxCapacity = parsedCapacityQuery['$lte']
         }
+        if (searchPrice1) query.minPrice = searchPrice1
+        if (searchPrice2) query.maxPrice = searchPrice2
         if (searchFeatures.length > 0) query.features = searchFeatures
         if (range) {
             if (range[0]) {
