@@ -11,9 +11,10 @@ import toastConfig from '@/configs/toast'
 
 export type RoomSortAndFilterParams = {
     searchRoomNumber: string
-    searchPriceQuery: string
     searchFloor: number
     searchRoomClass: number
+    searchMinPrice: string
+    searchMaxPrice: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -30,16 +31,13 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchRoomNumber, searchPriceQuery, searchFloor, searchRoomClass, sort, range }: RoomSortAndFilterParams) => {
+    const buildQuery = ({ searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range }: RoomSortAndFilterParams) => {
         const query: any = {}
         if (searchRoomNumber) query.roomNumber = searchRoomNumber.trim()
         if (searchFloor) query.floorId = searchFloor
         if (searchRoomClass) query.roomClassId = searchRoomClass
-        if (searchPriceQuery) {
-            const parsedPriceQuery = JSON.parse(searchPriceQuery)
-            if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
-            if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
-        }
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
         if (range) {
             if (range[0]) {
                 query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
