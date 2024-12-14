@@ -34,6 +34,7 @@ const RoomDashboardPage = () => {
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [selectedRoom, setSelectedRoom] = useState<IRoom | null>(null)
     const [havingFilters, setHavingFilters] = useState(false)
 
@@ -59,11 +60,11 @@ const RoomDashboardPage = () => {
     const roomClasses = fetchAllRoomClassesQuery.data?.data || []
 
     useEffect(() => {
-        if (isAddModalOpen || isUpdateModalOpen) {
+        if (isAddModalOpen || isUpdateModalOpen || isFilterOpen) {
             fetchAllFloorsQuery.refetch()
             fetchAllRoomClassesQuery.refetch()
         }
-    }, [isAddModalOpen, isUpdateModalOpen])
+    }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
     const exportCsvFile = () => {
         const formattedRooms = rooms.map(room => ({
@@ -96,7 +97,7 @@ const RoomDashboardPage = () => {
             <div className="flex items-center justify-between p-4">
                 <h2 className="text-2xl font-bold">Quản lý phòng khách sạn</h2>
                 <div className="flex justify-center gap-4">
-                    <Popover>
+                    <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                         <PopoverTrigger asChild>
                             <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">
                                 Tìm kiếm
