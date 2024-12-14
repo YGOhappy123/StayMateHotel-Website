@@ -75,6 +75,15 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const getCsvFloorsQuery = useQuery(['search-csv-floors', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IFloor[]>>(`/floors?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
+
     const onFilterSearch = () => {
         setPage(1)
         setIsSearching(true)
@@ -155,6 +164,7 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchFloorsQuery,
         getAllFloorsQuery,
+        getCsvFloorsQuery,
         createNewFloorMutation,
         updateFloorMutation,
         deleteFloorMutation

@@ -25,6 +25,7 @@ const RoomDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvRoomsQuery,
         createNewRoomMutation,
         updateRoomMutation,
         deleteRoomMutation,
@@ -67,29 +68,33 @@ const RoomDashboardPage = () => {
     }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
     const exportCsvFile = () => {
-        const formattedRooms = rooms.map(room => ({
-            ['Mã Phòng']: room.id,
-            ['Số Phòng']: room.roomNumber,
-            ['Tầng']: room.floor?.floorNumber,
-            ['Loại Phòng']: room.roomClass?.className,
-            ['Giá Phòng Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-                room.roomClass?.basePrice as number
-            ),
-            ['Trạng Thái Phòng']: getMappedStatus(room.status),
-            ['Ngày Tạo']: dayjs(room.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${room.createdBy?.lastName} ${room.createdBy?.firstName}`
-        }))
+        getCsvRoomsQuery.refetch().then(res => {
+            const csvRooms = res.data?.data?.data ?? []
 
-        exportToCSV(formattedRooms, `SMH_Danh_sách_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 20 },
-            { wch: 20 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 }
-        ])
+            const formattedRooms = csvRooms.map(room => ({
+                ['Mã Phòng']: room.id,
+                ['Số Phòng']: room.roomNumber,
+                ['Tầng']: room.floor?.floorNumber,
+                ['Loại Phòng']: room.roomClass?.className,
+                ['Giá Phòng Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+                    room.roomClass?.basePrice as number
+                ),
+                ['Trạng Thái Phòng']: getMappedStatus(room.status),
+                ['Ngày Tạo']: dayjs(room.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${room.createdBy?.lastName} ${room.createdBy?.firstName}`
+            }))
+
+            exportToCSV(formattedRooms, `SMH_Danh_sách_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 }
+            ])
+        })
     }
 
     return (
