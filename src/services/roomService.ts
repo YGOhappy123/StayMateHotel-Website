@@ -83,6 +83,15 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const getCsvRoomsQuery = useQuery(['search-csv-rooms', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IRoom[]>>(`/rooms?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
+
     const onFilterSearch = () => {
         setPage(1)
         setIsSearching(true)
@@ -195,6 +204,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchRoomsQuery,
         getAllRoomsQuery,
+        getCsvRoomsQuery,
         createNewRoomMutation,
         updateRoomMutation,
         deleteRoomMutation,

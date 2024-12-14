@@ -24,6 +24,7 @@ const RoomClassDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvRoomClassesQuery,
         createNewRoomClassMutation,
         updateRoomClassMutation,
         deleteRoomClassMutation
@@ -53,24 +54,28 @@ const RoomClassDashboardPage = () => {
     }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
     const exportCsvFile = () => {
-        const formattedRoomClasss = roomClasses.map(roomClass => ({
-            ['Mã Loại Phòng']: roomClass.id,
-            ['Tên Loại Phòng']: roomClass.className,
-            ['Giá Thuê Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomClass.basePrice as number),
-            ['Ngày Tạo']: dayjs(roomClass.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${roomClass.createdBy?.lastName} ${roomClass.createdBy?.firstName}`
-        }))
+        getCsvRoomClassesQuery.refetch().then(res => {
+            const csvRoomClasses = res.data?.data?.data || []
 
-        exportToCSV(formattedRoomClasss, `SMH_Danh_sách_loại_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 20 },
-            { wch: 20 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 }
-        ])
+            const formattedRoomClasses = csvRoomClasses.map(roomClass => ({
+                ['Mã Loại Phòng']: roomClass.id,
+                ['Tên Loại Phòng']: roomClass.className,
+                ['Giá Thuê Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomClass.basePrice as number),
+                ['Ngày Tạo']: dayjs(roomClass.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${roomClass.createdBy?.lastName} ${roomClass.createdBy?.firstName}`
+            }))
+
+            exportToCSV(formattedRoomClasses, `SMH_Danh_sách_loại_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 }
+            ])
+        })
     }
 
     return (
