@@ -11,13 +11,13 @@ import toastConfig from '@/configs/toast'
 
 export type RoomClassSortAndFilterParams = {
     searchClassName: string
-    searchPriceQuery: string
-    searchCapacityQuery: string
     searchFeatures: number[]
+    searchMinPrice: string
+    searchMaxPrice: string
+    searchMinCapacity: string
+    searchMaxCapacity: string
     sort: string
     range: string[] | any[] | undefined
-    searchPrice1: string
-    searchPrice2: string
 }
 
 const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
@@ -34,28 +34,20 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
 
     const buildQuery = ({
         searchClassName,
-        searchPriceQuery,
-        searchCapacityQuery,
         searchFeatures,
+        searchMinPrice,
+        searchMaxPrice,
+        searchMinCapacity,
+        searchMaxCapacity,
         sort,
-        range,
-        searchPrice1,
-        searchPrice2
+        range
     }: RoomClassSortAndFilterParams) => {
         const query: any = {}
         if (searchClassName) query.className = searchClassName.trim()
-        // if (searchPriceQuery) {
-        //     const parsedPriceQuery = JSON.parse(searchPriceQuery)
-        //     if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
-        //     if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
-        // }
-        if (searchCapacityQuery) {
-            const parsedCapacityQuery = JSON.parse(searchCapacityQuery)
-            if (parsedCapacityQuery['$gte']) query.minCapacity = parsedCapacityQuery['$gte']
-            if (parsedCapacityQuery['$lte']) query.maxCapacity = parsedCapacityQuery['$lte']
-        }
-        if (searchPrice1) query.minPrice = searchPrice1
-        if (searchPrice2) query.maxPrice = searchPrice2
+        if (searchMinCapacity) query.minCapacity = searchMinCapacity
+        if (searchMaxCapacity) query.maxCapacity = searchMaxCapacity
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
         if (searchFeatures.length > 0) query.features = searchFeatures
         if (range) {
             if (range[0]) {

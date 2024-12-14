@@ -18,37 +18,15 @@ type RoomClassFilterProps = {
 
 const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onReset }: RoomClassFilterProps) => {
     const [searchClassName, setSearchClassName] = useState<string>('')
-    const [searchPriceQuery, setSearchPriceQuery] = useState<string>('')
-    const [searchCapacityQuery, setSearchCapacityQuery] = useState<string>('')
     const [searchFeatures, setSearchFeatures] = useState<number[]>([])
+    const [searchMinPrice, setSearchMinPrice] = useState<string>('')
+    const [searchMaxPrice, setSearchMaxPrice] = useState<string>('')
+    const [searchMinCapacity, setSearchMinCapacity] = useState<string>('')
+    const [searchMaxCapacity, setSearchMaxCapacity] = useState<string>('')
     const [range, setRange] = useState<string[] | any[]>()
     const [sort, setSort] = useState<string>('-createdAt')
 
-    const [searchPrice, setSearchPrice] = useState<string>('')
-    const [searchPrice1, setSearchPrice1] = useState<string>('')
-    const [searchPrice2, setSearchPrice2] = useState<string>('')
-    const [priceSort, setPriceSort] = useState<string>('$lte')
-    const [searchCapacity, setSearchCapacity] = useState<string>('')
-    const [capacitySort, setCapacitySort] = useState<string>('$lte')
     const [date, setDate] = useState<DateRange | undefined>(undefined)
-
-    useEffect(() => {
-        if (searchPrice) {
-            const query = { [priceSort]: searchPrice }
-            setSearchPriceQuery(JSON.stringify(query))
-        } else {
-            setSearchPriceQuery('')
-        }
-    }, [searchPrice, priceSort])
-
-    useEffect(() => {
-        if (searchCapacity) {
-            const query = { [capacitySort]: searchCapacity }
-            setSearchCapacityQuery(JSON.stringify(query))
-        } else {
-            setSearchCapacityQuery('')
-        }
-    }, [searchCapacity, capacitySort])
 
     useEffect(() => {
         if (date) {
@@ -62,13 +40,22 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
     }, [date])
 
     useEffect(() => {
-        onChange({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range, searchPrice1, searchPrice2 })
-    }, [searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range, searchPrice1, searchPrice2])
+        onChange({ searchClassName, searchMinCapacity, searchMaxCapacity, searchMinPrice, searchMaxPrice, searchFeatures, sort, range })
+    }, [searchClassName, searchMinCapacity, searchMaxCapacity, searchMinPrice, searchMaxPrice, searchFeatures, sort, range])
 
     const handleSearch = () => {
         onSearch()
 
-        if (!searchClassName && !searchPriceQuery && !searchCapacityQuery && sort === '-createdAt' && !range?.length && !searchFeatures?.length) {
+        if (
+            !searchClassName &&
+            !searchMinPrice &&
+            !searchMaxPrice &&
+            !searchMinCapacity &&
+            !searchMaxCapacity &&
+            sort === '-createdAt' &&
+            !range?.length &&
+            !searchFeatures?.length
+        ) {
             setHavingFilters(false)
         } else {
             setHavingFilters(true)
@@ -77,8 +64,10 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
 
     const handleReset = () => {
         setSearchClassName('')
-        setSearchPriceQuery('')
-        setSearchCapacityQuery('')
+        setSearchMinCapacity('')
+        setSearchMaxCapacity('')
+        setSearchMinPrice('')
+        setSearchMaxPrice('')
         setSearchFeatures([])
         setSort('-createdAt')
         setDate(undefined)
@@ -140,86 +129,52 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
                     <div className="mb-4">
                         <DateRangePicker date={date} setDate={setDate} triggerClassName="leading-normal" />
                     </div>
-                    <div className="mb-4 flex gap-2">
-                        {/* <TextInput
-                            fieldName="price"
-                            placeholder="Lọc theo giá tiền"
-                            error=""
-                            value={searchPrice}
-                            onChange={(value: string) => setSearchPrice(Number.parseInt(value) >= 0 ? value : '')}
-                            onFocus={() => {}}
-                            type="number"
-                            wrapperClassName="flex-1"
-                            labelClassName="bg-white"
-                            inputClassName="leading-2"
-                        />
-                        <SelectInput
-                            fieldName="priceSort"
-                            placeholder="Chọn mốc"
-                            options={[
-                                { value: '$lte', label: 'Bé hơn hoặc bằng' },
-                                { value: '$gte', label: 'Lớn hơn hoặc bằng' }
-                            ]}
-                            error=""
-                            value={priceSort}
-                            onChange={(value: string | number) => setPriceSort(value as string)}
-                            onFocus={() => {}}
-                            havingDefaultOptions={false}
-                            labelClassName="bg-white"
-                            selectClassName="py-[9px]"
-                        /> */}
+                    <div className="mb-4 grid grid-cols-2 gap-2">
                         <TextInput
-                            fieldName="price1"
-                            placeholder="Lọc theo giá min"
+                            fieldName="minPrice"
+                            placeholder="Mức giá tối thiểu"
                             error=""
-                            value={searchPrice1}
-                            onChange={(value: string) => setSearchPrice1(Number.parseInt(value) >= 0 ? value : '')}
+                            value={searchMinPrice}
+                            onChange={(value: string) => setSearchMinPrice(Number.parseInt(value) >= 0 ? value : '')}
                             onFocus={() => {}}
                             type="number"
-                            wrapperClassName="flex-1"
                             labelClassName="bg-white"
                             inputClassName="leading-2"
                         />
                         <TextInput
-                            fieldName="price2"
-                            placeholder="Lọc theo giá max"
+                            fieldName="maxPrice"
+                            placeholder="Mức giá tối đa"
                             error=""
-                            value={searchPrice2}
-                            onChange={(value: string) => setSearchPrice2(Number.parseInt(value) >= 0 ? value : '')}
+                            value={searchMaxPrice}
+                            onChange={(value: string) => setSearchMaxPrice(Number.parseInt(value) >= 0 ? value : '')}
                             onFocus={() => {}}
                             type="number"
-                            wrapperClassName="flex-1"
                             labelClassName="bg-white"
                             inputClassName="leading-2"
                         />
                     </div>
-                    <div className="mb-4 flex gap-2">
+                    <div className="mb-4 grid grid-cols-2 gap-2">
                         <TextInput
-                            fieldName="capacity"
-                            placeholder="Lọc theo sức chứa"
+                            fieldName="minCapacity"
+                            placeholder="Sức chứa tối thiểu"
                             error=""
-                            value={searchCapacity}
-                            onChange={(value: string) => setSearchCapacity(Number.parseInt(value) >= 0 ? value : '')}
+                            value={searchMinCapacity}
+                            onChange={(value: string) => setSearchMinCapacity(Number.parseInt(value) >= 0 ? value : '')}
                             onFocus={() => {}}
                             type="number"
-                            wrapperClassName="flex-1"
                             labelClassName="bg-white"
                             inputClassName="leading-2"
                         />
-                        <SelectInput
-                            fieldName="capacitySort"
-                            placeholder="Chọn mốc"
-                            options={[
-                                { value: '$lte', label: 'Bé hơn hoặc bằng' },
-                                { value: '$gte', label: 'Lớn hơn hoặc bằng' }
-                            ]}
+                        <TextInput
+                            fieldName="maxCapacity"
+                            placeholder="Sức chứa tối đa"
                             error=""
-                            value={capacitySort}
-                            onChange={(value: string | number) => setCapacitySort(value as string)}
+                            value={searchMaxCapacity}
+                            onChange={(value: string) => setSearchMaxCapacity(Number.parseInt(value) >= 0 ? value : '')}
                             onFocus={() => {}}
-                            havingDefaultOptions={false}
+                            type="number"
                             labelClassName="bg-white"
-                            selectClassName="py-[9px]"
+                            inputClassName="leading-2"
                         />
                     </div>
                     <div>
