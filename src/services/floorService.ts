@@ -76,11 +76,13 @@ const floorService = ({ enableFetching }: { enableFetching: boolean }) => {
     })
 
     const onFilterSearch = () => {
+        setPage(1)
         setIsSearching(true)
-        searchFloorsQuery.refetch()
+        setTimeout(() => searchFloorsQuery.refetch(), 300)
     }
 
     const onResetFilterSearch = () => {
+        setPage(1)
         setIsSearching(false)
         setQuery('')
         setSort('')

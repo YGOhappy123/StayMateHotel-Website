@@ -84,11 +84,13 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
     })
 
     const onFilterSearch = () => {
+        setPage(1)
         setIsSearching(true)
-        searchRoomsQuery.refetch()
+        setTimeout(() => searchRoomsQuery.refetch(), 300)
     }
 
     const onResetFilterSearch = () => {
+        setPage(1)
         setIsSearching(false)
         setQuery('')
         setSort('')
