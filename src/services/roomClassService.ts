@@ -95,11 +95,13 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     })
 
     const onFilterSearch = () => {
+        setPage(1)
         setIsSearching(true)
-        searchRoomClassesQuery.refetch()
+        setTimeout(() => searchRoomClassesQuery.refetch(), 300)
     }
 
     const onResetFilterSearch = () => {
+        setPage(1)
         setIsSearching(false)
         setQuery('')
         setSort('')
