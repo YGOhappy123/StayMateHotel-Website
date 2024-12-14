@@ -25,6 +25,8 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
     const [sort, setSort] = useState<string>('-createdAt')
 
     const [searchPrice, setSearchPrice] = useState<string>('')
+    const [searchPrice1, setSearchPrice1] = useState<string>('')
+    const [searchPrice2, setSearchPrice2] = useState<string>('')
     const [priceSort, setPriceSort] = useState<string>('$lte')
     const [searchCapacity, setSearchCapacity] = useState<string>('')
     const [capacitySort, setCapacitySort] = useState<string>('$lte')
@@ -60,8 +62,8 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
     }, [date])
 
     useEffect(() => {
-        onChange({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range })
-    }, [searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range])
+        onChange({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range, searchPrice1, searchPrice2 })
+    }, [searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range, searchPrice1, searchPrice2])
 
     const handleSearch = () => {
         onSearch()
@@ -83,8 +85,6 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
         setHavingFilters(false)
         onReset()
     }
-
-    useEffect(() => console.log(searchFeatures), [searchFeatures])
 
     return (
         <PopoverContent className="w-[800px] bg-white">
@@ -141,7 +141,7 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
                         <DateRangePicker date={date} setDate={setDate} triggerClassName="leading-normal" />
                     </div>
                     <div className="mb-4 flex gap-2">
-                        <TextInput
+                        {/* <TextInput
                             fieldName="price"
                             placeholder="Lọc theo giá tiền"
                             error=""
@@ -167,6 +167,30 @@ const RoomClassFilter = ({ features, setHavingFilters, onChange, onSearch, onRes
                             havingDefaultOptions={false}
                             labelClassName="bg-white"
                             selectClassName="py-[9px]"
+                        /> */}
+                        <TextInput
+                            fieldName="price1"
+                            placeholder="Lọc theo giá min"
+                            error=""
+                            value={searchPrice1}
+                            onChange={(value: string) => setSearchPrice1(Number.parseInt(value) >= 0 ? value : '')}
+                            onFocus={() => {}}
+                            type="number"
+                            wrapperClassName="flex-1"
+                            labelClassName="bg-white"
+                            inputClassName="leading-2"
+                        />
+                        <TextInput
+                            fieldName="price2"
+                            placeholder="Lọc theo giá max"
+                            error=""
+                            value={searchPrice2}
+                            onChange={(value: string) => setSearchPrice2(Number.parseInt(value) >= 0 ? value : '')}
+                            onFocus={() => {}}
+                            type="number"
+                            wrapperClassName="flex-1"
+                            labelClassName="bg-white"
+                            inputClassName="leading-2"
                         />
                     </div>
                     <div className="mb-4 flex gap-2">
