@@ -2,6 +2,8 @@ import { Suspense } from 'react'
 import MainLayout from '@/layouts/MainLayout'
 import ErrorPage from '@/pages/ErrorPage'
 import HomePage from '@/pages/HomePage'
+import AboutPage from '@/pages/AboutPage'
+import OurServicesPage from '@/pages/OurServicesPage'
 
 const RootRoutes = [
     {
@@ -16,6 +18,14 @@ const RootRoutes = [
             {
                 path: '',
                 element: <HomePage />
+            },
+            {
+                path: 'about-us',
+                element: <AboutPage />
+            },
+            {
+                path: 'our-services',
+                element: <OurServicesPage />
             }
         ]
     }

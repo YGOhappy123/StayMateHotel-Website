@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-
-import { RootState } from '@/store'
-import { signOut } from '@/slices/authSlice'
 import useTitle from '@/hooks/useTitle'
+import StatisticSection from '@/pages/HomePage/StatisticSection'
+import HomeHeroSection from '@/pages/HomePage/HomeHeroSection'
+import DescriptionSection from '@/pages/HomePage/DescriptionSection'
+import GallerySection from '@/pages/HomePage/GallerySection'
+import WhyChoosingUsSection from '@/pages/OurServicesPage/WhyChoosingUsSection'
 
 const HomePage = () => {
     useTitle('Stay Mate Hotel | Trang Chủ')
@@ -12,15 +12,13 @@ const HomePage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const { user, isLogged } = useSelector((state: RootState) => state.auth)
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center text-xl font-bold text-red-700">
-            {isLogged ? <button onClick={() => dispatch(signOut())}>Đăng xuất</button> : <button onClick={() => navigate('/auth')}>Đăng nhập</button>}
-
-            {user && user.role === 'Admin' && <button onClick={() => navigate('/dashboard')}>Đến trang quản lý</button>}
+        <div className="-mt-[150px]">
+            <HomeHeroSection />
+            <StatisticSection />
+            <DescriptionSection />
+            <WhyChoosingUsSection featureImageUrl="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+            <GallerySection />
         </div>
     )
 }

@@ -107,7 +107,7 @@ const Sidebar = () => {
                     onClick={() => navigate('/')}
                 >
                     <img src="/images/no-text-logo.png" width={45} alt="" />
-                    <span className={`whitespace-pre text-xl text-primary ${!isOpen && 'hidden'}`}>StayMeHotel</span>
+                    <span className={`whitespace-pre text-xl tracking-widest text-primary ${!isOpen && 'hidden'}`}>StayMateHotel</span>
                 </div>
 
                 <div className="flex flex-col" style={{ height: 'calc(100% - var(--sidebar-logo-height))' }}>
