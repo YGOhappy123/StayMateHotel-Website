@@ -38,8 +38,43 @@ const authService = () => {
         }
     })
 
+    const signUpMutation = useMutation({
+        mutationFn: (data: { firstName: string; lastName: string; username: string; password: string; confirmPassword: string }) =>
+            axios.post<IResponseData<SignInResponse>>('/auth/sign-up', data),
+        onError: onError,
+        onSuccess: res => {
+            const redirectPath = cookies.get('redirect_path') || '/'
+            const { user, accessToken, refreshToken } = res.data.data
+            cookies.set('access_token', accessToken, { path: '/', expires: new Date(dayjs(Date.now()).add(30, 'day').toISOString()) })
+            cookies.set('refresh_token', refreshToken, { path: '/', expires: new Date(dayjs(Date.now()).add(30, 'day').toISOString()) })
+
+            navigate(redirectPath as string)
+            dispatch(setLogged(true))
+            dispatch(setUser(user))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const googleAuthMutation = useMutation({
+        mutationFn: (googleAccessToken: string) => axios.post('/auth/google-auth', { googleAccessToken }),
+        onError: onError,
+        onSuccess: res => {
+            const redirectPath = cookies.get('redirect_path') || '/'
+            const { user, accessToken, refreshToken } = res.data.data
+            cookies.set('access_token', accessToken, { path: '/', expires: new Date(dayjs(Date.now()).add(30, 'day').toISOString()) })
+            cookies.set('refresh_token', refreshToken, { path: '/', expires: new Date(dayjs(Date.now()).add(30, 'day').toISOString()) })
+
+            navigate(redirectPath as string)
+            dispatch(setLogged(true))
+            dispatch(setUser(user))
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
     return {
-        signInMutation
+        signInMutation,
+        signUpMutation,
+        googleAuthMutation
     }
 }
 

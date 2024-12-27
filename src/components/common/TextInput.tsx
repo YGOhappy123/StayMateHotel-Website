@@ -1,8 +1,11 @@
+import { HTMLInputAutoCompleteAttribute } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TextInputProps = {
     fieldName: string
     placeholder: string
+    autoComplete?: HTMLInputAutoCompleteAttribute | undefined
+
     value: string
     error: string
     onChange: (value: string) => void
@@ -16,6 +19,7 @@ type TextInputProps = {
 const TextInput = ({
     fieldName,
     placeholder,
+    autoComplete = 'on',
     error,
     value,
     onChange,
@@ -29,6 +33,7 @@ const TextInput = ({
         <div className={twMerge(`relative ${wrapperClassName}`)}>
             <input
                 type={type}
+                autoComplete={autoComplete}
                 className={twMerge(
                     `peer block min-h-[auto] w-full rounded border-2 border-neutral-500 bg-transparent px-3 py-2 font-medium leading-[2.15] text-primary caret-primary outline-none transition-all duration-200 ease-linear focus:border-primary motion-reduce:transition-none ${inputClassName}`
                 )}
@@ -47,7 +52,7 @@ const TextInput = ({
             >
                 {placeholder}
             </label>
-            {error && <p className="absolute px-3 text-sm font-medium text-red-600">{error}</p>}
+            {error && <p className="absolute text-sm font-medium text-red-600">{error}</p>}
         </div>
     )
 }
