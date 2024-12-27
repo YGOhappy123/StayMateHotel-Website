@@ -51,7 +51,7 @@ const SelectInput = ({
             >
                 {placeholder}
             </label>
-            {error && <p className="absolute px-3 text-sm font-medium text-red-600">{error}</p>}
+            {error && <p className="absolute text-sm font-medium text-red-600">{error}</p>}
         </div>
     )
 }
