@@ -19,24 +19,14 @@ type RoomFilterProps = {
 
 const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch, onReset }: RoomFilterProps) => {
     const [searchRoomNumber, setSearchRoomNumber] = useState<string>('')
-    const [searchPriceQuery, setSearchPriceQuery] = useState<string>('')
     const [searchFloor, setSearchFloor] = useState<number>(0)
     const [searchRoomClass, setSearchRoomClass] = useState<number>(0)
+    const [searchMinPrice, setSearchMinPrice] = useState<string>('')
+    const [searchMaxPrice, setSearchMaxPrice] = useState<string>('')
     const [range, setRange] = useState<string[] | any[]>()
     const [sort, setSort] = useState<string>('-createdAt')
 
-    const [searchPrice, setSearchPrice] = useState<string>('')
-    const [priceSort, setPriceSort] = useState<string>('$lte')
     const [date, setDate] = useState<DateRange | undefined>(undefined)
-
-    useEffect(() => {
-        if (searchPrice) {
-            const query = { [priceSort]: searchPrice }
-            setSearchPriceQuery(JSON.stringify(query))
-        } else {
-            setSearchPriceQuery('')
-        }
-    }, [searchPrice, priceSort])
 
     useEffect(() => {
         if (date) {
@@ -50,13 +40,13 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
     }, [date])
 
     useEffect(() => {
-        onChange({ searchRoomNumber, searchPriceQuery, searchFloor, searchRoomClass, sort, range })
-    }, [searchRoomNumber, searchPriceQuery, searchFloor, searchRoomClass, sort, range])
+        onChange({ searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range })
+    }, [searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range])
 
     const handleSearch = () => {
         onSearch()
 
-        if (!searchRoomNumber && !searchPriceQuery && !searchFloor && !searchRoomClass && sort === '-createdAt' && !range?.length) {
+        if (!searchRoomNumber && !searchMinPrice && !searchMaxPrice && !searchFloor && !searchRoomClass && sort === '-createdAt' && !range?.length) {
             setHavingFilters(false)
         } else {
             setHavingFilters(true)
@@ -65,7 +55,8 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
 
     const handleReset = () => {
         setSearchRoomNumber('')
-        setSearchPriceQuery('')
+        setSearchMinPrice('')
+        setSearchMaxPrice('')
         setSearchFloor(0)
         setSearchRoomClass(0)
         setSort('-createdAt')
@@ -124,31 +115,26 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
                 </div>
                 <div className="mb-4 flex gap-2">
                     <TextInput
-                        fieldName="price"
-                        placeholder="Lọc theo giá tiền"
+                        fieldName="minPrice"
+                        placeholder="Chọn giá tối thiểu"
                         error=""
-                        value={searchPrice}
-                        onChange={(value: string) => setSearchPrice(Number.parseInt(value) >= 0 ? value : '')}
+                        value={searchMinPrice}
+                        onChange={(value: string) => setSearchMinPrice(Number.parseInt(value) >= 0 ? value : '')}
                         onFocus={() => {}}
                         type="number"
-                        wrapperClassName="flex-1"
                         labelClassName="bg-white"
                         inputClassName="leading-2"
                     />
-                    <SelectInput
-                        fieldName="priceSort"
-                        placeholder="Chọn mốc"
-                        options={[
-                            { value: '$lte', label: 'Bé hơn hoặc bằng' },
-                            { value: '$gte', label: 'Lớn hơn hoặc bằng' }
-                        ]}
+                    <TextInput
+                        fieldName="maxPrice"
+                        placeholder="Chọn giá tối đa"
                         error=""
-                        value={priceSort}
-                        onChange={(value: string | number) => setPriceSort(value as string)}
+                        value={searchMaxPrice}
+                        onChange={(value: string) => setSearchMaxPrice(Number.parseInt(value) >= 0 ? value : '')}
                         onFocus={() => {}}
-                        havingDefaultOptions={false}
+                        type="number"
                         labelClassName="bg-white"
-                        selectClassName="py-[9px]"
+                        inputClassName="leading-2"
                     />
                 </div>
                 <div>

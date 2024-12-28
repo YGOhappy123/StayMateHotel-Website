@@ -93,8 +93,6 @@ const UpdateRoomClassDialog = ({ features, selectedRoomClass, isOpen, closeDialo
                                 value={roomFeatures.find(ft => ft.featureId === feature.id)?.quantity ?? '0'}
                                 onKeyDown={e => e.preventDefault()}
                                 onChange={e => {
-                                    console.log('hello')
-
                                     const value = Number.parseInt(e.target.value)
                                     setRoomFeatures(prev => {
                                         if (value > 0) {
@@ -139,8 +137,7 @@ const UpdateRoomClassDialog = ({ features, selectedRoomClass, isOpen, closeDialo
                             labelClassName="bg-white"
                         />
                     </div>
-
-                    <div>
+                    <div className="mb-5">
                         <TextInput
                             fieldName="capacity"
                             placeholder="Số Lượng Người"

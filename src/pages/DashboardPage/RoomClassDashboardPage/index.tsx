@@ -24,6 +24,7 @@ const RoomClassDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvRoomClassesQuery,
         createNewRoomClassMutation,
         updateRoomClassMutation,
         deleteRoomClassMutation
@@ -31,6 +32,7 @@ const RoomClassDashboardPage = () => {
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [selectedRoomClass, setSelectedRoomClass] = useState<IRoomClass | null>(null)
     const [havingFilters, setHavingFilters] = useState(false)
 
@@ -46,30 +48,34 @@ const RoomClassDashboardPage = () => {
     const features = fetchAllFeaturesQuery.data?.data || []
 
     useEffect(() => {
-        if (isAddModalOpen || isUpdateModalOpen) {
+        if (isAddModalOpen || isUpdateModalOpen || isFilterOpen) {
             fetchAllFeaturesQuery.refetch()
         }
-    }, [isAddModalOpen, isUpdateModalOpen])
+    }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
     const exportCsvFile = () => {
-        const formattedRoomClasss = roomClasses.map(roomClass => ({
-            ['Mã Loại Phòng']: roomClass.id,
-            ['Tên Loại Phòng']: roomClass.className,
-            ['Giá Thuê Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomClass.basePrice as number),
-            ['Ngày Tạo']: dayjs(roomClass.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${roomClass.createdBy?.lastName} ${roomClass.createdBy?.firstName}`
-        }))
+        getCsvRoomClassesQuery.refetch().then(res => {
+            const csvRoomClasses = res.data?.data?.data || []
 
-        exportToCSV(formattedRoomClasss, `SMH_Danh_sách_loại_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 20 },
-            { wch: 20 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 }
-        ])
+            const formattedRoomClasses = csvRoomClasses.map(roomClass => ({
+                ['Mã Loại Phòng']: roomClass.id,
+                ['Tên Loại Phòng']: roomClass.className,
+                ['Giá Thuê Theo Ngày']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(roomClass.basePrice as number),
+                ['Ngày Tạo']: dayjs(roomClass.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${roomClass.createdBy?.lastName} ${roomClass.createdBy?.firstName}`
+            }))
+
+            exportToCSV(formattedRoomClasses, `SMH_Danh_sách_loại_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 }
+            ])
+        })
     }
 
     return (
@@ -77,7 +83,7 @@ const RoomClassDashboardPage = () => {
             <div className="flex items-center justify-between p-4">
                 <h2 className="text-2xl font-bold">Quản lý loại phòng khách sạn</h2>
                 <div className="flex justify-center gap-4">
-                    <Popover>
+                    <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
                         <PopoverTrigger asChild>
                             <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">
                                 Tìm kiếm

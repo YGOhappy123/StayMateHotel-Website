@@ -11,9 +11,11 @@ import toastConfig from '@/configs/toast'
 
 export type RoomClassSortAndFilterParams = {
     searchClassName: string
-    searchPriceQuery: string
-    searchCapacityQuery: string
     searchFeatures: number[]
+    searchMinPrice: string
+    searchMaxPrice: string
+    searchMinCapacity: string
+    searchMaxCapacity: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -30,19 +32,22 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchClassName, searchPriceQuery, searchCapacityQuery, searchFeatures, sort, range }: RoomClassSortAndFilterParams) => {
+    const buildQuery = ({
+        searchClassName,
+        searchFeatures,
+        searchMinPrice,
+        searchMaxPrice,
+        searchMinCapacity,
+        searchMaxCapacity,
+        sort,
+        range
+    }: RoomClassSortAndFilterParams) => {
         const query: any = {}
         if (searchClassName) query.className = searchClassName.trim()
-        if (searchPriceQuery) {
-            const parsedPriceQuery = JSON.parse(searchPriceQuery)
-            if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
-            if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
-        }
-        if (searchCapacityQuery) {
-            const parsedCapacityQuery = JSON.parse(searchCapacityQuery)
-            if (parsedCapacityQuery['$gte']) query.minCapacity = parsedCapacityQuery['$gte']
-            if (parsedCapacityQuery['$lte']) query.maxCapacity = parsedCapacityQuery['$lte']
-        }
+        if (searchMinCapacity) query.minCapacity = searchMinCapacity
+        if (searchMaxCapacity) query.maxCapacity = searchMaxCapacity
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
         if (searchFeatures.length > 0) query.features = searchFeatures
         if (range) {
             if (range[0]) {
@@ -89,12 +94,23 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const getCsvRoomClassesQuery = useQuery(['search-csv-roomClasses', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IRoomClass[]>>(`/roomClasses?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
+
     const onFilterSearch = () => {
+        setPage(1)
         setIsSearching(true)
-        searchRoomClassesQuery.refetch()
+        setTimeout(() => searchRoomClassesQuery.refetch(), 300)
     }
 
     const onResetFilterSearch = () => {
+        setPage(1)
         setIsSearching(false)
         setQuery('')
         setSort('')
@@ -167,6 +183,7 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchRoomClassesQuery,
         getAllRoomClassesQuery,
+        getCsvRoomClassesQuery,
         createNewRoomClassMutation,
         updateRoomClassMutation,
         deleteRoomClassMutation

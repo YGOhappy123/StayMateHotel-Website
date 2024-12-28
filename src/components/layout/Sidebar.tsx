@@ -107,13 +107,13 @@ const Sidebar = () => {
                     onClick={() => navigate('/')}
                 >
                     <img src="/images/no-text-logo.png" width={45} alt="" />
-                    <span className={`whitespace-pre text-xl ${!isOpen && 'hidden'}`}>StayMeHotel</span>
+                    <span className={`whitespace-pre text-xl tracking-widest text-primary ${!isOpen && 'hidden'}`}>StayMateHotel</span>
                 </div>
 
                 <div className="flex flex-col" style={{ height: 'calc(100% - var(--sidebar-logo-height))' }}>
                     <ul className="scrollbar-thin scrollbar-track-white scrollbar-thumb-slate-100 flex flex-1 flex-col gap-1 overflow-hidden overflow-y-auto whitespace-pre px-2.5 py-5 text-[0.9rem] font-medium">
                         <li>
-                            <NavLink to={'/'} className="link">
+                            <NavLink to={'/'} className="link text-primary">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faHome} className="min-w-max" size="xl" />
                                 </div>
@@ -122,7 +122,7 @@ const Sidebar = () => {
                         </li>
 
                         <li>
-                            <NavLink to={'/dashboard'} end className="link">
+                            <NavLink to={'/dashboard'} end className="link text-primary">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faTasks} className="min-w-max" size="xl" />
                                 </div>
@@ -142,7 +142,7 @@ const Sidebar = () => {
                         )}
 
                         <li>
-                            <NavLink to={'/dashboard/admins'} className="link">
+                            <NavLink to={'/dashboard/admins'} className="link text-primary">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faUserFriends} className="min-w-max" size="xl" />
                                 </div>
@@ -151,7 +151,7 @@ const Sidebar = () => {
                         </li>
 
                         <li>
-                            <NavLink to={'/dashboard/statistics'} className="link">
+                            <NavLink to={'/dashboard/statistics'} className="link text-primary">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faChartLine} className="min-w-max" size="xl" />
                                 </div>

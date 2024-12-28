@@ -21,6 +21,7 @@ const FloorDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvFloorsQuery,
         createNewFloorMutation,
         updateFloorMutation,
         deleteFloorMutation
@@ -32,19 +33,23 @@ const FloorDashboardPage = () => {
     const [havingFilters, setHavingFilters] = useState(false)
 
     const exportCsvFile = () => {
-        const formattedFloors = floors.map(floor => ({
-            ['Mã Tầng']: floor.id,
-            ['Số Tầng']: floor.floorNumber,
-            ['Ngày Tạo']: dayjs(floor.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${floor.createdBy?.lastName} ${floor.createdBy?.firstName}`
-        }))
+        getCsvFloorsQuery.refetch().then(res => {
+            const csvFloors = res.data?.data?.data ?? []
 
-        exportToCSV(formattedFloors, `SMH_Danh_sách_tầng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 20 },
-            { wch: 30 },
-            { wch: 30 }
-        ])
+            const formattedFloors = csvFloors.map(floor => ({
+                ['Mã Tầng']: floor.id,
+                ['Số Tầng']: floor.floorNumber,
+                ['Ngày Tạo']: dayjs(floor.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${floor.createdBy?.lastName} ${floor.createdBy?.firstName}`
+            }))
+
+            exportToCSV(formattedFloors, `SMH_Danh_sách_tầng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 }
+            ])
+        })
     }
 
     return (

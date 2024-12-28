@@ -127,8 +127,7 @@ const CreateRoomClassDialog = ({ features, isOpen, closeDialog, createNewRoomCla
                             labelClassName="bg-white"
                         />
                     </div>
-
-                    <div>
+                    <div className="mb-5">
                         <TextInput
                             fieldName="capacity"
                             placeholder="Số Lượng Người"

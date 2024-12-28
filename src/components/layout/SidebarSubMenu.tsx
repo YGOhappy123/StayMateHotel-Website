@@ -16,11 +16,10 @@ type SubMenuProps = {
 
 const SidebarSubMenu = ({ label, Icon, items }: SubMenuProps) => {
     const [isSubMenuOpen, setIsSubMenuOpen] = useState(false)
-    const { pathname } = useLocation()
 
     return (
         <Fragment>
-            <li className={`link ${pathname.includes(label) && 'text-blue-600'}`} onClick={() => setIsSubMenuOpen(prev => !prev)}>
+            <li className="link text-primary" onClick={() => setIsSubMenuOpen(prev => !prev)}>
                 <div className="flex w-6 justify-center">
                     <FontAwesomeIcon icon={Icon} className="min-w-max" size="lg" />
                 </div>
@@ -35,8 +34,8 @@ const SidebarSubMenu = ({ label, Icon, items }: SubMenuProps) => {
                 className="flex h-0 flex-col overflow-hidden pl-14 text-[0.8rem] font-normal"
             >
                 {items?.map(menu => (
-                    <li key={menu.navigation} className="hover:font-medium hover:text-blue-600">
-                        <NavLink to={`/dashboard/${menu.navigation}`} className="link !bg-transparent">
+                    <li key={menu.navigation} className="hover:font-medium">
+                        <NavLink to={`/dashboard/${menu.navigation}`} className="link sub-menu text-primary">
                             {menu.label}
                         </NavLink>
                     </li>

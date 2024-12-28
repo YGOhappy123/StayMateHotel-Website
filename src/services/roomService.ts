@@ -11,9 +11,10 @@ import toastConfig from '@/configs/toast'
 
 export type RoomSortAndFilterParams = {
     searchRoomNumber: string
-    searchPriceQuery: string
     searchFloor: number
     searchRoomClass: number
+    searchMinPrice: string
+    searchMaxPrice: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -30,16 +31,13 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchRoomNumber, searchPriceQuery, searchFloor, searchRoomClass, sort, range }: RoomSortAndFilterParams) => {
+    const buildQuery = ({ searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range }: RoomSortAndFilterParams) => {
         const query: any = {}
         if (searchRoomNumber) query.roomNumber = searchRoomNumber.trim()
         if (searchFloor) query.floorId = searchFloor
         if (searchRoomClass) query.roomClassId = searchRoomClass
-        if (searchPriceQuery) {
-            const parsedPriceQuery = JSON.parse(searchPriceQuery)
-            if (parsedPriceQuery['$gte']) query.minPrice = parsedPriceQuery['$gte']
-            if (parsedPriceQuery['$lte']) query.maxPrice = parsedPriceQuery['$lte']
-        }
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
         if (range) {
             if (range[0]) {
                 query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
@@ -85,12 +83,23 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const getCsvRoomsQuery = useQuery(['search-csv-rooms', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IRoom[]>>(`/rooms?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
+
     const onFilterSearch = () => {
+        setPage(1)
         setIsSearching(true)
-        searchRoomsQuery.refetch()
+        setTimeout(() => searchRoomsQuery.refetch(), 300)
     }
 
     const onResetFilterSearch = () => {
+        setPage(1)
         setIsSearching(false)
         setQuery('')
         setSort('')
@@ -195,6 +204,7 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchRoomsQuery,
         getAllRoomsQuery,
+        getCsvRoomsQuery,
         createNewRoomMutation,
         updateRoomMutation,
         deleteRoomMutation,

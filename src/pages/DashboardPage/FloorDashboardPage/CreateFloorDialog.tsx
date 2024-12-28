@@ -58,7 +58,7 @@ const CreateFloorDialog = ({ isOpen, closeDialog, createNewFloorMutation }: Crea
             <div className="border-b-2"></div>
             <div className="grid grid-cols-1 gap-4">
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div className="mb-5">
                         <TextInput
                             fieldName="floorNumber"
                             placeholder="Số tầng"
