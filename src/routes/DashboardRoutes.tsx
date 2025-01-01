@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { OverallDashboardPage, RoomDashboardPage, RoomClassDashboardPage, FloorDashboardPage, FeatureDashboardPage } from '@/pages/DashboardPage'
+import { OverallDashboardPage, RoomDashboardPage, RoomClassDashboardPage, FloorDashboardPage, FeatureDashboardPage, ServiceDashboardPage } from '@/pages/DashboardPage'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import ErrorPage from '@/pages/ErrorPage'
 import AuthProtector from '@/components/container/AuthProtector'
@@ -29,6 +29,10 @@ const DashboardRoutes = [
             {
                 path: 'floors',
                 element: <FloorDashboardPage />
+            },
+            {
+                path: 'service',
+                element: <ServiceDashboardPage />
             },
             {
                 path: 'features',

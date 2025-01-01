@@ -9,18 +9,17 @@ import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import toastConfig from '@/configs/toast'
 
-export type FeatureSortAndFilterParams = {
-    searchFeatureName: string
-    searchFeatureQuery: string
-    searchRoomClasses: number[]
+export type ServiceSortAndFilterParams = {
+    searchServiceName: string
+    searchServiceQuery: string
     sort: string
     range: string[] | any[] | undefined
 }
 
-const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
+const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
     const queryClient = useQueryClient()
     const axios = useAxiosIns()
-    const [features, setFeatures] = useState<IFeature[]>([])
+    const [services, setServices] = useState<IService[]>([])
     const [total, setTotal] = useState<number>(0)
     const [isSearching, setIsSearching] = useState(false)
 
@@ -29,11 +28,10 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchFeatureName, searchFeatureQuery, searchRoomClasses, sort, range }: FeatureSortAndFilterParams) => {
+    const buildQuery = ({ searchServiceName, searchServiceQuery, sort, range }: ServiceSortAndFilterParams) => {
         const query: any = {}
-        if (searchFeatureName) query.name = searchFeatureName.trim()
-        if (searchFeatureQuery) query.featureQuery = searchFeatureQuery
-        if (searchRoomClasses.length > 0) query.roomClasses = searchRoomClasses
+        if (searchServiceName) query.name = searchServiceName.trim()
+        if (searchServiceQuery) query.serviceQuery = searchServiceQuery
         if (range) {
             if (range[0]) {
                 query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
@@ -42,29 +40,28 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
-        console.log("Final query:", query)
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
     }
 
-    const searchFeaturesQuery = useQuery(['search-features', query, sort], {
+    const searchServicesQuery = useQuery(['search-services', query, sort], {
         queryFn: () => {
-            return axios.get<IResponseData<IFeature[]>>(`/features?skip=${limit * (page - 1)}&limit=${limit}&filter=${query}&sort=${sort}`)
+            return axios.get<IResponseData<IService[]>>(`/services?skip=${limit * (page - 1)}&limit=${limit}&filter=${query}&sort=${sort}`)
         },
         keepPreviousData: true,
         enabled: false,
         onError: onError,
         onSuccess: res => {
             if (!res) return
-            setFeatures(res.data.data)
+            setServices(res.data.data)
             setTotal(res.data.total as number)
         }
     })
 
-    const getAllFeaturesQuery = useQuery(['features', page, limit], {
+    const getAllServicesQuery = useQuery(['services', page, limit], {
         queryFn: () => {
             if (!isSearching) {
-                return axios.get<IResponseData<IFeature[]>>(`/features?skip=${limit * (page - 1)}&limit=${limit}`)
+                return axios.get<IResponseData<IService[]>>(`/services?skip=${limit * (page - 1)}&limit=${limit}`)
             }
         },
         keepPreviousData: true,
@@ -75,79 +72,79 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
         onError: onError,
         onSuccess: res => {
             if (!res) return
-            setFeatures(res.data.data)
+            setServices(res.data.data)
             setTotal(res.data.total as number)
         }
     })
 
     const onFilterSearch = () => {
         setIsSearching(true)
-        searchFeaturesQuery.refetch()
+        searchServicesQuery.refetch()
     }
 
     const onResetFilterSearch = () => {
         setIsSearching(false)
         setQuery('')
         setSort('')
-        setTimeout(() => getAllFeaturesQuery.refetch(), 300)
+        setTimeout(() => getAllServicesQuery.refetch(), 300)
     }
 
     useEffect(() => {
         if (isSearching) {
-            searchFeaturesQuery.refetch()
+            searchServicesQuery.refetch()
         }
     }, [page])
 
-    const createNewFeatureMutation = useMutation({
-        mutationFn: (data: Partial<IFeature>) => {
-            return axios.post<IResponseData<IFeature>>('/features', data)
+    const createNewServiceMutation = useMutation({
+        mutationFn: (data: Partial<IService>) => {
+            return axios.post<IResponseData<IService>>('/services', data)
         },
         onError: onError,
         onSuccess: res => {
             if (isSearching) {
-                queryClient.invalidateQueries('search-features')
-                searchFeaturesQuery.refetch()
+                queryClient.invalidateQueries('search-services')
+                searchServicesQuery.refetch()
             } else {
-                queryClient.invalidateQueries('features')
+                queryClient.invalidateQueries('services')
             }
             toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
-    const updateFeatureMutation = useMutation({
-        mutationFn: (payload: { featureId: number; data: Partial<IFeature> }) => {
-            return axios.patch<IResponseData<IFeature>>(`/features/${payload.featureId}`, payload.data)
+    const updateServiceMutation = useMutation({
+        mutationFn: (payload: { serviceId: number; data: Partial<IService> }) => {
+            return axios.patch<IResponseData<IService>>(`/services/${payload.serviceId}`, payload.data)
         },
         onError: onError,
         onSuccess: res => {
             if (isSearching) {
-                queryClient.invalidateQueries('search-features')
-                searchFeaturesQuery.refetch()
+                queryClient.invalidateQueries('search-services')
+                searchServicesQuery.refetch()
             } else {
-                queryClient.invalidateQueries('features')
+                queryClient.invalidateQueries('services')
             }
             toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
-    const deleteFeatureMutation = useMutation({
-        mutationFn: (featureId: number) => {
-            return axios.delete<IResponseData<any>>(`/features/${featureId}`)
+    const deleteServiceMutation = useMutation({
+        mutationFn: (serviceId: number) => {
+            return axios.delete<IResponseData<any>>(`/services/${serviceId}`)
         },
         onError: onError,
         onSuccess: res => {
             if (isSearching) {
-                queryClient.invalidateQueries('search-features')
-                searchFeaturesQuery.refetch()
+                queryClient.invalidateQueries('search-services')
+                searchServicesQuery.refetch()
             } else {
-                queryClient.invalidateQueries('features')
+                queryClient.invalidateQueries('services')
             }
             toast(getMappedMessage(res.data.message), toastConfig('success'))
         }
     })
 
     return {
-        features,
+        services,
         total,
         page,
         limit,
@@ -156,12 +153,12 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
         onResetFilterSearch,
         buildQuery,
 
-        searchFeaturesQuery,
-        getAllFeaturesQuery,
-        createNewFeatureMutation,
-        updateFeatureMutation,
-        deleteFeatureMutation
+        searchServicesQuery,
+        getAllServicesQuery,
+        createNewServiceMutation,
+        updateServiceMutation,
+        deleteServiceMutation
     }
 }
 
-export default featureService
+export default serviceService

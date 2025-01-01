@@ -35,27 +35,19 @@ const FeatureDashboardPage = () => {
     const [havingFilters, setHavingFilters] = useState(false)
 
     const fetchAllRoomClassesQuery = useQuery(['features-all'], {
-        queryFn: () => {
-            return axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`)  // Thay `/roomClasses` bằng API phù hợp
-        },
-        refetchOnWindowFocus: false,  // Không tự động truy vấn lại khi cửa sổ trình duyệt lấy lại focus
-        enabled: true,  // Query được kích hoạt khi component được render
-        select: res => res.data,  // Chỉ lấy dữ liệu từ trường `data` trong phản hồi API
-        onSuccess: data => {
-            console.log('Dữ liệu roomClasses đã được lấy:', data); // Log dữ liệu trả về từ API
-        },
-        onError: error => {
-            console.error('Có lỗi xảy ra khi lấy dữ liệu roomClasses:', error);
-        }
+        queryFn: () => axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`),
+        refetchOnWindowFocus: false,
+        enabled: true,
+        select: res => res.data,
+        onSuccess: data => console.log('Room classes data:', data),
+        onError: error => console.error('Error fetching room classes:', error),
     })
-    
-    
-    
+
     const roomClasses = fetchAllRoomClassesQuery.data?.data || []
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen) {
-            
+            // Any additional logic when modals are open
         }
     }, [isAddModalOpen, isUpdateModalOpen])
 
@@ -71,7 +63,6 @@ const FeatureDashboardPage = () => {
             { wch: 10 },
             { wch: 30 },
             { wch: 30 },
-            { wch: 30 },
             { wch: 30 }
         ])
     }
@@ -85,7 +76,9 @@ const FeatureDashboardPage = () => {
                         <PopoverTrigger asChild>
                             <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">
                                 Tìm kiếm
-                                {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}
+                                {havingFilters && (
+                                    <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>
+                                )}
                             </div>
                         </PopoverTrigger>
                         <FeatureFilter
