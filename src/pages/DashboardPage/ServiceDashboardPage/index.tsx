@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Dialog, DialogTrigger } from '@/components/ui/Dialog'
@@ -41,7 +40,7 @@ const ServiceDashboardPage = () => {
         queryFn: () => axios.get<IResponseData<IFeature[]>>('/features'),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: (res) => res.data
+        select: res => res.data
     })
 
     const features = fetchAllFeaturesQuery.data?.data || []
@@ -139,10 +138,6 @@ const ServiceDashboardPage = () => {
             />
         </div>
     )
-=======
-const ServiceDashboardPage = () => {
-    return <div>ServiceDashboardPage</div>
->>>>>>> 1cd8cab0707b2854f923c894484e4e03cb486432
 }
 
 export default ServiceDashboardPage
