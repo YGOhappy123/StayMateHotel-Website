@@ -4,8 +4,9 @@ import ErrorPage from '@/pages/ErrorPage'
 import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import OurServicesPage from '@/pages/OurServicesPage'
+import BookingPage from '@/pages/BookingPage'
 
-const RootRoutes = [
+const MainRoutes = [
     {
         path: '/',
         element: (
@@ -26,9 +27,13 @@ const RootRoutes = [
             {
                 path: 'our-services',
                 element: <OurServicesPage />
+            },
+            {
+                path: 'booking',
+                element: <BookingPage />
             }
         ]
     }
 ]
 
-export default RootRoutes
+export default MainRoutes

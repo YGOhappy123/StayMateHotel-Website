@@ -30,6 +30,7 @@ const RES_MESSAGE_MAPPING = {
     GOOGLE_AUTH_SUCCESSFULLY: 'Xác thực Google thành công.',
     RESET_PASSWORD_SUCCESSFULLY: 'Đặt lại mật khẩu thành công.',
     CHANGE_PASSWORD_SUCCESSFULLY: 'Thay đổi mật khẩu thành công.',
+    MAKE_RESERVATION_SUCCESSFULLY: 'Đặt phòng thành công.',
     CREATE_ROOM_SUCCESSFULLY: 'Tạo phòng thành công.',
     UPDATE_ROOM_SUCCESSFULLY: 'Cập nhật phòng thành công.',
     DELETE_ROOM_SUCCESSFULLY: 'Xóa phòng thành công.',

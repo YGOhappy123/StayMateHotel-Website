@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,4 +68,8 @@ input:-webkit-autofill:active {
 
 .font-nunito {
     font-family: 'Nunito', sans-serif;
+}
+
+.font-oswald {
+    font-family: 'Oswald', sans-serif;
 }

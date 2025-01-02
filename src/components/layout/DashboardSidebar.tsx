@@ -82,7 +82,7 @@ export const MOTION_EFFECTS = {
     }
 }
 
-const Sidebar = () => {
+const DashboardSidebar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -188,4 +188,4 @@ const Sidebar = () => {
     )
 }
 
-export default Sidebar
+export default DashboardSidebar
