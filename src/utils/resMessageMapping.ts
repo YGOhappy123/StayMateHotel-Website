@@ -44,7 +44,13 @@ const RES_MESSAGE_MAPPING = {
     DELETE_ROOM_CLASS_SUCCESSFULLY: 'Xóa loại phòng thành công.',
     CREATE_FLOOR_SUCCESSFULLY: 'Tạo tầng thành công.',
     UPDATE_FLOOR_SUCCESSFULLY: 'Cập nhật tầng thành công.',
-    DELETE_FLOOR_SUCCESSFULLY: 'Xóa tầng thành công.'
+    DELETE_FLOOR_SUCCESSFULLY: 'Xóa tầng thành công.',
+    CREATE_SERVICE_SUCCESSFULLY: 'Tạo dịch vụ thành công.',
+    UPDATE_SERVICE_SUCCESSFULLY: 'Cập nhật dịch vụ thành công.',
+    DELETE_SERVICE_SUCCESSFULLY: 'Xóa dịch vụ thành công.',
+    SERVICE_NOT_FOUND: 'Dịch vụ không tồn tại.',
+    DUPLICATE_SERVICE_NAME: 'Tên dịch vụ đã tồn tại.',
+    SERVICE_CANNOT_BE_DELETED: 'Không thể xóa dịch vụ.',
 }
 
 const getMappedMessage = (originalMessage: string) => {
