@@ -37,6 +37,7 @@ declare global {
         email: string
         avatar?: string
 
+        phoneNumber: string
         createdById?: number
         createdBy?: Partial<IAdmin>
         isActive?: boolean
