@@ -15,7 +15,7 @@ type DateRangePickerProps = {
 
 const DateRangePicker = ({ date, setDate, className, triggerClassName }: DateRangePickerProps) => {
     return (
-        <div className={twMerge(`grid gap-2 ${className}`)}>
+        <div className={twMerge(`${className}`)}>
             <Popover>
                 <PopoverTrigger asChild>
                     <button
