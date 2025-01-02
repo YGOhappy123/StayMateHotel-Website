@@ -21,15 +21,6 @@ const AdminTable = ({ admins, total, page, limit, setPage, toggleActiveMutation 
 
     const columns: ColumnDef<IAdmin>[] = [
         {
-            accessorKey: 'avatar',
-            header: 'Ảnh Đại Diện',
-            cell: ({ row }) => {
-                const avatar = row.original.avatar
-
-                return <img src={avatar} alt="Avatar" className="h-10 w-10 rounded-full" />
-            }
-        },
-        {
             accessorKey: 'id',
             header: 'Mã Nhân Viên'
         },
@@ -48,6 +39,19 @@ const AdminTable = ({ admins, total, page, limit, setPage, toggleActiveMutation 
         {
             accessorKey: 'phoneNumber',
             header: 'Số Điện Thoại'
+        },
+        {
+            accessorKey: 'avatar',
+            header: 'Ảnh Đại Diện',
+            cell: ({ row }) => {
+                const avatar = row.original.avatar
+
+                return (
+                    <div className="flex justify-center">
+                        <img src={avatar} alt="Avatar" className="h-10 w-10 rounded-full" />
+                    </div>
+                )
+            }
         },
         {
             accessorKey: 'createdAt',
