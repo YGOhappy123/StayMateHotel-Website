@@ -4,7 +4,7 @@ import TextInput from '@/components/common/TextInput'
 import PasswordInput from '@/components/common/PasswordInput'
 import authService from '@/services/authService'
 import Button from '@/components/common/Button'
-import GoogleAuthButton from '@/components/ui/GoogleAuthButton'
+import GoogleAuthButton from '@/pages/AuthPage/GoogleAuthButton'
 
 type SignInFormProps = {
     changeFormType: (type: FormType) => void

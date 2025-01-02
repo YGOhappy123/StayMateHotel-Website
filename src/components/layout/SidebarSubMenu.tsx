@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, IconDefinition } from '@fortawesome/free-solid-svg-icons'
-import { MOTION_EFFECTS } from '@/components/layout/Sidebar'
+import { MOTION_EFFECTS } from '@/components/layout/DashboardSidebar'
 
 type SubMenuProps = {
     label: string

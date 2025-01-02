@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import BackgroundPoster from '@/components/ui/BackgroundPoster'
 
-const AboutHeroSection = () => {
+const BookingHeroSection = () => {
     const navigate = useNavigate()
 
     return (
         <section className="relative">
             <BackgroundPoster
-                imageUrl="https://images.unsplash.com/photo-1460408037948-b89a5e837b41?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                imageUrl="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 size="small"
             />
 
@@ -20,14 +20,15 @@ const AboutHeroSection = () => {
                             Trang chủ
                         </span>
                         <FontAwesomeIcon icon={faCaretRight} />
-                        <span className="text-ivory">Giới thiệu</span>
+                        <span className="text-ivory">Đặt phòng</span>
                     </p>
                     <p className="font-serif text-5xl font-semibold capitalize leading-[1.4] text-ivory">
-                        Xin chào, <span className="text-secondary">chúng tôi</span> là <span className="text-secondary">Stay Mate Hotel...</span>
+                        Tra cứu <span className="text-secondary">phòng khách sạn nhanh chóng</span> và{' '}
+                        <span className="text-secondary">tiện lợi...</span>
                     </p>
                     <p className="font-semibold capitalize text-ivory">
-                        Thuê căn phòng mơ ước của bạn: Không gian thoải mái, tiện nghi hiện đại, giờ giấc thoải mái, an ninh cao,... đều có thể được
-                        tìm thấy tại Stay Mate Hotel!
+                        Hãy chọn thời gian check in - check out, số lượng phòng, số lượng khách và một số tiện nghi bạn cần, việc còn lại cứ để Stay
+                        Mate Hotel lo!
                     </p>
                 </div>
             </div>
@@ -35,4 +36,4 @@ const AboutHeroSection = () => {
     )
 }
 
-export default AboutHeroSection
+export default BookingHeroSection
