@@ -24,6 +24,7 @@ const ServiceDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvServicesQuery,
         createNewServiceMutation,
         updateServiceMutation,
         deleteServiceMutation
@@ -31,49 +32,47 @@ const ServiceDashboardPage = () => {
 
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
+    const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [selectedService, setSelectedService] = useState<IService | null>(null)
     const [havingFilters, setHavingFilters] = useState(false)
 
-    // Fetch room classes
-    const fetchAllRoomClassesQuery = useQuery(['services-all'], {
-        queryFn: () => {
-            return axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`)  // Thay thế bằng endpoint phù hợp với dịch vụ
-        },
+    const fetchAllFeaturesQuery = useQuery(['features-all'], {
+        queryFn: () => axios.get<IResponseData<IFeature[]>>('/features'),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data,
-        onSuccess: data => {
-            console.log('Dữ liệu lớp phòng đã được lấy:', data);
-        },
-        onError: error => {
-            console.error('Lỗi khi lấy dữ liệu lớp phòng:', error);
-        }
+        select: (res) => res.data
     })
 
-    const roomClasses = fetchAllRoomClassesQuery.data?.data || []
+    const features = fetchAllFeaturesQuery.data?.data || []
 
     useEffect(() => {
-        if (isAddModalOpen || isUpdateModalOpen) {
-            // Có thể cần xử lý thêm khi modals mở, ví dụ: xử lý trạng thái bộ lọc
+        if (isAddModalOpen || isUpdateModalOpen || isFilterOpen) {
+            fetchAllFeaturesQuery.refetch()
         }
-    }, [isAddModalOpen, isUpdateModalOpen])
+    }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
-    // Xuất danh sách dịch vụ ra CSV
     const exportCsvFile = () => {
-        const formattedServices = services.map(service => ({
-            ['Mã Dịch Vụ']: service.id,
-            ['Tên Dịch Vụ']: service.name,
-            ['Ngày Tạo']: dayjs(service.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${service.createdBy?.lastName} ${service.createdBy?.firstName}`
-        }))
+        getCsvServicesQuery.refetch().then(res => {
+            const csvServices = res.data?.data?.data || []
 
-        exportToCSV(formattedServices, `Danh_sách_dịch_vụ_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 }
-        ])
+            const formattedServices = csvServices.map(service => ({
+                ['Mã Dịch Vụ']: service.id,
+                ['Tên Dịch Vụ']: service.name,
+                ['Giá Dịch Vụ']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(service.price as number),
+                ['Ngày Tạo']: dayjs(service.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${service.createdBy?.lastName} ${service.createdBy?.firstName}`
+            }))
+
+            exportToCSV(formattedServices, `SMH_Danh_sách_dịch_vụ_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 }
+            ])
+        })
     }
 
     return (
@@ -81,21 +80,21 @@ const ServiceDashboardPage = () => {
             <div className="flex items-center justify-between p-4">
                 <h2 className="text-2xl font-bold">Quản lý dịch vụ</h2>
                 <div className="flex justify-center gap-4">
-                    {/*<Popover>*/}
-                    {/*    <PopoverTrigger asChild>*/}
-                    {/*        <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">*/}
-                    {/*            Tìm kiếm*/}
-                    {/*            {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}*/}
-                    {/*        </div>*/}
-                    {/*    </PopoverTrigger>*/}
-                    {/*    <ServiceFilter*/}
-                    {/*        //roomClasses={roomClasses}*/}
-                    {/*        setHavingFilters={setHavingFilters}*/}
-                    {/*        onChange={buildQuery}*/}
-                    {/*        onSearch={onFilterSearch}*/}
-                    {/*        onReset={onResetFilterSearch}*/}
-                    {/*    />*/}
-                    {/*</Popover>*/}
+                    <Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+                        <PopoverTrigger asChild>
+                            <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">
+                                Tìm kiếm
+                                {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}
+                            </div>
+                        </PopoverTrigger>
+                        <ServiceFilter
+                            //features={features}
+                            setHavingFilters={setHavingFilters}
+                            onChange={buildQuery}
+                            onSearch={onFilterSearch}
+                            onReset={onResetFilterSearch}
+                        />
+                    </Popover>
 
                     <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
                         <DialogTrigger>
@@ -104,6 +103,7 @@ const ServiceDashboardPage = () => {
                             </div>
                         </DialogTrigger>
                         <CreateServiceDialog
+                            features={features}
                             isOpen={isAddModalOpen}
                             closeDialog={() => setIsAddModalOpen(false)}
                             createNewServiceMutation={createNewServiceMutation}
@@ -112,6 +112,7 @@ const ServiceDashboardPage = () => {
 
                     <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
                         <UpdateServiceDialog
+                            features={features}
                             selectedService={selectedService}
                             isOpen={isUpdateModalOpen}
                             closeDialog={() => setIsUpdateModalOpen(false)}

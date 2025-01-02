@@ -35,6 +35,35 @@ const ServiceTable = ({
             header: 'Tên Dịch Vụ'
         },
         {
+            accessorKey: 'price',
+            header: 'Giá Dịch Vụ', // Tiêu đề
+            cell: ({ row }) => {
+                const price = row.original.price;
+                return (
+                    <div className="inline-block rounded border border-solid border-indigo-600 bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-600">
+                        {price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} {/* Hiển thị VND */}
+                    </div>
+                );
+            },
+            size: 120, // Giữ kích thước cố định
+        },
+
+        {
+            accessorKey: 'isAvailable',
+            header: 'Trạng Thái',
+            cell: ({ row }) => {
+                const isAvailable = row.original.isAvailable
+                return (
+                    <div
+                        className={`px-3 py-1.5 text-sm font-medium rounded-full text-center ${isAvailable ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
+                            }`}
+                    >
+                        {isAvailable ? 'Có sẵn' : 'Không có sẵn'}
+                    </div>
+                )
+            },
+        },
+        {
             accessorKey: 'createdAt',
             header: 'Ngày Và Người Tạo',
             enableHiding: true,

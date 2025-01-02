@@ -41,9 +41,9 @@ declare global {
         id: number
         name: string
         createdAt: string
-
         createdById?: number
         createdBy?: Partial<IAdmin>
+        
     }
 
     interface IService {

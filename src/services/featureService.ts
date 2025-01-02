@@ -11,7 +11,7 @@ import toastConfig from '@/configs/toast'
 
 export type FeatureSortAndFilterParams = {
     searchFeatureName: string
-    searchFeatureQuery: string
+    //searchFeatureQuery: string
     searchRoomClasses: number[]
     sort: string
     range: string[] | any[] | undefined

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
@@ -12,6 +12,8 @@ import toastConfig from '@/configs/toast'
 export type ServiceSortAndFilterParams = {
     searchServiceName: string
     searchServiceQuery: string
+    searchMinPrice: string
+    searchMaxPrice: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -28,10 +30,19 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchServiceName, searchServiceQuery, sort, range }: ServiceSortAndFilterParams) => {
+    const buildQuery = ({
+        searchServiceName,
+        searchServiceQuery,
+        searchMinPrice,
+        searchMaxPrice,
+        sort,
+        range,
+    }: ServiceSortAndFilterParams) => {
         const query: any = {}
         if (searchServiceName) query.name = searchServiceName.trim()
         if (searchServiceQuery) query.serviceQuery = searchServiceQuery
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
         if (range) {
             if (range[0]) {
                 query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
@@ -40,6 +51,8 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
+
+
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
     }

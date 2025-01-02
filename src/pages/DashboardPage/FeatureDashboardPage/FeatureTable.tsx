@@ -27,6 +27,10 @@ const FeatureTable = ({
     onSelectFeature,
     deleteFeatureMutation
 }: FeatureTableProps) => {
+
+    const calculateTotalQuantity = (roomClasses: { quantity: number }[]) => {
+        return roomClasses.reduce((sum, room) => sum + room.quantity, 0)
+    }
     const columns: ColumnDef<IFeature>[] = [
         {
             accessorKey: 'id',
@@ -36,7 +40,38 @@ const FeatureTable = ({
             accessorKey: 'name',
             header: 'Tên Tiện Ích'
         },
-    
+        {
+            accessorKey: 'quantity',
+            header: '     Số Lượng',
+            cell: ({ row }) => {
+                // Tính tổng quantity từ tất cả các roomClass
+                const quantity = row.original.roomClasses.reduce((sum: number, room: { quantity: number }) => sum + room.quantity, 0);
+
+                return (
+                    <div className="flex items-center justify-center">
+                        <div
+                            className={`w-[30px] h-[30px] text-center font-medium ${quantity >= 0 ? 'bg-blue-100 text-blue-600 border-blue-600' : 'bg-gray-100 text-gray-600 border-gray-600'} border-2 rounded-md flex items-center justify-center hover:opacity-90`}
+                        >
+                            {/* Nếu có quantity và dấu x */}
+                            {quantity >= 0 && (
+                                <div className="flex items-center justify-center space-x-0.5">
+                                    <span className="text-red-500 font-bold text-[6px]"> {/* Kích thước chữ giảm còn 6px */}
+                                        ✖
+                                    </span>
+                                    <span>{quantity}</span>
+                                </div>
+                            )}
+                            {/* Hiển thị số lượng nếu không có dấu x */}
+                            {/*{quantity === 0 && (*/}
+                            {/*    <span className="flex items-center justify-center">0</span>*/}
+                            {/*)}*/}
+                        </div>
+                    </div>
+                );
+            }
+        },
+
+
         {
             accessorKey: 'createdAt',
             header: 'Ngày Và Người Tạo',
@@ -58,6 +93,9 @@ const FeatureTable = ({
                 )
             }
         },
+
+        
+
         {
             accessorKey: 'actions',
             header: () => <div className="text-center">Hành Động</div>,

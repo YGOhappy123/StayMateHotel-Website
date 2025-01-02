@@ -31,7 +31,7 @@ const DashboardRoutes = [
                 element: <FloorDashboardPage />
             },
             {
-                path: 'service',
+                path: 'services',
                 element: <ServiceDashboardPage />
             },
             {

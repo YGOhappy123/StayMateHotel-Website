@@ -56,21 +56,23 @@ const FeatureDashboardPage = () => {
             ['Mã Tính Năng']: feature.id,
             ['Tên Tính Năng']: feature.name,
             ['Ngày Tạo']: dayjs(feature.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`
+            ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`,
+            ['Số Lượng']: feature.quantity || 0  // Cột "Số Lượng" với giá trị mặc định là 0 nếu không có
         }))
 
         exportToCSV(formattedFeatures, `Danh_sách_tính_năng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
             { wch: 10 },
             { wch: 30 },
             { wch: 30 },
-            { wch: 30 }
+            { wch: 30 },
+            { wch: 15 }  // Đặt độ rộng cột cho "Số Lượng"
         ])
     }
 
     return (
         <div className="flex w-full flex-col gap-4">
             <div className="flex items-center justify-between p-4">
-                <h2 className="text-2xl font-bold">Quản lý tính năng</h2>
+                <h2 className="text-2xl font-bold">Quản lý tiện ích</h2>
                 <div className="flex justify-center gap-4">
                     <Popover>
                         <PopoverTrigger asChild>

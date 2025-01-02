@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog'
+import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/Dialog'
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 
@@ -12,18 +12,16 @@ type CreateFeatureDialogProps = {
 const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: CreateFeatureDialogProps) => {
     const [formValues, setFormValues] = useState({
         name: '',
-        description: '',
     })
 
     const [errors, setErrors] = useState({
         name: '',
-        description: '',
     })
 
     const handleSubmit = async () => {
         const formErrors = validateFormValues()
 
-        if (!formErrors.name && !formErrors.description) {
+        if (!formErrors.name) {
             await createNewFeatureMutation
                 .mutateAsync({ ...formValues }) // Gửi request tạo Feature mới
                 .then(() => closeDialog())
@@ -33,11 +31,10 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
     }
 
     const validateFormValues = () => {
-        const { name, description } = formValues
+        const { name } = formValues
         const formErrors = { ...errors }
 
-        if (!name.trim()) formErrors.name = formErrors.name || 'Tên tiện ích không được để trống.'
-        if (!description.trim()) formErrors.description = formErrors.description || 'Mô tả tiện ích không được để trống.'
+        if (!name.trim()) formErrors.name = 'Tên tiện ích không được để trống.' // Lỗi tên tiện ích trống
 
         return formErrors
     }
@@ -46,50 +43,38 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
         if (isOpen) {
             setFormValues({
                 name: '',
-                description: '',
             })
             setErrors({
                 name: '',
-                description: '',
             })
         }
     }, [isOpen])
 
     return (
-        <DialogContent className="max-w-[1000px] bg-white">
+        <DialogContent className="max-w-[500px] bg-white p-6 rounded-lg shadow-lg">
             <DialogHeader>
-                <DialogTitle>Tạo tiện ích mới</DialogTitle>
-                <DialogDescription></DialogDescription>
+                <DialogTitle className="text-lg font-semibold text-center">Tạo tiện ích mới</DialogTitle>
             </DialogHeader>
             <div className="border-b-2"></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="my-6">
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-10">
+                    <div className="mb-6">
                         <TextInput
                             fieldName="name"
                             placeholder="Tên tiện ích"
                             error={errors.name}
                             value={formValues.name}
                             onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} // Xóa lỗi khi focus
+                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} // Xóa lỗi khi focus vào
                             labelClassName="bg-white"
+                            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-sm"
                         />
+                        {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
                     </div>
-                    {/*<div className="mb-10">*/}
-                    {/*    <TextInput*/}
-                    {/*        //fieldName="description"*/}
-                    {/*       // placeholder="Mô tả tiện ích"*/}
-                    {/*        error={errors.description}*/}
-                    {/*        value={formValues.description}*/}
-                    {/*        onChange={(value: string) => setFormValues(prev => ({ ...prev, description: value }))}*/}
-                    {/*        onFocus={() => setErrors(prev => ({ ...prev, description: '' }))} // Xóa lỗi khi focus*/}
-                    {/*        labelClassName="bg-white"*/}
-                    {/*    />*/}
-                    {/*</div>*/}
                 </form>
             </div>
             <div className="border-b-2"></div>
-            <DialogFooter>
+            <DialogFooter className="flex justify-between mt-6">
                 <Button text="Hủy bỏ" variant="danger" onClick={closeDialog} />
                 <Button text="Xác nhận" variant="success" onClick={handleSubmit} />
             </DialogFooter>

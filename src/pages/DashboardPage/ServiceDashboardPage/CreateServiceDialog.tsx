@@ -13,20 +13,18 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
     const [formValues, setFormValues] = useState({
         name: '',
         price: '',
-        description: '',
-        isAvailable: true,
+        isAvailable: true,  // Trạng thái dịch vụ
     })
 
     const [errors, setErrors] = useState({
         name: '',
         price: '',
-        description: '',
     })
 
     const handleSubmit = async () => {
         const formErrors = validateFormValues()
 
-        if (!formErrors.name && !formErrors.price && !formErrors.description) {
+        if (!formErrors.name && !formErrors.price) {
             await createNewServiceMutation
                 .mutateAsync({ ...formValues }) // Gửi request tạo Service mới
                 .then(() => closeDialog())
@@ -36,73 +34,88 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
     }
 
     const validateFormValues = () => {
-        const { name, price, description } = formValues
+        const { name, price } = formValues
         const formErrors = { ...errors }
 
-        if (!name.trim()) formErrors.name = formErrors.name || 'Tên dịch vụ không được để trống.'
-        if (!price.trim() || isNaN(Number(price))) formErrors.price = formErrors.price || 'Giá dịch vụ phải là số hợp lệ.'
-        if (!description.trim()) formErrors.description = formErrors.description || 'Mô tả dịch vụ không được để trống.'
+        if (!name.trim()) formErrors.name = 'Tên dịch vụ không được để trống.'
+        if (!price.trim() || isNaN(Number(price)) || Number(price) <= 0) formErrors.price = 'Giá dịch vụ phải là số hợp lệ và lớn hơn 0.'
 
         return formErrors
     }
+
+    const handlePriceChange = (value: string) => {
+        if (/[a-zA-Z]/.test(value)) {
+            setErrors(prev => ({
+                ...prev,
+                price: 'Giá trị phải là số, không được chứa chữ cái.',
+            }));
+        } else {
+            setErrors(prev => ({
+                ...prev,
+                price: '',
+            }));
+        }
+        setFormValues(prev => ({ ...prev, price: value }));
+    };
 
     useEffect(() => {
         if (isOpen) {
             setFormValues({
                 name: '',
                 price: '',
-                description: '',
-                isAvailable: true,
+                isAvailable: true,  // Chế độ mặc định là "Có sẵn"
             })
             setErrors({
                 name: '',
                 price: '',
-                description: '',
             })
         }
     }, [isOpen])
 
     return (
-        <DialogContent className="max-w-[1000px] bg-white">
+        <DialogContent className="max-w-[600px] bg-white">
             <DialogHeader>
                 <DialogTitle>Tạo dịch vụ mới</DialogTitle>
                 <DialogDescription></DialogDescription>
             </DialogHeader>
             <div className="border-b-2"></div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-10">
+                    <div className="mb-4">
                         <TextInput
                             fieldName="name"
                             placeholder="Tên dịch vụ"
                             error={errors.name}
                             value={formValues.name}
                             onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} // Xóa lỗi khi focus
+                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))}
                             labelClassName="bg-white"
                         />
                     </div>
-                    <div className="mb-10">
+                    <div className="mb-4">
                         <TextInput
                             fieldName="price"
-                            placeholder="Giá dịch vụ"
+                            placeholder="Giá dịch vụ (VND)"
                             error={errors.price}
                             value={formValues.price}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, price: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, price: '' }))} // Xóa lỗi khi focus
+                            onChange={(value: string) => handlePriceChange(value)}  // Xử lý sự thay đổi giá trị
+                            onFocus={() => setErrors(prev => ({ ...prev, price: '' }))}
                             labelClassName="bg-white"
+                            suffix="VND" // Đơn vị VND
                         />
                     </div>
-                    <div className="mb-10">
-                        <TextInput
-                            fieldName="description"
-                            placeholder="Mô tả dịch vụ"
-                            error={errors.description}
-                            value={formValues.description}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, description: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, description: '' }))} // Xóa lỗi khi focus
-                            labelClassName="bg-white"
-                        />
+                    {/* Thêm ô trạng thái "Có sẵn"*/}
+                    <div className="mb-4">
+                        <label className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={formValues.isAvailable}
+                                onChange={(e) =>
+                                    setFormValues({ ...formValues, isAvailable: e.target.checked })
+                                }
+                            />
+                            <span>Trạng thái: {formValues.isAvailable ? 'Có sẵn' : 'Không có sẵn'}</span>
+                        </label>
                     </div>
                 </form>
             </div>
