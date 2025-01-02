@@ -11,7 +11,7 @@ import toastConfig from '@/configs/toast'
 
 export type ServiceSortAndFilterParams = {
     searchServiceName: string
-    searchServiceQuery: string
+    //searchServiceQuery: string
     searchMinPrice: string
     searchMaxPrice: string
     sort: string
