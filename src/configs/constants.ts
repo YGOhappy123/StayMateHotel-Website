@@ -17,9 +17,9 @@ export const NAVIGATION_TABS: NavigationTab[] = [
     { label: 'trang chủ', href: '/' },
     { label: 'giới thiệu', href: '/about-us' },
     { label: 'dịch vụ', href: '/our-services' },
+    { label: 'xem phòng', href: '/rooms' },
     { label: 'đặt phòng', href: '/booking' },
-    { label: 'hồ sơ', href: '/profile', roles: ['Guest', 'Admin'] },
-    { label: 'quản lý khách sạn', href: '/dashboard', roles: ['Admin'] }
+    { label: 'quản lý', href: '/dashboard', roles: ['Admin'] }
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [

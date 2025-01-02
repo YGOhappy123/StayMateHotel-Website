@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faPhoneSquare } from '@fortawesome/free-solid-svg-icons'
 import { RootState } from '@/store'
 import { signOut } from '@/slices/authSlice'
 import { NAVIGATION_TABS, SOCIAL_LINKS } from '@/configs/constants'
+import toastConfig from '@/configs/toast'
 
 type AppbarProps = {
     showTopBar: boolean
@@ -54,24 +56,36 @@ const Appbar = ({ showTopBar }: AppbarProps) => {
 
                 <div className="flex items-center gap-9">
                     {NAVIGATION_TABS.filter(tab => !tab.roles || tab.roles?.includes(user?.role)).map(tab => (
-                        <NavLink key={tab.href} to={tab.href} className={({ isActive }) => (isActive ? 'text-white' : 'text-white/75')}>
-                            <span className="font-semibold uppercase tracking-wide hover:text-white">{tab.label}</span>
+                        <NavLink key={tab.href} to={tab.href} className={({ isActive }) => (isActive ? 'text-secondary' : 'text-white')}>
+                            <span className="font-semibold uppercase tracking-wide hover:text-secondary">{tab.label}</span>
                         </NavLink>
                     ))}
                 </div>
 
-                <button
-                    className="flex h-[60px] w-[200px] items-center justify-center rounded-full border-2 border-primary bg-ivory font-semibold uppercase tracking-widest text-primary hover:bg-[#DBD6CA]"
-                    onClick={() => {
-                        if (isLogged) {
-                            dispatch(signOut())
-                        } else {
-                            navigate('/auth')
-                        }
-                    }}
-                >
-                    {isLogged ? 'đăng xuất' : 'đăng nhập'}
-                </button>
+                <div className="flex items-center gap-3">
+                    {user?.avatar && (
+                        <button
+                            className="flex aspect-square h-[60px] items-center justify-center overflow-hidden rounded-full border-2 border-primary bg-ivory"
+                            onClick={() => navigate('/profile')}
+                        >
+                            <img src={user.avatar} alt="" className="h-full w-full object-cover" />
+                        </button>
+                    )}
+                    <button
+                        className="flex h-[60px] w-[200px] items-center justify-center rounded-full border-2 border-primary bg-ivory font-semibold uppercase tracking-widest text-primary hover:bg-[#DBD6CA]"
+                        onClick={() => {
+                            if (isLogged) {
+                                dispatch(signOut())
+                                navigate('/')
+                                toast('Đăng xuất thành công', toastConfig('success'))
+                            } else {
+                                navigate('/auth')
+                            }
+                        }}
+                    >
+                        {isLogged ? 'đăng xuất' : 'đăng nhập'}
+                    </button>
+                </div>
             </div>
         </header>
     )
