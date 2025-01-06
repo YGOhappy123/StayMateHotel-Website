@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import useTitle from '@/hooks/useTitle'
 import BookingHeroSection from '@/pages/BookingPage/BookingHeroSection'
-import RoomListSection from '@/pages/BookingPage/RoomListSection'
+import BookingRoomListSection from '@/pages/BookingPage/BookingRoomListSection'
 
 const BookingPage = () => {
     useTitle('Stay Mate Hotel | Đặt Phòng')
@@ -12,7 +12,7 @@ const BookingPage = () => {
     return (
         <div className="-mt-[150px]">
             <BookingHeroSection />
-            <RoomListSection />
+            <BookingRoomListSection />
         </div>
     )
 }

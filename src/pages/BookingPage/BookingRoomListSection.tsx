@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/store'
 import { WishedRoom } from '@/services/bookingService'
 import RoomSearching from '@/pages/BookingPage/RoomSearching'
-import RoomCard from '@/pages/BookingPage/RoomCard'
+import RoomCard from '@/components/ui/RoomCard'
 import ChosenRoomsForm from '@/pages/BookingPage/ChosenRoomsForm'
 
 export type ChosenRoom = {
@@ -16,7 +16,7 @@ export type BookingRequirements = {
     guests: WishedRoom[]
 }
 
-const RoomListSection = () => {
+const BookingRoomListSection = () => {
     const user = useSelector((state: RootState) => state.auth.user)
     const [availableRooms, setAvailableRooms] = useState<IRoom[][]>([])
     const [activeRoomList, setActiveRoomList] = useState(0)
@@ -30,7 +30,7 @@ const RoomListSection = () => {
 
     return (
         <section className="flex flex-col items-center bg-ivory px-5 py-[100px]">
-            <div className="flex w-full max-w-container gap-[60px] bg-ivory">
+            <div className="w-full max-w-container bg-ivory">
                 <RoomSearching setAvailableRooms={setAvailableRooms} setBookingRequirements={setBookingRequirements} />
             </div>
 
@@ -85,7 +85,7 @@ const RoomListSection = () => {
                         <ChosenRoomsForm
                             availableRooms={availableRooms}
                             chosenRooms={[...selectedRooms].sort((a, b) => a.index - b.index)}
-                            bookingRequirements={bookingRequirements}
+                            bookingRequirements={bookingRequirements!}
                         />
                     )}
                 </div>
@@ -94,4 +94,4 @@ const RoomListSection = () => {
     )
 }
 
-export default RoomListSection
+export default BookingRoomListSection

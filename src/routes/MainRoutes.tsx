@@ -5,6 +5,8 @@ import HomePage from '@/pages/HomePage'
 import AboutPage from '@/pages/AboutPage'
 import OurServicesPage from '@/pages/OurServicesPage'
 import BookingPage from '@/pages/BookingPage'
+import RoomListPage from '@/pages/RoomListPage'
+import RoomDetailPage from '@/pages/RoomDetailPage'
 
 const MainRoutes = [
     {
@@ -27,6 +29,14 @@ const MainRoutes = [
             {
                 path: 'our-services',
                 element: <OurServicesPage />
+            },
+            {
+                path: 'rooms',
+                element: <RoomListPage />
+            },
+            {
+                path: 'rooms/:roomId',
+                element: <RoomDetailPage />
             },
             {
                 path: 'booking',

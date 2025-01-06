@@ -17,7 +17,7 @@ const ForgotPasswordForm = ({ changeFormType }: ForgotPasswordFormProps) => {
         email: ''
     })
 
-    // const { signInMutation } = authService()
+    const { forgotPasswordMutation } = authService()
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -25,10 +25,9 @@ const ForgotPasswordForm = ({ changeFormType }: ForgotPasswordFormProps) => {
         const formErrors = validateFormValues()
 
         if (!formErrors.email) {
-            // await signInMutation.mutateAsync({
-            //     email: formValues.email,
-            //     password: formValues.password
-            // })
+            await forgotPasswordMutation.mutateAsync({
+                email: formValues.email
+            })
         } else {
             setErrors(formErrors)
         }

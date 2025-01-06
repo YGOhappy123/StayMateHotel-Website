@@ -18,16 +18,7 @@ type FeatureTableProps = {
     deleteFeatureMutation: any
 }
 
-const FeatureTable = ({
-    features,
-    total,
-    page,
-    limit,
-    setPage,
-    onSelectFeature,
-    deleteFeatureMutation
-}: FeatureTableProps) => {
-
+const FeatureTable = ({ features, total, page, limit, setPage, onSelectFeature, deleteFeatureMutation }: FeatureTableProps) => {
     const calculateTotalQuantity = (roomClasses: { quantity: number }[]) => {
         return roomClasses.reduce((sum, room) => sum + room.quantity, 0)
     }
@@ -42,22 +33,20 @@ const FeatureTable = ({
         },
         {
             accessorKey: 'quantity',
-            header: '     Số Lượng',
+            header: () => <div className="text-center">Số Lượng</div>,
             cell: ({ row }) => {
                 // Tính tổng quantity từ tất cả các roomClass
-                const quantity = row.original.roomClasses.reduce((sum: number, room: { quantity: number }) => sum + room.quantity, 0);
+                const quantity = row.original.roomClasses.reduce((sum: number, room: { quantity: number }) => sum + room.quantity, 0)
 
                 return (
                     <div className="flex items-center justify-center">
                         <div
-                            className={`w-[30px] h-[30px] text-center font-medium ${quantity >= 0 ? 'bg-blue-100 text-blue-600 border-blue-600' : 'bg-gray-100 text-gray-600 border-gray-600'} border-2 rounded-md flex items-center justify-center hover:opacity-90`}
+                            className={`h-[30px] w-[30px] text-center font-medium ${quantity >= 0 ? 'border-blue-600 bg-blue-100 text-blue-600' : 'border-gray-600 bg-gray-100 text-gray-600'} flex items-center justify-center rounded-md border-2 hover:opacity-90`}
                         >
                             {/* Nếu có quantity và dấu x */}
                             {quantity >= 0 && (
                                 <div className="flex items-center justify-center space-x-0.5">
-                                    <span className="text-red-500 font-bold text-[6px]"> {/* Kích thước chữ giảm còn 6px */}
-                                        ✖
-                                    </span>
+                                    <span className="text-[6px] font-bold text-red-500"> {/* Kích thước chữ giảm còn 6px */}✖</span>
                                     <span>{quantity}</span>
                                 </div>
                             )}
@@ -67,10 +56,9 @@ const FeatureTable = ({
                             {/*)}*/}
                         </div>
                     </div>
-                );
+                )
             }
         },
-
 
         {
             accessorKey: 'createdAt',
@@ -93,8 +81,6 @@ const FeatureTable = ({
                 )
             }
         },
-
-        
 
         {
             accessorKey: 'actions',

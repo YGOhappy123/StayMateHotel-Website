@@ -23,7 +23,7 @@ const ResetPasswordForm = ({ changeFormType }: ResetPasswordFormProps) => {
     })
 
     const [query, setQuery] = useSearchParams()
-    // const { signUpMutation } = authService()
+    const { resetPasswordMutation } = authService()
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -37,16 +37,17 @@ const ResetPasswordForm = ({ changeFormType }: ResetPasswordFormProps) => {
         const formErrors = validateFormValues()
 
         if (!formErrors.password && !formErrors.cfPassword) {
-            // await signUpMutation.mutateAsync({
-            //     firstName: formValues.firstName,
-            //     lastName: formValues.lastName,
-            //     username: formValues.username,
-            //     password: formValues.password,
-            //     confirmPassword: formValues.cfPassword
-            // })
-            // query.delete('token')
-            // query.set('type', 'signIn')
-            // setQuery(query)
+            await resetPasswordMutation
+                .mutateAsync({
+                    resetPasswordToken: token,
+                    password: formValues.password,
+                    confirmPassword: formValues.cfPassword
+                })
+                .then(() => {
+                    query.delete('token')
+                    query.set('type', 'signIn')
+                    setQuery(query)
+                })
         } else {
             setErrors(formErrors)
         }
