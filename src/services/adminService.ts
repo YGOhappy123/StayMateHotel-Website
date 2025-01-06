@@ -124,6 +124,14 @@ const adminService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const updateAdminMutation = useMutation({
+        mutationFn: ({ data }: { data: Partial<IAdmin> }) => axios.patch<IResponseData<any>>(`/admins/profile`, data),
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        },
+        onError: onError
+    })
+
     const toggleActiveMutation = useMutation({
         mutationFn: (adminId: number) => {
             return axios.post<IResponseData<any>>(`/admins/toggle-active/${adminId}`)
@@ -154,6 +162,7 @@ const adminService = ({ enableFetching }: { enableFetching: boolean }) => {
         getAllAdminsQuery,
         getCsvAdminsQuery,
         createNewAdminMutation,
+        updateAdminMutation,
         toggleActiveMutation
     }
 }

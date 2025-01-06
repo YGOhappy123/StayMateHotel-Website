@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 
 import { onError } from '@/utils/errorsHandler'
-import { setLogged, setUser } from '@/slices/authSlice'
+import { setLogged, setUser, signOut } from '@/slices/authSlice'
 import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import cookies from '@/libs/cookies'
@@ -71,10 +71,53 @@ const authService = () => {
         }
     })
 
+    const forgotPasswordMutation = useMutation({
+        mutationFn: ({ email }: { email: string }) => axios.post<IResponseData<SignInResponse>>('/auth/forgot-password', { email }),
+        onError: onError,
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const resetPasswordMutation = useMutation({
+        mutationFn: (data: { resetPasswordToken: string; password: string; confirmPassword: string }) =>
+            axios.post<IResponseData<any>>('/auth/reset-password', data),
+        onError: onError,
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const updatePasswordMutation = useMutation({
+        mutationFn: ({ oldPassword, newPassword, confirmPassword }: { oldPassword: string; newPassword: string; confirmPassword: string }) =>
+            axios.post<IResponseData<any>>(`/auth/change-password`, { oldPassword, newPassword, confirmPassword }),
+        onError: onError,
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const deactivateAccountMutation = useMutation({
+        mutationFn: (data: { targetUserId: number; targetUserRole: IRole }) =>
+            axios.post<IResponseData<any>>(`/auth/deactivate-account`, {
+                targetUserId: data.targetUserId,
+                targetUserRole: data.targetUserRole
+            }),
+        onError: onError,
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+            dispatch(signOut())
+        }
+    })
+
     return {
         signInMutation,
         signUpMutation,
-        googleAuthMutation
+        googleAuthMutation,
+        forgotPasswordMutation,
+        resetPasswordMutation,
+        updatePasswordMutation,
+        deactivateAccountMutation
     }
 }
 

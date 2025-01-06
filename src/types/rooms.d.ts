@@ -43,22 +43,21 @@ declare global {
         createdAt: string
         createdById?: number
         createdBy?: Partial<IAdmin>
-        
     }
 
     interface IService {
-        id: number; // Service ID
-        name: string; // Name of the service
-        price: number; // Price in decimal format
-        isAvailable: boolean; // Availability status
-        createdAt: string; // ISO date string for CreatedAt
-        createdById?: number; // ID of the admin who created the service
-        createdBy?: Partial<IAdmin>;
+        id: number // Service ID
+        name: string // Name of the service
+        price: number // Price in decimal format
+        isAvailable: boolean // Availability status
+        createdAt: string // ISO date string for CreatedAt
+        createdById?: number // ID of the admin who created the service
+        createdBy?: Partial<IAdmin>
         bookingServices: {
-            id: number; // BookingService ID
-            serviceId: number; // ID of related service
-            bookingId: number; // ID of the related booking
-        }[]; // List of related bookings
+            id: number // BookingService ID
+            serviceId: number // ID of related service
+            bookingId: number // ID of the related booking
+        }[] // List of related bookings
     }
 
     interface IRoomClassFeature {
@@ -70,7 +69,7 @@ declare global {
         feature?: Partial<IFeature>
     }
 
-    type RoomStatus = 'Available' | 'Reserved' | 'Occupied' | 'UnderCleaning' | 'OutOfService'
+    type RoomStatus = 'Available' | 'Occupied' | 'UnderCleaning' | 'OutOfService'
 }
 
 export {}

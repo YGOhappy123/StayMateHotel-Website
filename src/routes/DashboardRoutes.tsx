@@ -1,7 +1,4 @@
 import { Suspense } from 'react'
-//<<<<<<< HEAD
-//import { OverallDashboardPage, RoomDashboardPage, RoomClassDashboardPage, FloorDashboardPage, FeatureDashboardPage, ServiceDashboardPage } from '@/pages/DashboardPage'
-//=======
 import {
     OverallDashboardPage,
     RoomDashboardPage,
@@ -10,9 +7,9 @@ import {
     FeatureDashboardPage,
     ServiceDashboardPage,
     CustomerDashboardPage,
-    AdminDashboardPage
+    AdminDashboardPage,
+    BookingDashboardPage
 } from '@/pages/DashboardPage'
-//>>>>>>> 1cd8cab0707b2854f923c894484e4e03cb486432
 import DashboardLayout from '@/layouts/DashboardLayout'
 import ErrorPage from '@/pages/ErrorPage'
 import AuthProtector from '@/components/container/AuthProtector'
@@ -62,6 +59,10 @@ const DashboardRoutes = [
             {
                 path: 'admins',
                 element: <AdminDashboardPage />
+            },
+            {
+                path: 'bookings',
+                element: <BookingDashboardPage />
             }
         ]
     }

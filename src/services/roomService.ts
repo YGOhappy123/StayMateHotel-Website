@@ -11,6 +11,7 @@ import toastConfig from '@/configs/toast'
 
 export type RoomSortAndFilterParams = {
     searchRoomNumber: string
+    searchStatus: string
     searchFloor: number
     searchRoomClass: number
     searchMinPrice: string
@@ -31,9 +32,19 @@ const roomService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range }: RoomSortAndFilterParams) => {
+    const buildQuery = ({
+        searchRoomNumber,
+        searchStatus,
+        searchFloor,
+        searchRoomClass,
+        searchMinPrice,
+        searchMaxPrice,
+        sort,
+        range
+    }: RoomSortAndFilterParams) => {
         const query: any = {}
         if (searchRoomNumber) query.roomNumber = searchRoomNumber.trim()
+        if (searchStatus) query.status = searchStatus
         if (searchFloor) query.floorId = searchFloor
         if (searchRoomClass) query.roomClassId = searchRoomClass
         if (searchMinPrice) query.minPrice = searchMinPrice

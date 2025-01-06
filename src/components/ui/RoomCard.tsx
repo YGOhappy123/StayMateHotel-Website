@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/Carousel'
 import { RootState } from '@/store'
@@ -11,9 +12,11 @@ type RoomCardProps = {
     removeRoom: () => void
     expanded: boolean
     isSelected: boolean
+    isRoomList?: boolean
 }
 
-const RoomCard = ({ room, selectRoom, removeRoom, expanded, isSelected }: RoomCardProps) => {
+const RoomCard = ({ room, selectRoom, removeRoom, expanded, isSelected, isRoomList = false }: RoomCardProps) => {
+    const navigate = useNavigate()
     const user = useSelector((state: RootState) => state.auth.user)
 
     return (
@@ -32,6 +35,7 @@ const RoomCard = ({ room, selectRoom, removeRoom, expanded, isSelected }: RoomCa
                     {room.roomClass?.className}
                 </div>
             </div>
+
             <div className="mt-6 flex gap-[40px]">
                 <div className={`overflow-hidden rounded-2xl`}>
                     {room.images && room.images.length > 0 ? (
@@ -84,21 +88,33 @@ const RoomCard = ({ room, selectRoom, removeRoom, expanded, isSelected }: RoomCa
                     <div className={`grid grid-cols-2 ${expanded ? 'mt-auto gap-6' : 'mt-8 gap-4'}`}>
                         <button
                             className={`flex items-center justify-center rounded-full border-2 border-primary bg-primary font-semibold uppercase tracking-widest text-ivory hover:bg-primary/90 ${expanded ? 'h-[60px]' : 'h-[50px] text-sm'}`}
-                            onClick={() => window.open(`${window.location.origin}/rooms/${room.id}`, '_blank')}
+                            onClick={() => {
+                                isRoomList ? navigate(`/rooms/${room.id}`) : window.open(`${window.location.origin}/rooms/${room.id}`, '_blank')
+                            }}
                         >
                             Xem chi tiết
                         </button>
-                        <button
-                            className={`flex items-center justify-center rounded-full border-2 border-primary bg-ivory font-semibold uppercase tracking-widest text-primary hover:bg-[#DBD6CA] ${expanded ? 'h-[60px]' : 'h-[50px] text-sm'}`}
-                            onClick={() => {
-                                if (!user) return toast('Bạn phải đăng nhập để sử dụng tính năng này', toastConfig('info'))
-                                if (user.role !== 'Guest') return toast('Tính năng này chỉ khả dụng cho vai trò "Khách hàng"', toastConfig('info'))
+                        {isRoomList ? (
+                            <button
+                                className={`flex items-center justify-center rounded-full border-2 border-primary bg-ivory font-semibold uppercase tracking-widest text-primary hover:bg-[#DBD6CA] ${expanded ? 'h-[60px]' : 'h-[50px] text-sm'}`}
+                                onClick={() => navigate('/booking')}
+                            >
+                                Đặt phòng ngay
+                            </button>
+                        ) : (
+                            <button
+                                className={`flex items-center justify-center rounded-full border-2 border-primary bg-ivory font-semibold uppercase tracking-widest text-primary hover:bg-[#DBD6CA] ${expanded ? 'h-[60px]' : 'h-[50px] text-sm'}`}
+                                onClick={() => {
+                                    if (!user) return toast('Bạn phải đăng nhập để sử dụng tính năng này', toastConfig('info'))
+                                    if (user.role !== 'Guest')
+                                        return toast('Tính năng này chỉ khả dụng cho vai trò "Khách hàng"', toastConfig('info'))
 
-                                isSelected ? removeRoom() : selectRoom()
-                            }}
-                        >
-                            {isSelected ? 'Xóa phòng' : 'Chọn phòng'}
-                        </button>
+                                    isSelected ? removeRoom() : selectRoom()
+                                }}
+                            >
+                                {isSelected ? 'Xóa phòng' : 'Chọn phòng'}
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
