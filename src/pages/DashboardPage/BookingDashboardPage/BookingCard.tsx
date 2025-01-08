@@ -202,7 +202,7 @@ const BookingCard = ({
                 <Dialog open={depositDialogOpen} onOpenChange={setDepositDialogOpen}>
                     <DialogTrigger asChild>
                         <button
-                            disabled={booking.status !== 'Confirmed'}
+                            disabled={booking.status !== 'Confirmed' || totalPaymentAmount > 0}
                             className={twMerge(
                                 `${baseButtonClass} border-green-600 bg-green-100 text-green-600 disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600`
                             )}
