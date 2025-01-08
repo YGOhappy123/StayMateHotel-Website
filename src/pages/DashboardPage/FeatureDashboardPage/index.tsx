@@ -24,6 +24,7 @@ const FeatureDashboardPage = () => {
         buildQuery,
         onFilterSearch,
         onResetFilterSearch,
+        getCsvFeaturesQuery,
         createNewFeatureMutation,
         updateFeatureMutation,
         deleteFeatureMutation
@@ -47,27 +48,30 @@ const FeatureDashboardPage = () => {
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen) {
-            // Any additional logic when modals are open
+            //
         }
     }, [isAddModalOpen, isUpdateModalOpen])
 
     const exportCsvFile = () => {
-        const formattedFeatures = features.map(feature => ({
-            ['Mã Tính Năng']: feature.id,
-            ['Tên Tính Năng']: feature.name,
-            ['Ngày Tạo']: dayjs(feature.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-            ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`,
-            ['Số Lượng']: feature.quantity || 0  // Cột "Số Lượng" với giá trị mặc định là 0 nếu không có
-        }))
+        getCsvFeaturesQuery.refetch().then(res => {
+            if (!getCsvFeaturesQuery.data) return; 
+            const csvFeatures = res.data?.data?.data ?? []
+            const formattedFeatures = csvFeatures.map(feature => ({
+                ['Mã Tiện ích']: feature.id,
+                ['Tên Tiện ích']: feature.name,
+                ['Ngày Tạo']: dayjs(feature.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`,
+            }));
 
-        exportToCSV(formattedFeatures, `Danh_sách_tính_năng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
-            { wch: 10 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 30 },
-            { wch: 15 }  // Đặt độ rộng cột cho "Số Lượng"
-        ])
-    }
+            exportToCSV(formattedFeatures, `SMH_Danh_sách_tiện_ích_${dayjs(Date.now()).format('DD_MM_YYYY')}`, [
+                { wch: 10 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+            ]);
+        });
+    };
+
 
     return (
         <div className="flex w-full flex-col gap-4">

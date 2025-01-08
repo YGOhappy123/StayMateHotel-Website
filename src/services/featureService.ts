@@ -80,6 +80,15 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
         }
     })
 
+    const getCsvFeaturesQuery = useQuery(['search-csv-features', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IFeature[]>>(`/features?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
+
     const onFilterSearch = () => {
         setIsSearching(true)
         searchFeaturesQuery.refetch()
@@ -158,6 +167,7 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchFeaturesQuery,
         getAllFeaturesQuery,
+        getCsvFeaturesQuery,
         createNewFeatureMutation,
         updateFeatureMutation,
         deleteFeatureMutation
