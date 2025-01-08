@@ -50,7 +50,7 @@ const FeatureTable = ({
                             roomClasses.map((roomClass, index) => (
                                 <div key={index} className="flex items-center space-x-2 justify-center">
                                     <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">
-                                        {roomClass.className}
+                                        {roomClass.name}
                                     </span>
                                 </div>
                             ))
