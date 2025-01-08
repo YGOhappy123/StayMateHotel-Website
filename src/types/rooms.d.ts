@@ -72,7 +72,7 @@ declare global {
         feature?: Partial<IFeature>
     }
 
-    type RoomStatus = 'Available' | 'Reserved' | 'Occupied' | 'UnderCleaning' | 'OutOfService'
+    type RoomStatus = 'Available' | 'Occupied' | 'UnderCleaning' | 'OutOfService'
 }
 
 export {}

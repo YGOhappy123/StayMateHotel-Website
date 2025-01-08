@@ -22,7 +22,7 @@ const AdminTable = ({ admins, total, page, limit, setPage, toggleActiveMutation 
     const columns: ColumnDef<IAdmin>[] = [
         {
             accessorKey: 'id',
-            header: 'Mã Nhân Viên'
+            header: 'Mã Quản Lý'
         },
         {
             accessorKey: 'lastName',
@@ -42,7 +42,7 @@ const AdminTable = ({ admins, total, page, limit, setPage, toggleActiveMutation 
         },
         {
             accessorKey: 'avatar',
-            header: 'Ảnh Đại Diện',
+            header: () => <div className="text-center">Ảnh Đại Diện</div>,
             cell: ({ row }) => {
                 const avatar = row.original.avatar
 
@@ -69,7 +69,7 @@ const AdminTable = ({ admins, total, page, limit, setPage, toggleActiveMutation 
                         </div>
                         <div>
                             <span className="font-semibold">Người tạo: </span>
-                            {`${createdBy}`}
+                            {(createdBy as string) || <i>(Không có)</i>}
                         </div>
                     </div>
                 )

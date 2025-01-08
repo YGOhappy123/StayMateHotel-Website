@@ -11,7 +11,7 @@ import toastConfig from '@/configs/toast'
 
 export type FeatureSortAndFilterParams = {
     searchFeatureName: string
-    //searchFeatureQuery: string
+    searchFeatureQuery: string
     searchRoomClasses: number[]
     sort: string
     range: string[] | any[] | undefined
@@ -42,7 +42,7 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
-        console.log("Final query:", query)
+        console.log('Final query:', query)
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
     }

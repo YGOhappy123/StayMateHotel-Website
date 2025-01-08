@@ -19,6 +19,10 @@ declare global {
 
     interface IBookingRoom {
         numberOfGuests: number
+        unitPrice: number
+        roomNumber?: string
+        floor?: string
+        roomClass?: string
 
         bookingId?: number
         booking?: Partial<IBooking>
@@ -26,7 +30,19 @@ declare global {
         room?: Partial<IRoom>
     }
 
-    interface IBookingService {}
+    interface IBookingService {
+        id: number
+        quantity: number
+        unitPrice: number
+        status: BookingServiceStatus
+        createdAt: string
+        name?: string
+
+        bookingId?: number
+        booking?: Partial<IBooking>
+        serviceId?: number
+        service?: Partial<IService>
+    }
 
     interface IPayment {
         id: number
@@ -38,6 +54,8 @@ declare global {
     }
 
     type BookingStatus = 'Pending' | 'Confirmed' | 'Cancelled' | 'CheckedIn' | 'CheckedOut' | 'PaymentDone'
+
+    type BookingServiceStatus = 'Pending' | 'Accepted' | 'Rejected' | 'Done'
 
     type PaymentMethod = 'Cash' | 'CreditCard' | 'Transfer'
 }

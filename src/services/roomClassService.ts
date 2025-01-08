@@ -57,7 +57,6 @@ const roomClassService = ({ enableFetching }: { enableFetching: boolean }) => {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
-        console.log("Final query:", query)
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))
     }

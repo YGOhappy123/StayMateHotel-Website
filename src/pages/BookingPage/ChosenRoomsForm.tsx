@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { differenceInDays, format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { RootState } from '@/store'
-import { BookingRequirements, ChosenRoom } from '@/pages/BookingPage/RoomListSection'
+import { BookingRequirements, ChosenRoom } from '@/pages/BookingPage/BookingRoomListSection'
 import bookingService from '@/services/bookingService'
 import toastConfig from '@/configs/toast'
 import dayjs from 'dayjs'
@@ -30,7 +30,7 @@ const ChosenRoomsForm = ({ availableRooms, chosenRooms, bookingRequirements }: C
         }, 0)
     }, [chosenRooms])
 
-    const { placeBookingMutation } = bookingService()
+    const { placeBookingMutation } = bookingService({ enableFetching: false })
     const handleBooking = async () => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/

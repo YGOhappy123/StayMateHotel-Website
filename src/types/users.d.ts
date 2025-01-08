@@ -12,7 +12,7 @@ declare global {
         avatar?: string
 
         createdById?: number
-        createdBy?: Partial<IAdmin>
+        createdBy?: Partial<IAdmin> | string
     }
 
     interface IGuest {
@@ -39,7 +39,7 @@ declare global {
 
         phoneNumber: string
         createdById?: number
-        createdBy?: Partial<IAdmin>
+        createdBy?: Partial<IAdmin> | string
         isActive?: boolean
     }
 

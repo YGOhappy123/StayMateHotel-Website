@@ -3,7 +3,6 @@ import { DataTable } from '@/components/ui/DataTable'
 import { getMappedStatus } from '@/utils/roomStatusMapping'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from '@/libs/dayjs'
-
 import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
 import fileService from '@/services/fileService'
@@ -132,7 +131,7 @@ const RoomTable = ({
                             text="Cập nhật"
                             variant="success"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            disabled={room.status === 'Occupied' || room.status === 'Reserved'}
+                            disabled={room.status === 'Occupied'}
                             onClick={() => onSelectRoom(room)}
                         />
                         <Button
@@ -140,12 +139,14 @@ const RoomTable = ({
                             variant="info"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
                             disabled={room.status !== 'UnderCleaning'}
-                            onClick={() => markCleaningDoneMutation.mutate(room.id)}
+                            onClick={async () => {
+                                await markCleaningDoneMutation.mutateAsync(room.id)
+                            }}
                         />
                         <ConfirmationDialog
                             Trigger={
                                 <button
-                                    disabled={room.status === 'Occupied' || room.status === 'Reserved'}
+                                    disabled={room.status === 'Occupied'}
                                     className="min-w-fit rounded border-2 border-solid border-yellow-600 bg-yellow-100 px-3 py-1.5 text-xs font-medium text-yellow-600 hover:opacity-90 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50"
                                 >
                                     {room.status === 'OutOfService' ? 'Mở phòng' : 'Bảo trì'}

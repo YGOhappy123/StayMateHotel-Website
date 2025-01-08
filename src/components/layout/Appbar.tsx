@@ -68,7 +68,7 @@ const Appbar = ({ showTopBar }: AppbarProps) => {
                             className="flex aspect-square h-[60px] items-center justify-center overflow-hidden rounded-full border-2 border-primary bg-ivory"
                             onClick={() => navigate('/profile')}
                         >
-                            <img src={user.avatar} alt="" className="h-full w-full object-cover" />
+                            <img src={user.avatar} alt="user avatar" className="h-full w-full object-cover" />
                         </button>
                     )}
                     <button

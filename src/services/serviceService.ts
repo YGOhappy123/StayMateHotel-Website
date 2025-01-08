@@ -30,14 +30,7 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({
-        searchServiceName,
-        searchServiceQuery,
-        searchMinPrice,
-        searchMaxPrice,
-        sort,
-        range,
-    }: ServiceSortAndFilterParams) => {
+    const buildQuery = ({ searchServiceName, searchServiceQuery, searchMinPrice, searchMaxPrice, sort, range }: ServiceSortAndFilterParams) => {
         const query: any = {}
         if (searchServiceName) query.name = searchServiceName.trim()
         if (searchServiceQuery) query.serviceQuery = searchServiceQuery
@@ -51,7 +44,6 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
                 query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
             }
         }
-
 
         setQuery(JSON.stringify(query))
         if (sort) setSort(JSON.stringify(getMappedSort(sort)))

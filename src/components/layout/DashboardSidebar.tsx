@@ -3,7 +3,17 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuilding, faChartLine, faChevronRight, faConciergeBell, faHome, faTasks, faUser, faUserFriends } from '@fortawesome/free-solid-svg-icons'
+import {
+    faBuilding,
+    faCashRegister,
+    faChartLine,
+    faChevronRight,
+    faConciergeBell,
+    faHome,
+    faTasks,
+    faUser,
+    faUserFriends
+} from '@fortawesome/free-solid-svg-icons'
 
 import { RootState } from '@/store'
 import { signOut } from '@/slices/authSlice'
@@ -22,6 +32,10 @@ const SUB_MENU_LIST = [
             {
                 label: 'Đơn đặt phòng',
                 navigation: 'bookings'
+            },
+            {
+                label: 'Đơn đặt dịch vụ',
+                navigation: 'service-bookings'
             }
         ]
     },
@@ -54,10 +68,6 @@ const SUB_MENU_LIST = [
             {
                 label: 'Dịch vụ',
                 navigation: 'services'
-            },
-            {
-                label: 'Đơn đặt dịch vụ',
-                navigation: 'service-bookings'
             }
         ]
     }
@@ -124,7 +134,7 @@ const DashboardSidebar = () => {
                         <li>
                             <NavLink to={'/dashboard'} end className="link text-primary">
                                 <div className="flex w-6 justify-center">
-                                    <FontAwesomeIcon icon={faTasks} className="min-w-max" size="xl" />
+                                    <FontAwesomeIcon icon={faChartLine} className="min-w-max" size="xl" />
                                 </div>
                                 Tình hình hoạt động
                             </NavLink>
@@ -151,11 +161,11 @@ const DashboardSidebar = () => {
                         </li>
 
                         <li>
-                            <NavLink to={'/dashboard/statistics'} className="link text-primary">
+                            <NavLink to={'/dashboard/transactions'} className="link text-primary">
                                 <div className="flex w-6 justify-center">
-                                    <FontAwesomeIcon icon={faChartLine} className="min-w-max" size="xl" />
+                                    <FontAwesomeIcon icon={faCashRegister} className="min-w-max" size="xl" />
                                 </div>
-                                Thống kê
+                                Giao dịch
                             </NavLink>
                         </li>
                     </ul>

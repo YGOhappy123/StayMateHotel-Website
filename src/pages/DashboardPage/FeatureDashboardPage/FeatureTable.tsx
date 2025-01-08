@@ -18,6 +18,7 @@ type FeatureTableProps = {
     deleteFeatureMutation: any
 }
 
+
 const FeatureTable = ({
     features,
     total,
@@ -73,12 +74,9 @@ const FeatureTable = ({
                             </div>
                         )}
                     </div>
-                );
+                )
             }
         },
-
-
-        
 
 
         {
@@ -102,8 +100,6 @@ const FeatureTable = ({
                 )
             }
         },
-
-        
 
         {
             accessorKey: 'actions',

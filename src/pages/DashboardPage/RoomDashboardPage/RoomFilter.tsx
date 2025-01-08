@@ -3,6 +3,7 @@ import { PopoverContent } from '@/components/ui/Popover'
 import { RoomSortAndFilterParams } from '@/services/roomService'
 import { DateRange } from 'react-day-picker'
 
+import { STATUS_MAPPING } from '@/utils/roomStatusMapping'
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
 import SelectInput from '@/components/common/SelectInput'
@@ -21,6 +22,7 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
     const [searchRoomNumber, setSearchRoomNumber] = useState<string>('')
     const [searchFloor, setSearchFloor] = useState<number>(0)
     const [searchRoomClass, setSearchRoomClass] = useState<number>(0)
+    const [searchStatus, setSearchStatus] = useState<string>('')
     const [searchMinPrice, setSearchMinPrice] = useState<string>('')
     const [searchMaxPrice, setSearchMaxPrice] = useState<string>('')
     const [range, setRange] = useState<string[] | any[]>()
@@ -40,8 +42,8 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
     }, [date])
 
     useEffect(() => {
-        onChange({ searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range })
-    }, [searchRoomNumber, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range])
+        onChange({ searchRoomNumber, searchStatus, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range })
+    }, [searchRoomNumber, searchStatus, searchFloor, searchRoomClass, searchMinPrice, searchMaxPrice, sort, range])
 
     const handleSearch = () => {
         onSearch()
@@ -57,6 +59,7 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
         setSearchRoomNumber('')
         setSearchMinPrice('')
         setSearchMaxPrice('')
+        setSearchStatus('')
         setSearchFloor(0)
         setSearchRoomClass(0)
         setSort('-createdAt')
@@ -105,6 +108,22 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
                         error=""
                         value={searchRoomClass}
                         onChange={(value: string | number) => setSearchRoomClass(value as number)}
+                        onFocus={() => {}}
+                        labelClassName="bg-white"
+                        selectClassName="py-[9px]"
+                    />
+                </div>
+                <div className="mb-4">
+                    <SelectInput
+                        fieldName="status"
+                        placeholder="Trạng thái"
+                        options={['Available', 'Occupied', 'UnderCleaning', 'OutOfService'].map(stt => ({
+                            value: stt,
+                            label: STATUS_MAPPING[stt as keyof typeof STATUS_MAPPING]
+                        }))}
+                        error=""
+                        value={searchStatus}
+                        onChange={(value: string | number) => setSearchStatus(value as string)}
                         onFocus={() => {}}
                         labelClassName="bg-white"
                         selectClassName="py-[9px]"

@@ -18,7 +18,7 @@ type RoomSearchingProps = {
 }
 
 const RoomSearching = ({ setAvailableRooms, setBookingRequirements }: RoomSearchingProps) => {
-    const { buildQuery, getAvailableRoomsQuery } = bookingService()
+    const { buildRoomsQuery, getAvailableRoomsQuery } = bookingService({ enableFetching: false })
     const [date, setDate] = useState<DateRange | undefined>(undefined)
     const [range, setRange] = useState<string[] | any[]>([])
     const [wishedRooms, setWishedRooms] = useState<WishedRoom[]>([{ numberOfGuests: 1 }])
@@ -36,7 +36,10 @@ const RoomSearching = ({ setAvailableRooms, setBookingRequirements }: RoomSearch
             return toast('Vui lòng chọn ngày check out', toastConfig('info'))
         }
         if (date!.from! < today) {
-            return toast(`Ngày check in phải lớn hơn hoặc bằng hôm nay (${format(today, 'dd LLL, y', { locale: vi })})`, toastConfig('info'))
+            return toast(`Ngày check-in phải lớn hơn hoặc bằng hôm nay (${format(today, 'dd LLL, y', { locale: vi })})`, toastConfig('info'))
+        }
+        if (date!.to! <= date!.from!) {
+            return toast(`Ngày check-out phải lớn hơn ngày check-in (${format(date!.from!, 'dd LLL, y', { locale: vi })})`, toastConfig('info'))
         }
 
         getAvailableRoomsQuery.refetch().then(result => setAvailableRooms([...(result.data?.data.data ?? [])]))
@@ -58,7 +61,7 @@ const RoomSearching = ({ setAvailableRooms, setBookingRequirements }: RoomSearch
     }, [date])
 
     useEffect(() => {
-        buildQuery({ range: range, roomsAndGuests: wishedRooms })
+        buildRoomsQuery({ range: range, roomsAndGuests: wishedRooms })
     }, [range, wishedRooms])
 
     return (
