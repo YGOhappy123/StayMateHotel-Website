@@ -41,9 +41,10 @@ const CreateRoomClassDialog = ({ features, isOpen, closeDialog, createNewRoomCla
         const formErrors = { ...errors }
 
         if (!className.trim()) formErrors.className = formErrors.className || 'Tên loại phòng không được để trống.'
-        if (basePrice <= 0) formErrors.basePrice = formErrors.basePrice || 'Giá tiền không được âm hoặc bằng 0.'
+        if (basePrice <= 0) formErrors.basePrice = formErrors.basePrice || 'Giá tiền không được bằng 0.'
         if (basePrice > 2147483647) formErrors.basePrice = formErrors.basePrice || 'Giá tiền vượt mức quy định.'
-        if (capacity <= 0) formErrors.capacity = formErrors.capacity || 'Số lượng không được âm hoặc bằng 0.'
+        if (basePrice % 1000 !== 0) formErrors.basePrice = formErrors.basePrice || 'Giá tiền phải chia hết cho 1000.'
+        if (capacity <= 0) formErrors.capacity = formErrors.capacity || 'Số lượng không được bằng 0.'
         if (capacity > 2147483647) formErrors.capacity = formErrors.capacity || 'Số lượng vượt mức quy định.'
 
         return formErrors
@@ -118,10 +119,12 @@ const CreateRoomClassDialog = ({ features, isOpen, closeDialog, createNewRoomCla
                     <div className="mb-10">
                         <TextInput
                             fieldName="basePrice"
-                            placeholder="Giá Loại phòng"
+                            placeholder="Giá loại phòng"
                             error={errors.basePrice}
                             value={formValues.basePrice.toString()}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, basePrice: Number(value) }))}
+                            onChange={(value: string) =>
+                                setFormValues(prev => ({ ...prev, basePrice: Number.parseInt(value) >= 0 ? Number.parseInt(value) : 0 }))
+                            }
                             onFocus={() => setErrors(prev => ({ ...prev, basePrice: '' }))}
                             type="number"
                             labelClassName="bg-white"
@@ -130,10 +133,12 @@ const CreateRoomClassDialog = ({ features, isOpen, closeDialog, createNewRoomCla
                     <div className="mb-5">
                         <TextInput
                             fieldName="capacity"
-                            placeholder="Số Lượng Người"
+                            placeholder="Số lượng người"
                             error={errors.capacity}
                             value={formValues.capacity.toString()}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, capacity: Number(value) }))}
+                            onChange={(value: string) =>
+                                setFormValues(prev => ({ ...prev, capacity: Number.parseInt(value) >= 0 ? Number.parseInt(value) : 0 }))
+                            }
                             onFocus={() => setErrors(prev => ({ ...prev, capacity: '' }))}
                             type="number"
                             labelClassName="bg-white"
