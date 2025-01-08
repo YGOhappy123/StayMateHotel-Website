@@ -1,22 +1,29 @@
-import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
-import { Dialog, DialogTrigger } from '@/components/ui/Dialog'
+import { useState } from 'react'
 import { Popover, PopoverTrigger } from '@/components/ui/Popover'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from 'dayjs'
-
-import { exportToCSV } from '@/utils/exportCsvFile'
 import bookingService from '@/services/bookingService'
 import Button from '@/components/common/Button'
-import RoomTable from '@/pages/DashboardPage/RoomDashboardPage/RoomTable'
-import CreateRoomDialog from '@/pages/DashboardPage/RoomDashboardPage/CreateRoomDialog'
-import UpdateRoomDialog from '@/pages/DashboardPage/RoomDashboardPage/UpdateRoomDialog'
-import useAxiosIns from '@/hooks/useAxiosIns'
-import RoomFilter from '@/pages/DashboardPage/RoomDashboardPage/RoomFilter'
 import BookingCard from '@/pages/DashboardPage/BookingDashboardPage/BookingCard'
 
 const BookingDashboardPage = () => {
-    const { bookings, bookingsCount, total, page, limit, setPage, onFilterSearch, onResetFilterSearch, getCsvBookingsQuery } = bookingService({
+    const {
+        bookings,
+        bookingsCount,
+        total,
+        page,
+        limit,
+        setPage,
+        onFilterSearch,
+        onResetFilterSearch,
+        getCsvBookingsQuery,
+        acceptBookingMutation,
+        cancelBookingMutation,
+        checkInBookingMutation,
+        checkOutBookingMutation,
+        depositMutation,
+        makePaymentMutation
+    } = bookingService({
         enableFetching: true
     })
 
@@ -38,13 +45,8 @@ const BookingDashboardPage = () => {
                                 {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}
                             </div>
                         </PopoverTrigger>
-                        {/* <RoomFilter
-                            floors={floors}
-                            roomClasses={roomClasses}
-                            setHavingFilters={setHavingFilters}
-                            onChange={buildQuery}
-                            onSearch={onFilterSearch}
-                            onReset={onResetFilterSearch}
+                        {/* <BookingFilter
+                                ...
                         /> */}
                     </Popover>
 
@@ -74,7 +76,16 @@ const BookingDashboardPage = () => {
                 </div>
 
                 {bookings.map(booking => (
-                    <BookingCard key={booking.id} booking={booking} />
+                    <BookingCard
+                        key={booking.id}
+                        booking={booking}
+                        acceptBookingMutation={acceptBookingMutation}
+                        cancelBookingMutation={cancelBookingMutation}
+                        checkInBookingMutation={checkInBookingMutation}
+                        checkOutBookingMutation={checkOutBookingMutation}
+                        depositMutation={depositMutation}
+                        makePaymentMutation={makePaymentMutation}
+                    />
                 ))}
             </div>
 

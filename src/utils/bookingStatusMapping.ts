@@ -22,4 +22,21 @@ const getMappedBookingServiceStatus = (status: string) => {
     return BOOKING_SERVICE_STATUS_MAPPING[status as keyof typeof BOOKING_SERVICE_STATUS_MAPPING] ?? 'Không xác định'
 }
 
-export { BOOKING_STATUS_MAPPING, BOOKING_SERVICE_STATUS_MAPPING, getMappedBookingStatus, getMappedBookingServiceStatus }
+const PAYMENT_METHOD_MAPPING = {
+    Cash: 'Tiền mặt',
+    CreditCard: 'Quẹt thẻ tín dụng',
+    Transfer: 'Chuyển khoản'
+}
+
+const getMappedPaymentMethod = (status: string) => {
+    return PAYMENT_METHOD_MAPPING[status as keyof typeof PAYMENT_METHOD_MAPPING] ?? 'Không xác định'
+}
+
+export {
+    BOOKING_STATUS_MAPPING,
+    BOOKING_SERVICE_STATUS_MAPPING,
+    PAYMENT_METHOD_MAPPING,
+    getMappedBookingStatus,
+    getMappedBookingServiceStatus,
+    getMappedPaymentMethod
+}

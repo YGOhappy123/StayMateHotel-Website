@@ -1,11 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { toast } from 'react-toastify'
 import { onError } from '@/utils/errorsHandler'
-import useAxiosIns from '@/hooks/useAxiosIns'
+import { getMappedMessage } from '@/utils/resMessageMapping'
 import dayjs from 'dayjs'
+import useAxiosIns from '@/hooks/useAxiosIns'
+import toastConfig from '@/configs/toast'
 
 export type WishedRoom = {
     numberOfGuests: number
+}
+
+export type PaymentPayload = {
+    bookingId: number
+    amount?: number
+    method: PaymentMethod
 }
 
 const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
@@ -35,7 +44,7 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [isSearching, setIsSearching] = useState(false)
 
     const [page, setPage] = useState<number>(1)
-    const [limit, setLimit] = useState<number>(6)
+    const [limit] = useState<number>(6)
     const [bookingQuery, setBookingQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
@@ -81,7 +90,7 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
         onError: onError
     })
 
-    const countBookingsByStatusQuery = useQuery(['count-bookings-by-status'], {
+    useQuery(['count-bookings-by-status'], {
         queryFn: () => {
             return axios.get<IResponseData<Record<BookingStatus, number>>>('/bookings/count-by-status')
         },
@@ -124,6 +133,107 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
         onError: onError
     })
 
+    const acceptBookingMutation = useMutation({
+        mutationFn: (bookingId: number) => {
+            return axios.post<IResponseData<any>>(`/bookings/accept-booking/${bookingId}`)
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const checkInBookingMutation = useMutation({
+        mutationFn: (bookingId: number) => {
+            return axios.post<IResponseData<any>>(`/bookings/check-in/${bookingId}`)
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const checkOutBookingMutation = useMutation({
+        mutationFn: (bookingId: number) => {
+            return axios.post<IResponseData<any>>(`/bookings/check-out/${bookingId}`)
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const depositMutation = useMutation({
+        mutationFn: (data: PaymentPayload) => {
+            return axios.post<IResponseData<any>>(`/bookings/deposit/${data.bookingId}`, {
+                method: data.method
+            })
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const makePaymentMutation = useMutation({
+        mutationFn: (data: PaymentPayload) => {
+            return axios.post<IResponseData<any>>(`/bookings/make-payment/${data.bookingId}`, {
+                amount: data.amount,
+                method: data.method
+            })
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
+    const cancelBookingMutation = useMutation({
+        mutationFn: (bookingId: number) => {
+            return axios.post<IResponseData<any>>(`/bookings/cancel-booking/${bookingId}`)
+        },
+        onError: onError,
+        onSuccess: res => {
+            if (isSearching) {
+                queryClient.invalidateQueries('search-bookings')
+                searchBookingsQuery.refetch()
+            } else {
+                queryClient.invalidateQueries('bookings')
+            }
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
     return {
         buildRoomsQuery,
         getAvailableRoomsQuery,
@@ -137,7 +247,13 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
         onFilterSearch,
         onResetFilterSearch,
         getCsvBookingsQuery,
-        placeBookingMutation
+        placeBookingMutation,
+        acceptBookingMutation,
+        cancelBookingMutation,
+        checkInBookingMutation,
+        checkOutBookingMutation,
+        depositMutation,
+        makePaymentMutation
     }
 }
 

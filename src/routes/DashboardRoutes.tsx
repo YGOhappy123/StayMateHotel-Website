@@ -8,7 +8,9 @@ import {
     ServiceDashboardPage,
     CustomerDashboardPage,
     AdminDashboardPage,
-    BookingDashboardPage
+    BookingDashboardPage,
+    TransactionDashboardPage,
+    ServiceBookingDashboardPage
 } from '@/pages/DashboardPage'
 import DashboardLayout from '@/layouts/DashboardLayout'
 import ErrorPage from '@/pages/ErrorPage'
@@ -63,6 +65,14 @@ const DashboardRoutes = [
             {
                 path: 'bookings',
                 element: <BookingDashboardPage />
+            },
+            {
+                path: 'transactions',
+                element: <TransactionDashboardPage />
+            },
+            {
+                path: 'service-bookings',
+                element: <ServiceBookingDashboardPage />
             }
         ]
     }

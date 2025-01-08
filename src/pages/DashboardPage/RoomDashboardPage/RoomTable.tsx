@@ -139,7 +139,9 @@ const RoomTable = ({
                             variant="info"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
                             disabled={room.status !== 'UnderCleaning'}
-                            onClick={() => markCleaningDoneMutation.mutate(room.id)}
+                            onClick={async () => {
+                                await markCleaningDoneMutation.mutateAsync(room.id)
+                            }}
                         />
                         <ConfirmationDialog
                             Trigger={

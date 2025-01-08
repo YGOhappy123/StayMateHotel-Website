@@ -31,9 +31,11 @@ declare global {
     }
 
     interface IBookingService {
+        id: number
         quantity: number
         unitPrice: number
         status: BookingServiceStatus
+        createdAt: string
         name?: string
 
         bookingId?: number

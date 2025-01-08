@@ -7,6 +7,8 @@ import ServiceDashboardPage from '@/pages/DashboardPage/ServiceDashboardPage'
 import CustomerDashboardPage from '@/pages/DashboardPage/CustomerDashboardPage'
 import AdminDashboardPage from '@/pages/DashboardPage/AdminDashboardPage'
 import BookingDashboardPage from '@/pages/DashboardPage/BookingDashboardPage'
+import TransactionDashboardPage from '@/pages/DashboardPage/TransactionDashboardPage'
+import ServiceBookingDashboardPage from '@/pages/DashboardPage/ServiceBookingDashboardPage'
 
 export {
     OverallDashboardPage,
@@ -17,5 +19,7 @@ export {
     ServiceDashboardPage,
     CustomerDashboardPage,
     AdminDashboardPage,
-    BookingDashboardPage
+    BookingDashboardPage,
+    TransactionDashboardPage,
+    ServiceBookingDashboardPage
 }

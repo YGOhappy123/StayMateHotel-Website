@@ -134,7 +134,7 @@ const DashboardSidebar = () => {
                         <li>
                             <NavLink to={'/dashboard'} end className="link text-primary">
                                 <div className="flex w-6 justify-center">
-                                    <FontAwesomeIcon icon={faTasks} className="min-w-max" size="xl" />
+                                    <FontAwesomeIcon icon={faChartLine} className="min-w-max" size="xl" />
                                 </div>
                                 Tình hình hoạt động
                             </NavLink>
@@ -161,20 +161,11 @@ const DashboardSidebar = () => {
                         </li>
 
                         <li>
-                            <NavLink to={'/dashboard/statistics'} className="link text-primary">
-                                <div className="flex w-6 justify-center">
-                                    <FontAwesomeIcon icon={faChartLine} className="min-w-max" size="xl" />
-                                </div>
-                                Thống kê
-                            </NavLink>
-                        </li>
-
-                        <li>
-                            <NavLink to={'/dashboard/payments'} className="link text-primary">
+                            <NavLink to={'/dashboard/transactions'} className="link text-primary">
                                 <div className="flex w-6 justify-center">
                                     <FontAwesomeIcon icon={faCashRegister} className="min-w-max" size="xl" />
                                 </div>
-                                Doanh thu
+                                Giao dịch
                             </NavLink>
                         </li>
                     </ul>
