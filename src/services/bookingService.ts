@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
+
 import { onError } from '@/utils/errorsHandler'
+import { getMappedSort } from '@/utils/apiSortMapping'
 import { getMappedMessage } from '@/utils/resMessageMapping'
 import dayjs from 'dayjs'
 import useAxiosIns from '@/hooks/useAxiosIns'
@@ -15,6 +17,21 @@ export type PaymentPayload = {
     bookingId: number
     amount?: number
     method: PaymentMethod
+}
+
+export type BookingSortAndFilterParams = {
+    searchBookingId: string
+    searchGuestName: string
+    searchEmail: string
+    searchPhoneNumber: string
+    searchRoomNumber: string
+    searchStatus: string
+    searchMinTotalAmount: string
+    searchMaxTotalAmount: string
+    sort: string
+    rangeBookingTime: string[] | any[] | undefined
+    rangeCheckInTime: string[] | any[] | undefined
+    rangeCheckOutTime: string[] | any[] | undefined
 }
 
 const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
@@ -47,6 +64,57 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [limit] = useState<number>(6)
     const [bookingQuery, setBookingQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
+
+    const buildBookingQuery = ({
+        searchBookingId,
+        searchGuestName,
+        searchEmail,
+        searchPhoneNumber,
+        searchRoomNumber,
+        searchStatus,
+        searchMinTotalAmount,
+        searchMaxTotalAmount,
+        sort,
+        rangeBookingTime,
+        rangeCheckInTime,
+        rangeCheckOutTime
+    }: BookingSortAndFilterParams) => {
+        const query: any = {}
+        if (searchBookingId) query.id = searchBookingId
+        if (searchGuestName) query.guestName = searchGuestName.trim()
+        if (searchEmail) query.email = searchEmail.trim()
+        if (searchPhoneNumber) query.phoneNumber = searchPhoneNumber.trim()
+        if (searchRoomNumber) query.roomNumber = searchRoomNumber.trim()
+        if (searchStatus) query.status = searchStatus
+        if (searchMinTotalAmount) query.minTotalAmount = searchMinTotalAmount
+        if (searchMaxTotalAmount) query.maxTotalAmount = searchMaxTotalAmount
+        if (rangeBookingTime) {
+            if (rangeBookingTime[0]) {
+                query.startBookingTime = dayjs(rangeBookingTime[0]).format('YYYY-MM-DD')
+            }
+            if (rangeBookingTime[1]) {
+                query.endBookingTime = dayjs(rangeBookingTime[1]).format('YYYY-MM-DD')
+            }
+        }
+        if (rangeCheckInTime) {
+            if (rangeCheckInTime[0]) {
+                query.startCheckInTime = dayjs(rangeCheckInTime[0]).format('YYYY-MM-DD')
+            }
+            if (rangeCheckInTime[1]) {
+                query.endCheckInTime = dayjs(rangeCheckInTime[1]).format('YYYY-MM-DD')
+            }
+        }
+        if (rangeCheckOutTime) {
+            if (rangeCheckOutTime[0]) {
+                query.startCheckOutTime = dayjs(rangeCheckOutTime[0]).format('YYYY-MM-DD')
+            }
+            if (rangeCheckOutTime[1]) {
+                query.endCheckOutTime = dayjs(rangeCheckOutTime[1]).format('YYYY-MM-DD')
+            }
+        }
+        setBookingQuery(JSON.stringify(query))
+        if (sort) setSort(JSON.stringify(getMappedSort(sort)))
+    }
 
     const searchBookingsQuery = useQuery(['search-bookings', bookingQuery, sort], {
         queryFn: () => {
@@ -246,6 +314,8 @@ const bookingService = ({ enableFetching }: { enableFetching: boolean }) => {
         setPage,
         onFilterSearch,
         onResetFilterSearch,
+        buildBookingQuery,
+
         getCsvBookingsQuery,
         placeBookingMutation,
         acceptBookingMutation,

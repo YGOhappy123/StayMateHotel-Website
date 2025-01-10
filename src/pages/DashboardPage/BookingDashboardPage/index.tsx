@@ -2,9 +2,12 @@ import { useState } from 'react'
 import { Popover, PopoverTrigger } from '@/components/ui/Popover'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from 'dayjs'
+
+import { exportToCSV } from '@/utils/exportCsvFile'
 import bookingService from '@/services/bookingService'
 import Button from '@/components/common/Button'
 import BookingCard from '@/pages/DashboardPage/BookingDashboardPage/BookingCard'
+import BookingFilter from '@/pages/DashboardPage/BookingDashboardPage/BookingFilter'
 
 const BookingDashboardPage = () => {
     const {
@@ -14,6 +17,7 @@ const BookingDashboardPage = () => {
         page,
         limit,
         setPage,
+        buildBookingQuery,
         onFilterSearch,
         onResetFilterSearch,
         getCsvBookingsQuery,
@@ -31,7 +35,45 @@ const BookingDashboardPage = () => {
     const [havingFilters, setHavingFilters] = useState(false)
     const lastPage = Math.ceil(total / limit)
 
-    const exportCsvFile = () => {}
+    const exportCsvFile = () => {
+        getCsvBookingsQuery.refetch().then(res => {
+            const csvBookings = res.data?.data?.data || []
+
+            const formattedBookings = csvBookings.map(booking => {
+                const totalPaymentAmount = booking.payments.reduce((total, payment) => total + (payment.amount ?? 0), 0)
+
+                return {
+                    ['Mã Đơn']: booking.id,
+                    ['Tên Khách Hàng']: `${booking.guest?.lastName} ${booking.guest?.firstName}`,
+                    ['Email']: booking.email,
+                    ['Số điện thoại']: booking.phoneNumber,
+                    ['Các phòng']: booking.bookingRooms.map(bookingRoom => bookingRoom.roomNumber).join(', '),
+                    ['Ngày tạo']: dayjs(booking.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                    ['Ngày check-in']: dayjs(booking.checkInTime).format('DD/MM/YYYY HH:mm:ss'),
+                    ['Ngày check-out']: dayjs(booking.checkOutTime).format('DD/MM/YYYY HH:mm:ss'),
+                    ['Tổng tiền']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(booking.totalAmount as number),
+                    ['Số tiền đã trả']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPaymentAmount as number),
+                    ['Số tiền thêm']: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
+                        (booking.totalAmount - totalPaymentAmount) as number
+                    )
+                }
+            })
+
+            exportToCSV(formattedBookings, `SMH_Danh_sách_đơn_đặt_phòng_${dayjs(Date.now()).format('DD/MM/YYYY')}`, [
+                { wch: 10 },
+                { wch: 25 },
+                { wch: 40 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 30 },
+                { wch: 15 },
+                { wch: 15 },
+                { wch: 15 }
+            ])
+        })
+    }
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -45,9 +87,12 @@ const BookingDashboardPage = () => {
                                 {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}
                             </div>
                         </PopoverTrigger>
-                        {/* <BookingFilter
-                                ...
-                        /> */}
+                        <BookingFilter
+                            setHavingFilters={setHavingFilters}
+                            onChange={buildBookingQuery}
+                            onSearch={onFilterSearch}
+                            onReset={onResetFilterSearch}
+                        />
                     </Popover>
 
                     <Button text="Xuất CSV" variant="primary" onClick={exportCsvFile} />
