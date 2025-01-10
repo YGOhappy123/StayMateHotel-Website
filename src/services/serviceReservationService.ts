@@ -3,9 +3,14 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
 import { onError } from '@/utils/errorsHandler'
 import { getMappedMessage } from '@/utils/resMessageMapping'
-import dayjs from 'dayjs'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import toastConfig from '@/configs/toast'
+
+export type BookServicePayload = {
+    bookingId: number
+    serviceId: number
+    quantity: number
+}
 
 const serviceReservationService = ({ enableFetching }: { enableFetching: boolean }) => {
     const axios = useAxiosIns()
@@ -100,6 +105,19 @@ const serviceReservationService = ({ enableFetching }: { enableFetching: boolean
         }
     }, [page])
 
+    const bookServiceMutation = useMutation({
+        mutationFn: (data: BookServicePayload) => {
+            return axios.post<IResponseData<any>>(`/bookings/${data.bookingId}/book-service`, {
+                serviceId: data.serviceId,
+                quantity: data.quantity
+            })
+        },
+        onError: onError,
+        onSuccess: res => {
+            toast(getMappedMessage(res.data.message), toastConfig('success'))
+        }
+    })
+
     const acceptBookingMutation = useMutation({
         mutationFn: (bookingServiceId: number) => {
             return axios.post<IResponseData<any>>(`/bookings/accept-booking-services/${bookingServiceId}`)
@@ -159,6 +177,7 @@ const serviceReservationService = ({ enableFetching }: { enableFetching: boolean
         onFilterSearch,
         onResetFilterSearch,
 
+        bookServiceMutation,
         getCsvBookingServicesQuery,
         acceptBookingMutation,
         rejectBookingMutation,

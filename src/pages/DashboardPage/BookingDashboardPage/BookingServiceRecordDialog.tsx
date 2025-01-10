@@ -31,8 +31,22 @@ const BookingServiceRecordDialog = ({ services, closeDialog }: BookingServiceRec
             }
         },
         {
+            accessorKey: 'unitPrice',
+            header: () => <div className="text-center">Đơn Giá</div>,
+            cell: ({ row }) => {
+                const unitPrice = row.original.unitPrice
+                return (
+                    <div className="flex justify-center">
+                        <div className="table-tag-green">
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(unitPrice!)}
+                        </div>
+                    </div>
+                )
+            }
+        },
+        {
             accessorKey: 'status',
-            header: () => <div className="text-center">Phương Thức Thanh Toán</div>,
+            header: () => <div className="text-center">Trạng Thái</div>,
             cell: ({ row }) => {
                 const status = row.original.status
                 return (
@@ -53,7 +67,7 @@ const BookingServiceRecordDialog = ({ services, closeDialog }: BookingServiceRec
     ]
 
     return (
-        <DialogContent className="max-w-[850px] bg-white">
+        <DialogContent className="max-w-[950px] bg-white">
             <DialogHeader>
                 <DialogTitle>Lịch sử đặt dịch vụ của đơn đặt phòng</DialogTitle>
                 <DialogDescription></DialogDescription>
