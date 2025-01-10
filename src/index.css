@@ -73,3 +73,7 @@ input:-webkit-autofill:active {
 .font-oswald {
     font-family: 'Oswald', sans-serif;
 }
+
+.bg-muted {
+    background-color: hsl(240 3.7% 15.9%);
+}
