@@ -29,7 +29,7 @@ const UpdateServiceDialog = ({ selectedService, isOpen, closeDialog, updateServi
         if (!formErrors.name && !formErrors.price) {
             await updateServiceMutation
                 .mutateAsync({
-                    serviceId: selectedService?.id!,  // ID dịch vụ
+                    serviceId: selectedService?.id!,  
                     data: { ...formValues }
                 })
                 .then(() => closeDialog())
