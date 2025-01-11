@@ -44,6 +44,7 @@ const RoomDashboardPage = () => {
             return axios.get<IResponseData<IFloor[]>>(`/floors`)
         },
         refetchOnWindowFocus: false,
+        refetchInterval: 10000,
         enabled: true,
         select: res => res.data
     })
@@ -53,6 +54,7 @@ const RoomDashboardPage = () => {
             return axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`)
         },
         refetchOnWindowFocus: false,
+        refetchInterval: 10000,
         enabled: true,
         select: res => res.data
     })

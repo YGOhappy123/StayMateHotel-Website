@@ -11,9 +11,10 @@ type DateRangePickerProps = {
     setDate: (value: DateRange | undefined) => void
     className?: string
     triggerClassName?: string
+    placeHolder?: string
 }
 
-const DateRangePicker = ({ date, setDate, className, triggerClassName }: DateRangePickerProps) => {
+const DateRangePicker = ({ date, setDate, className, triggerClassName, placeHolder }: DateRangePickerProps) => {
     return (
         <div className={twMerge(`${className}`)}>
             <Popover>
@@ -33,7 +34,7 @@ const DateRangePicker = ({ date, setDate, className, triggerClassName }: DateRan
                                 format(date.from, 'dd LLL, y', { locale: vi })
                             )
                         ) : (
-                            <span>Lọc theo ngày tạo</span>
+                            <span>{placeHolder || 'Lọc theo ngày tạo'}</span>
                         )}
                     </button>
                 </PopoverTrigger>

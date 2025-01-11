@@ -61,7 +61,7 @@ const PaymentRecordDialog = ({ payments, closeDialog }: PaymentRecordDialogProps
                 <DialogDescription></DialogDescription>
             </DialogHeader>
             <div className="border-b-2"></div>
-            <div>
+            <div className="max-h-[400px] overflow-y-auto">
                 <DataTable
                     columns={columns}
                     data={payments}
