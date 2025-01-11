@@ -12,6 +12,10 @@ declare global {
         features?: Partial<IRoomClassFeature>[]
         createdBy?: Partial<IAdmin>
         images?: string[]
+
+        statisticThisYear?: number
+        statisticThisMonth?: number
+        bookingCount?: number
     }
 
     interface IFloor {

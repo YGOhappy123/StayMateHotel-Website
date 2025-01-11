@@ -132,7 +132,9 @@ const BookingCard = ({
                 <p className="flex items-center justify-between text-lg">
                     <span className="font-semibold">Tổng số tiền dịch vụ: </span>
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(
-                        booking.bookingServices.reduce((total, bks) => total + (bks.unitPrice ?? 0) * (bks.quantity ?? 0), 0)
+                        booking.bookingServices
+                            .filter(bks => bks.status === 'Done')
+                            .reduce((total, bks) => total + (bks.unitPrice ?? 0) * (bks.quantity ?? 0), 0)
                     )}
                 </p>
             </div>
@@ -283,10 +285,10 @@ const BookingCard = ({
                     Trigger={
                         <button
                             disabled={
-                                (booking.status !== 'Pending' && // not isPending
-                                    (booking.status !== 'Confirmed' || totalPaymentAmount > 0) && // not isConfirmedWithoutDeposit
-                                    (!today.isBefore(dayjs(booking.checkInTime), 'day') || totalPaymentAmount > 0)) || // not isAfterCheckInWithoutDeposit
-                                booking.status === 'Cancelled' // already isCancelled
+                                booking.status === 'Cancelled' || // Already cancelled
+                                (booking.status !== 'Pending' && // Not pending
+                                    (booking.status !== 'Confirmed' || totalPaymentAmount > 0) && // Not confirmed or has deposit
+                                    (!today.isBefore(dayjs(booking.checkInTime), 'day') || totalPaymentAmount > 0)) // After check-in or has deposit
                             }
                             className={twMerge(
                                 `${baseButtonClass} border-red-600 bg-red-100 text-red-600 disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600`

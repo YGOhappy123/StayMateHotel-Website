@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Popover, PopoverTrigger } from '@/components/ui/Popover'
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
 import dayjs from 'dayjs'
@@ -26,6 +26,10 @@ const BookingDashboardPage = () => {
     } = bookingService({
         enableFetching: true
     })
+
+    useEffect(() => {
+        window.scrollTo({ left: 0, top: 0, behavior: 'smooth' })
+    }, [page])
 
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const [havingFilters, setHavingFilters] = useState(false)

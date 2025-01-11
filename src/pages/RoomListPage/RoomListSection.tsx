@@ -12,17 +12,17 @@ const RoomListSection = () => {
     const DEFAULT_FILTER = { isAvailable: 1 }
     const fetchRoomClassesQuery = useQuery(['room-list-room-classes'], {
         queryFn: () => axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`),
-        enabled: true,
         refetchIntervalInBackground: true,
-        refetchInterval: 10000,
+        refetchInterval: 30000,
+        enabled: true,
         select: res => res.data
     })
 
     const fetchRoomsQuery = useQuery(['room-list-rooms', searchRoomQuery], {
         queryFn: () => axios.get<IResponseData<IRoom[]>>(`/rooms?filter=${searchRoomQuery}`),
-        enabled: true,
         refetchIntervalInBackground: true,
-        refetchInterval: 10000,
+        refetchInterval: 30000,
+        enabled: true,
         select: res => res.data
     })
 
