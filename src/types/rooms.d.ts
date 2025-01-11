@@ -15,6 +15,7 @@ declare global {
 
         statisticThisYear?: number
         statisticThisMonth?: number
+        bookingCount?: number
     }
 
     interface IFloor {
