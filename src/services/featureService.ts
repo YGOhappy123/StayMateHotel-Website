@@ -11,7 +11,6 @@ import toastConfig from '@/configs/toast'
 
 export type FeatureSortAndFilterParams = {
     searchFeatureName: string
-    searchFeatureQuery: string
     searchRoomClasses: number[]
     sort: string
     range: string[] | any[] | undefined
@@ -29,10 +28,9 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchFeatureName, searchFeatureQuery, searchRoomClasses, sort, range }: FeatureSortAndFilterParams) => {
+    const buildQuery = ({ searchFeatureName,  searchRoomClasses, sort, range }: FeatureSortAndFilterParams) => {
         const query: any = {}
         if (searchFeatureName) query.name = searchFeatureName.trim()
-        if (searchFeatureQuery) query.featureQuery = searchFeatureQuery
         if (searchRoomClasses.length > 0) query.roomClasses = searchRoomClasses
         if (range) {
             if (range[0]) {
@@ -78,6 +76,15 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
             setFeatures(res.data.data)
             setTotal(res.data.total as number)
         }
+    })
+
+    const getCsvFeaturesQuery = useQuery(['search-csv-features', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IFeature[]>>(`/features?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
     })
 
     const onFilterSearch = () => {
@@ -158,6 +165,7 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchFeaturesQuery,
         getAllFeaturesQuery,
+        getCsvFeaturesQuery,
         createNewFeatureMutation,
         updateFeatureMutation,
         deleteFeatureMutation

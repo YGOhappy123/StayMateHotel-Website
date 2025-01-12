@@ -17,6 +17,7 @@ type ServiceFilterProps = {
 
 const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: ServiceFilterProps) => {
     const [searchServiceName, setSearchServiceName] = useState<string>('');
+    const [searchServiceQuery, setSearchServiceQuery] = useState<string>('');
     const [searchMinPrice, setSearchMinPrice] = useState<string>('');
     const [searchMaxPrice, setSearchMaxPrice] = useState<string>('');
     const [sort, setSort] = useState<string>('-createdAt');
@@ -27,26 +28,28 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
         const dateRange = date ? [date.from, date.to] : [];
         onChange({
             searchServiceName,
+            searchServiceQuery,
             searchMinPrice,
             searchMaxPrice,
             sort,
-            range: dateRange,  // Pass in date range as 'range'
+            range: dateRange,  
         });
-    }, [searchServiceName, searchMinPrice, searchMaxPrice, sort, date, onChange]);
+    }, [searchServiceName, searchServiceQuery, searchMinPrice, searchMaxPrice, sort, date, onChange]);
 
-    // Handle Search button
+    
     const handleSearch = () => {
         onSearch();
 
         const filtersActive =
-            searchServiceName ||
-            searchMinPrice ||
-            searchMaxPrice ||
-            sort !== '-createdAt' ||
-            (date && (date.from || date.to));
+            (searchServiceName && searchServiceName.trim()) ||    
+            (searchMinPrice && !isNaN(Number(searchMinPrice))) || 
+            (searchMaxPrice && !isNaN(Number(searchMaxPrice))) || 
+            sort !== '-createdAt' ||                               
+            (date && (date.from || date.to));                      
 
-        setHavingFilters(filtersActive);
+        setHavingFilters(Boolean(filtersActive));
     };
+
 
     // Handle Reset button
     const handleReset = () => {
@@ -83,7 +86,9 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
                         fieldName="serviceName"
                         placeholder="Lọc theo tên dịch vụ"
                         value={searchServiceName}
+                        error=""
                         onChange={(value: string) => setSearchServiceName(value)}
+                        onFocus={() => { }}
                         labelClassName="bg-white"
                         inputClassName="leading-2"
                     />
@@ -95,8 +100,10 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
                         fieldName="minPrice"
                         placeholder="Mức giá tối thiểu"
                         value={searchMinPrice}
+                        error=""
                         onChange={(value: string) => setSearchMinPrice(value)}
                         type="number"
+                        onFocus={() => { }}
                         labelClassName="bg-white"
                         inputClassName="leading-2"
                     />
@@ -105,7 +112,9 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
                         placeholder="Mức giá tối đa"
                         value={searchMaxPrice}
                         onChange={(value: string) => setSearchMaxPrice(value)}
+                        error=""
                         type="number"
+                        onFocus={() => { }}
                         labelClassName="bg-white"
                         inputClassName="leading-2"
                     />
@@ -128,7 +137,9 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
                             { value: '+price', label: 'Giá tăng dần' }
                         ]}
                         value={sort}
+                        error=""
                         onChange={(value: string | number) => setSort(value as string)}
+                        onFocus={() => { }}
                         labelClassName="bg-white"
                         selectClassName="py-[9px]"
                     />

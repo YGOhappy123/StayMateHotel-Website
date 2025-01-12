@@ -26,6 +26,9 @@ declare global {
         phoneNumber?: string
         avatar?: string
         isActive?: boolean
+
+        bookingCount?: number
+        totalPayment?: number
     }
 
     interface IAdmin {
