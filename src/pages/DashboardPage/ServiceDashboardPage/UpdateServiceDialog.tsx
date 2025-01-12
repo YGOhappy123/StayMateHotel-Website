@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react'
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/Dialog'
 import Button from '@/components/common/Button'
 import TextInput from '@/components/common/TextInput'
-import NumberInput from '@/components/common/NumberInput' // Giả sử bạn có component NumberInput
+import NumberInput from '@/components/common/NumberInput' 
 
 type UpdateServiceDialogProps = {
     selectedService: IService | null
     isOpen: boolean
     closeDialog: () => void
-    updateServiceMutation: any // Chỉnh sửa tùy theo dữ liệu API
+    updateServiceMutation: any 
 }
 
 const UpdateServiceDialog = ({ selectedService, isOpen, closeDialog, updateServiceMutation }: UpdateServiceDialogProps) => {
     const [formValues, setFormValues] = useState({
         name: '',
-        price: 0, // Thêm trường giá
-        isAvailable: false // Thêm trường trạng thái có sẵn
+        price: 0, 
+        isAvailable: false 
     })
 
     const [errors, setErrors] = useState({
