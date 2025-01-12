@@ -6,7 +6,7 @@ import TextInput from '@/components/common/TextInput'
 type CreateFeatureDialogProps = {
     isOpen: boolean
     closeDialog: () => void
-    createNewFeatureMutation: any // Chỉnh sửa tùy theo dữ liệu API
+    createNewFeatureMutation: any 
 }
 
 const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: CreateFeatureDialogProps) => {
@@ -23,7 +23,7 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
 
         if (!formErrors.name) {
             await createNewFeatureMutation
-                .mutateAsync({ ...formValues }) // Gửi request tạo Feature mới
+                .mutateAsync({ ...formValues }) 
                 .then(() => closeDialog())
         } else {
             setErrors(formErrors)
@@ -34,7 +34,7 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
         const { name } = formValues
         const formErrors = { ...errors }
 
-        if (!name.trim()) formErrors.name = 'Tên tiện ích không được để trống.' // Lỗi tên tiện ích trống
+        if (!name.trim()) formErrors.name = 'Tên tiện ích không được để trống.' 
 
         return formErrors
     }
@@ -65,7 +65,7 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
                             error={errors.name}
                             value={formValues.name}
                             onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} // Xóa lỗi khi focus vào
+                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} 
                             labelClassName="bg-white"
                         />
                         {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}

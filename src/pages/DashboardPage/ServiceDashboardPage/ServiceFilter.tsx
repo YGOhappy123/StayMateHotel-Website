@@ -23,7 +23,6 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
     const [sort, setSort] = useState<string>('-createdAt');
     const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-    // Effect to convert date range into params
     useEffect(() => {
         const dateRange = date ? [date.from, date.to] : [];
         onChange({
@@ -50,8 +49,6 @@ const ServiceFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Servic
         setHavingFilters(Boolean(filtersActive));
     };
 
-
-    // Handle Reset button
     const handleReset = () => {
         setSearchServiceName('');
         setSearchMinPrice('');

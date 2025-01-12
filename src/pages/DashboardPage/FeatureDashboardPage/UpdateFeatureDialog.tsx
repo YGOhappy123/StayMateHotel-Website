@@ -7,7 +7,7 @@ type UpdateFeatureDialogProps = {
     selectedFeature: IFeature | null
     isOpen: boolean
     closeDialog: () => void
-    updateFeatureMutation: any // Chỉnh sửa tùy theo dữ liệu API
+    updateFeatureMutation: any 
 }
 
 const UpdateFeatureDialog = ({ selectedFeature, isOpen, closeDialog, updateFeatureMutation }: UpdateFeatureDialogProps) => {
@@ -41,7 +41,6 @@ const UpdateFeatureDialog = ({ selectedFeature, isOpen, closeDialog, updateFeatu
         const formErrors = { ...errors }
 
         if (!name.trim()) formErrors.name = formErrors.name || 'Tên tiện ích không được để trống.'
-        //if (!description.trim()) formErrors.description = formErrors.description || 'Mô tả tiện ích không được để trống.'
 
         return formErrors
     }
@@ -50,11 +49,9 @@ const UpdateFeatureDialog = ({ selectedFeature, isOpen, closeDialog, updateFeatu
         if (isOpen && selectedFeature) {
             setFormValues({
                 name: selectedFeature.name,
-                //description: selectedFeature.description || '',
             })
             setErrors({
                 name: '',
-                //description: '',
             })
         }
     }, [isOpen, selectedFeature])
@@ -79,17 +76,6 @@ const UpdateFeatureDialog = ({ selectedFeature, isOpen, closeDialog, updateFeatu
                             labelClassName="bg-white"
                         />
                     </div>
-                    {/*<div className="mb-10">*/}
-                    {/*    <TextInput*/}
-                    {/*        fieldName="description"*/}
-                    {/*        placeholder="Mô tả tiện ích"*/}
-                    {/*        error={errors.description}*/}
-                    {/*        value={formValues.description}*/}
-                    {/*        onChange={(value: string) => setFormValues(prev => ({ ...prev, description: value }))}*/}
-                    {/*        onFocus={() => setErrors(prev => ({ ...prev, description: '' }))}*/}
-                    {/*        labelClassName="bg-white"*/}
-                    {/*    />*/}
-                    {/*</div>*/}
                 </form>
             </div>
             <div className="border-b-2"></div>

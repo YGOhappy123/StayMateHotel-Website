@@ -73,7 +73,7 @@ const BookingDashboardPage = () => {
                             <span className="ml-5 font-bold">{(bookingsCount?.CheckedIn ?? 0).toString().padStart(2, '0')}</span>
                         </h3>
                         <h3 className="flex items-center justify-between text-xl font-semibold">
-                            Số đơn đặt phòng dã check-out và chờ thanh toán:
+                            Số đơn đặt phòng đã check-out và chờ thanh toán:
                             <span className="ml-5 font-bold">{(bookingsCount?.CheckedOut ?? 0).toString().padStart(2, '0')}</span>
                         </h3>
                     </div>

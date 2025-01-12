@@ -6,14 +6,14 @@ import TextInput from '@/components/common/TextInput'
 type CreateServiceDialogProps = {
     isOpen: boolean
     closeDialog: () => void
-    createNewServiceMutation: any // Chỉnh sửa tùy theo dữ liệu API
+    createNewServiceMutation: any 
 }
 
 const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: CreateServiceDialogProps) => {
     const [formValues, setFormValues] = useState({
         name: '',
         price: '',
-        isAvailable: true,  // Trạng thái dịch vụ
+        isAvailable: true,  
     })
 
     const [errors, setErrors] = useState({
@@ -26,7 +26,7 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
 
         if (!formErrors.name && !formErrors.price) {
             await createNewServiceMutation
-                .mutateAsync({ ...formValues }) // Gửi request tạo Service mới
+                .mutateAsync({ ...formValues }) 
                 .then(() => closeDialog())
         } else {
             setErrors(formErrors)
@@ -63,7 +63,7 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
             setFormValues({
                 name: '',
                 price: '',
-                isAvailable: true,  // Chế độ mặc định là "Có sẵn"
+                isAvailable: true,  
             })
             setErrors({
                 name: '',
@@ -98,7 +98,7 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
                             placeholder="Giá dịch vụ (VND)"
                             error={errors.price}
                             value={formValues.price}
-                            onChange={(value: string) => handlePriceChange(value)}  // Xử lý sự thay đổi giá trị
+                            onChange={(value: string) => handlePriceChange(value)}  
                             onFocus={() => setErrors(prev => ({ ...prev, price: '' }))}
                             labelClassName="bg-white"
                         />

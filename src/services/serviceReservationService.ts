@@ -1,17 +1,31 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { toast } from 'react-toastify'
+import dayjs from 'dayjs'
+
 import { onError } from '@/utils/errorsHandler'
 import { getMappedMessage } from '@/utils/resMessageMapping'
 import useAxiosIns from '@/hooks/useAxiosIns'
 import toastConfig from '@/configs/toast'
+import { getMappedSort } from '@/utils/apiSortMapping'
 
 export type BookServicePayload = {
     bookingId: number
     serviceId: number
     quantity: number
 }
-
+export type BookingServiceSortAndFilterParams = {
+    searchServiceName?: string;
+    searchServiceQuery?: string;
+    searchMinPrice: string;
+    searchMaxPrice: string;
+    sort?: string;
+    range?: string[] | any[] | undefined
+    status?: string;
+    searchCustomerName?: string;
+    searchBookingServiceId?: string;
+    searchBookingId?: string;
+};
 const serviceReservationService = ({ enableFetching }: { enableFetching: boolean }) => {
     const axios = useAxiosIns()
     const queryClient = useQueryClient()
@@ -24,6 +38,38 @@ const serviceReservationService = ({ enableFetching }: { enableFetching: boolean
     const [limit] = useState<number>(6)
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
+
+    const buildQuery = ({
+        searchServiceName,
+        searchServiceQuery,
+        searchMinPrice,
+        searchMaxPrice,
+        sort,
+        range,
+        status,
+        searchCustomerName,
+        searchBookingServiceId,
+        searchBookingId,
+    }: BookingServiceSortAndFilterParams) => {
+        const query: any = {}
+
+        if (searchServiceName) query.serviceName = searchServiceName.trim()
+        if (searchCustomerName) query.customerName = searchCustomerName.trim()
+        if (searchServiceQuery) query.serviceQuery = searchServiceQuery
+        if (searchMinPrice) query.minPrice = searchMinPrice
+        if (searchMaxPrice) query.maxPrice = searchMaxPrice
+        if (status) query.status = status 
+        if (searchBookingServiceId) query.bookingServiceId = searchBookingServiceId;
+        if (searchBookingId) query.bookingId = searchBookingId;
+        if (range) {
+            if (range[0]) query.startTime = dayjs(range[0]).format('YYYY-MM-DD')
+            if (range[1]) query.endTime = dayjs(range[1]).format('YYYY-MM-DD')
+        }
+
+        setQuery(JSON.stringify(query))
+
+        if (sort) setSort(JSON.stringify(getMappedSort(sort)))
+    }
 
     const searchBookingServicesQuery = useQuery(['search-booking-services', query, sort], {
         queryFn: () => {
@@ -174,6 +220,7 @@ const serviceReservationService = ({ enableFetching }: { enableFetching: boolean
         limit,
 
         setPage,
+        buildQuery,
         onFilterSearch,
         onResetFilterSearch,
 

@@ -7,7 +7,7 @@ import Button from '@/components/common/Button'
 import serviceService from '@/services/serviceService'
 
 type ServiceTableProps = {
-    services: IService[] // Dữ liệu dịch vụ
+    services: IService[] 
     total: number
     page: number
     limit: number
@@ -96,7 +96,7 @@ const ServiceTable = ({
                             text="Cập nhật"
                             variant="success"
                             className="min-w-fit rounded px-3 py-1.5 text-xs"
-                            onClick={() => onSelectService(service)} // Chọn dịch vụ để sửa đổi
+                            onClick={() => onSelectService(service)} 
                         />
                         <ConfirmationDialog
                             Trigger={

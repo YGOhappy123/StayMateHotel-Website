@@ -58,6 +58,10 @@ const BookingServiceCard = ({ bookingService, acceptBookingMutation, rejectBooki
                     <span className="font-semibold">Đơn giá: </span>
                     {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(bookingService.unitPrice as number)}
                 </p>
+                <p className="flex items-center justify-between text-lg">
+                    <span className="font-semibold">Tổng tiền: </span>
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format((bookingService.unitPrice as number) * bookingService.quantity)}
+                </p>
             </div>
 
             <div className="h-1 bg-black/10"></div>
