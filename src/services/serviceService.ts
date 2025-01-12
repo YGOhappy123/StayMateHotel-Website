@@ -81,7 +81,14 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
             setTotal(res.data.total as number)
         }
     })
-
+    const getCsvServicesQuery = useQuery(['search-csv-services', query, sort], {
+        queryFn: () => {
+            return axios.get<IResponseData<IService[]>>(`/services?filter=${query}&sort=${sort}`)
+        },
+        keepPreviousData: true,
+        enabled: false,
+        onError: onError
+    })
     const onFilterSearch = () => {
         setIsSearching(true)
         searchServicesQuery.refetch()
@@ -160,6 +167,7 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
 
         searchServicesQuery,
         getAllServicesQuery,
+        getCsvServicesQuery,
         createNewServiceMutation,
         updateServiceMutation,
         deleteServiceMutation

@@ -67,7 +67,6 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
                             onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
                             onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} // Xóa lỗi khi focus vào
                             labelClassName="bg-white"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-sm"
                         />
                         {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
                     </div>

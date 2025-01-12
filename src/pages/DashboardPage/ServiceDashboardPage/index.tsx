@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Dialog, DialogTrigger } from '@/components/ui/Dialog'
@@ -103,7 +104,6 @@ const ServiceDashboardPage = () => {
                             </div>
                         </DialogTrigger>
                         <CreateServiceDialog
-                            features={features}
                             isOpen={isAddModalOpen}
                             closeDialog={() => setIsAddModalOpen(false)}
                             createNewServiceMutation={createNewServiceMutation}
@@ -112,7 +112,6 @@ const ServiceDashboardPage = () => {
 
                     <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
                         <UpdateServiceDialog
-                            features={features}
                             selectedService={selectedService}
                             isOpen={isUpdateModalOpen}
                             closeDialog={() => setIsUpdateModalOpen(false)}

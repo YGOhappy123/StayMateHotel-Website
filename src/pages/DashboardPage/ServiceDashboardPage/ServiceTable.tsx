@@ -36,7 +36,8 @@ const ServiceTable = ({
         },
         {
             accessorKey: 'price',
-            header: 'Giá Dịch Vụ', // Tiêu đề
+            //header: () => <div className="text-center">Giá Dịch Vụ</div>,
+            header: 'Giá Dịch Vụ',
             cell: ({ row }) => {
                 const price = row.original.price;
                 return (
@@ -50,7 +51,7 @@ const ServiceTable = ({
 
         {
             accessorKey: 'isAvailable',
-            header: 'Trạng Thái',
+            header: () => <div className="text-center">Trạng Thái</div>,
             cell: ({ row }) => {
                 const isAvailable = row.original.isAvailable
                 return (

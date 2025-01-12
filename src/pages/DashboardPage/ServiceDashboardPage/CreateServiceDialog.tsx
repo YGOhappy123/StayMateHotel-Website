@@ -101,8 +101,8 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
                             onChange={(value: string) => handlePriceChange(value)}  // Xử lý sự thay đổi giá trị
                             onFocus={() => setErrors(prev => ({ ...prev, price: '' }))}
                             labelClassName="bg-white"
-                            suffix="VND" // Đơn vị VND
                         />
+                        {/*<span className="absolute right-0 top-0 px-2 py-1 text-sm text-gray-500">VND</span>*/}
                     </div>
                     {/* Thêm ô trạng thái "Có sẵn"*/}
                     <div className="mb-4">

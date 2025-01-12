@@ -18,10 +18,17 @@ type FeatureTableProps = {
     deleteFeatureMutation: any
 }
 
-const FeatureTable = ({ features, total, page, limit, setPage, onSelectFeature, deleteFeatureMutation }: FeatureTableProps) => {
-    const calculateTotalQuantity = (roomClasses: { quantity: number }[]) => {
-        return roomClasses.reduce((sum, room) => sum + room.quantity, 0)
-    }
+
+const FeatureTable = ({
+    features,
+    total,
+    page,
+    limit,
+    setPage,
+    onSelectFeature,
+    deleteFeatureMutation
+}: FeatureTableProps) => {
+
     const columns: ColumnDef<IFeature>[] = [
         {
             accessorKey: 'id',
@@ -32,33 +39,45 @@ const FeatureTable = ({ features, total, page, limit, setPage, onSelectFeature, 
             header: 'Tên Tiện Ích'
         },
         {
-            accessorKey: 'quantity',
-            header: () => <div className="text-center">Số Lượng</div>,
+            accessorKey: 'roomClasses',
+            header: () => <div className="text-center">Loại Phòng</div>,
             cell: ({ row }) => {
-                // Tính tổng quantity từ tất cả các roomClass
-                const quantity = row.original.roomClasses.reduce((sum: number, room: { quantity: number }) => sum + room.quantity, 0)
+                const roomClasses = row.original.roomClasses;
 
                 return (
-                    <div className="flex items-center justify-center">
-                        <div
-                            className={`h-[30px] w-[30px] text-center font-medium ${quantity >= 0 ? 'border-blue-600 bg-blue-100 text-blue-600' : 'border-gray-600 bg-gray-100 text-gray-600'} flex items-center justify-center rounded-md border-2 hover:opacity-90`}
-                        >
-                            {/* Nếu có quantity và dấu x */}
-                            {quantity >= 0 && (
-                                <div className="flex items-center justify-center space-x-0.5">
-                                    <span className="text-[6px] font-bold text-red-500"> {/* Kích thước chữ giảm còn 6px */}✖</span>
-                                    <span>{quantity}</span>
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                        {roomClasses && roomClasses.length > 0 ? (
+                            roomClasses.map((roomClass, index) => (
+                                <div key={index} className="flex items-center space-x-2 justify-center">
+                                    <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">
+                                        {roomClass.name}
+                                    </span>
                                 </div>
-                            )}
-                            {/* Hiển thị số lượng nếu không có dấu x */}
-                            {/*{quantity === 0 && (*/}
-                            {/*    <span className="flex items-center justify-center">0</span>*/}
-                            {/*)}*/}
-                        </div>
+                            ))
+                        ) : (
+                            <div className="flex flex-col items-center justify-center py-4">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-gray-400 mb-1"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 13h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2m5 8a7 7 0 100-14 7 7 0 000 14z"
+                                    />
+                                </svg>
+                                <span className="text-gray-500 text-sm">Chưa đươc sử dụng</span>
+                            </div>
+                        )}
                     </div>
                 )
             }
         },
+
 
         {
             accessorKey: 'createdAt',
