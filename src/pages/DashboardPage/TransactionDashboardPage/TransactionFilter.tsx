@@ -90,7 +90,7 @@ const TransactionFilter = ({ setHavingFilters, onChange, onSearch, onReset }: Tr
                 </div>
                 <div className="mb-4">
                     <DateRangePicker
-                        
+                        placeHolder='Lọc theo ngày thanh toán'
                         date={date}
                         setDate={setDate}
                         triggerClassName="leading-normal"
