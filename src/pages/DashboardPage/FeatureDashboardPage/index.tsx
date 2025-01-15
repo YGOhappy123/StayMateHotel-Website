@@ -43,8 +43,18 @@ const FeatureDashboardPage = () => {
         onSuccess: data => console.log('Room classes data:', data),
         onError: error => console.error('Error fetching room classes:', error),
     })
-
     const roomClasses = fetchAllRoomClassesQuery.data?.data || []
+
+    const fetchAllAdminsQuery = useQuery(['admins-all'], {
+        queryFn: () => axios.get<IResponseData<IAdmin[]>>(`/admins`),
+        refetchOnWindowFocus: false,
+        enabled: true,
+        select: res => res.data,
+        onSuccess: data => console.log('Admins data:', data),
+        onError: error => console.error('Error fetching Admins:', error),
+    })
+    const admins = fetchAllAdminsQuery.data?.data || []
+    
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen) {
@@ -89,6 +99,7 @@ const FeatureDashboardPage = () => {
                         </PopoverTrigger>
                         <FeatureFilter
                             roomClasses={roomClasses}
+                            admins={admins}
                             setHavingFilters={setHavingFilters}
                             onChange={buildQuery}
                             onSearch={onFilterSearch}
