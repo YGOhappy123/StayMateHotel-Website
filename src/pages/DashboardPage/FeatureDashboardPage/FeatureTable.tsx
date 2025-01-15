@@ -9,7 +9,7 @@ import featureService from '@/services/featureService'
 import fileService from '@/services/fileService'
 
 type FeatureTableProps = {
-    features: IFeature[] // Dữ liệu tiện ích
+    features: IFeature[] 
     total: number
     page: number
     limit: number

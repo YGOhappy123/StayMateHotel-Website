@@ -37,18 +37,19 @@ const ServiceDashboardPage = () => {
     const [selectedService, setSelectedService] = useState<IService | null>(null)
     const [havingFilters, setHavingFilters] = useState(false)
 
-    const fetchAllFeaturesQuery = useQuery(['features-all'], {
-        queryFn: () => axios.get<IResponseData<IFeature[]>>('/features'),
+    const fetchAllAdminsQuery = useQuery(['admins-all'], {
+        queryFn: () => axios.get<IResponseData<IAdmin[]>>(`/admins`),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data
+        select: res => res.data,
+        onSuccess: data => console.log('Admins data:', data),
+        onError: error => console.error('Error fetching Admins:', error),
     })
-
-    const features = fetchAllFeaturesQuery.data?.data || []
+    const admins = fetchAllAdminsQuery.data?.data || []
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen || isFilterOpen) {
-            fetchAllFeaturesQuery.refetch()
+            //
         }
     }, [isAddModalOpen, isUpdateModalOpen, isFilterOpen])
 
@@ -89,7 +90,7 @@ const ServiceDashboardPage = () => {
                             </div>
                         </PopoverTrigger>
                         <ServiceFilter
-                            //features={features}
+                            admins={admins}
                             setHavingFilters={setHavingFilters}
                             onChange={buildQuery}
                             onSearch={onFilterSearch}

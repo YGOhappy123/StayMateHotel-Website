@@ -12,6 +12,7 @@ import toastConfig from '@/configs/toast'
 export type ServiceSortAndFilterParams = {
     searchServiceName: string
     searchServiceQuery: string
+    searchAdminName: string
     searchMinPrice: string
     searchMaxPrice: string
     sort: string
@@ -30,9 +31,10 @@ const serviceService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchServiceName, searchServiceQuery, searchMinPrice, searchMaxPrice, sort, range }: ServiceSortAndFilterParams) => {
+    const buildQuery = ({ searchServiceName, searchServiceQuery, searchAdminName, searchMinPrice, searchMaxPrice, sort, range }: ServiceSortAndFilterParams) => {
         const query: any = {}
         if (searchServiceName) query.name = searchServiceName.trim()
+        if (searchAdminName) query.createdById = searchAdminName
         if (searchServiceQuery) query.serviceQuery = searchServiceQuery
         if (searchMinPrice) query.minPrice = searchMinPrice
         if (searchMaxPrice) query.maxPrice = searchMaxPrice

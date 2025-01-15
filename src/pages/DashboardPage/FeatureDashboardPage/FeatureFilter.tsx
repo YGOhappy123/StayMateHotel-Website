@@ -10,21 +10,31 @@ import DateRangePicker from '@/components/common/DateRangePicker'
 
 type FeatureFilterProps = {
     roomClasses: IRoomClass[]
+    admins: IAdmin[]
     setHavingFilters: (value: boolean) => void
     onChange: (params: FeatureSortAndFilterParams) => void
     onSearch: () => void
     onReset: () => void
 }
 
-const FeatureFilter = ({ roomClasses, setHavingFilters, onChange, onSearch, onReset }: FeatureFilterProps) => {
-    const [searchFeatureName, setSearchFeatureName] = useState<string>('')
-    const [searchRoomClasses, setSearchRoomClasses] = useState<number[]>([])
-    const [startTime, setStartTime] = useState<string>('')
-    const [endTime, setEndTime] = useState<string>('')
-    const [sort, setSort] = useState<string>('-createdAt')
-    const [range, setRange] = useState<string[] | any[]>()
+const FeatureFilter = ({ roomClasses, admins, setHavingFilters, onChange, onSearch, onReset }: FeatureFilterProps) => {
+    const [searchFeatureName, setSearchFeatureName] = useState<string>('');
+    const [searchRoomClasses, setSearchRoomClasses] = useState<number[]>([]);
+    const [selectedAdmin, setSelectedAdmin] = useState<string>('');
+    const [startTime, setStartTime] = useState<string>('');
+    const [endTime, setEndTime] = useState<string>('');
+    const [sort, setSort] = useState<string>('-createdAt');
+    const [range, setRange] = useState<string[] | any[]>();
+    const [date, setDate] = useState<DateRange | undefined>(undefined);
 
-    const [date, setDate] = useState<DateRange | undefined>(undefined)
+    const fetchAdmins = () => {
+        return admins;
+    };
+
+    const AdminOptions = fetchAdmins().map((admin) => ({
+        value: admin.id.toString(),
+        label: "ID: " + admin.id.toString() + " - " + admin.lastName + " " + admin.firstName,
+    }));
 
     useEffect(() => {
         if (date) {
@@ -41,17 +51,17 @@ const FeatureFilter = ({ roomClasses, setHavingFilters, onChange, onSearch, onRe
         onChange({
             searchFeatureName,
             searchRoomClasses,
-            //startTime,
-            //endTime,
+            searchAdminName: selectedAdmin,
             sort,
             range
         })
-    }, [searchFeatureName, searchRoomClasses, sort, range])
+    }, [searchFeatureName, searchRoomClasses, selectedAdmin, sort, range])
 
     const handleSearch = () => {
         onSearch()
 
         if (
+            !(selectedAdmin && selectedAdmin.trim()) &&
             !searchFeatureName &&
             !searchRoomClasses.length &&
             !startTime &&
@@ -67,6 +77,7 @@ const FeatureFilter = ({ roomClasses, setHavingFilters, onChange, onSearch, onRe
     const handleReset = () => {
         setSearchFeatureName('')
         setSearchRoomClasses([])
+        setSelectedAdmin('')
         setStartTime('')
         setEndTime('')
         setSort('-createdAt')
@@ -123,6 +134,21 @@ const FeatureFilter = ({ roomClasses, setHavingFilters, onChange, onSearch, onRe
                             onFocus={() => { }}
                             labelClassName="bg-white"
                             inputClassName="leading-2"
+                        />
+                    </div>
+
+                    {/* Lọc theo người tạo */}
+                    <div className="mb-4">
+                        <SelectInput
+                            fieldName="admin"
+                            placeholder="Lọc theo người tạo"
+                            options={AdminOptions}
+                            value={selectedAdmin}
+                            onChange={(value: string | number) => setSelectedAdmin(value as string)}
+                            labelClassName="bg-white"
+                            selectClassName="py-[9px]"
+                            error=""
+                            onFocus={() => { }}
                         />
                     </div>
 

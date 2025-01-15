@@ -1,16 +1,16 @@
-import { useNavigate } from 'react-router-dom'; // Nếu bạn đang sử dụng React Router
-import Button from '@/components/common/Button'; // Nếu bạn có component Button
+import { useNavigate } from 'react-router-dom'; 
+import Button from '@/components/common/Button'; 
 import { FC } from 'react'
 
 interface ErrorPageProps {
-    errorMessage?: string; // Có thể thêm tham số lỗi cụ thể
+    errorMessage?: string;
 }
 
 const ErrorPage: FC<ErrorPageProps> = ({ errorMessage }) => {
     const navigate = useNavigate();
 
     const handleRedirectHome = () => {
-        navigate('/'); // Điều hướng người dùng trở về trang chủ
+        navigate('/'); 
     };
 
     return (
@@ -23,7 +23,7 @@ const ErrorPage: FC<ErrorPageProps> = ({ errorMessage }) => {
                 <Button
                     text="Go Back to Home"
                     variant="primary"
-                    onClick={handleRedirectHome} // Chuyển đến trang chủ hoặc trang khác
+                    onClick={handleRedirectHome} 
                 />
             </div>
         </div>
