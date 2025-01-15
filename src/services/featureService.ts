@@ -12,6 +12,7 @@ import toastConfig from '@/configs/toast'
 export type FeatureSortAndFilterParams = {
     searchFeatureName: string
     searchRoomClasses: number[]
+    searchAdminName: string
     sort: string
     range: string[] | any[] | undefined
 }
@@ -28,9 +29,10 @@ const featureService = ({ enableFetching }: { enableFetching: boolean }) => {
     const [query, setQuery] = useState<string>('')
     const [sort, setSort] = useState<string>('')
 
-    const buildQuery = ({ searchFeatureName,  searchRoomClasses, sort, range }: FeatureSortAndFilterParams) => {
+    const buildQuery = ({ searchFeatureName, searchAdminName, searchRoomClasses, sort, range }: FeatureSortAndFilterParams) => {
         const query: any = {}
         if (searchFeatureName) query.name = searchFeatureName.trim()
+        if (searchAdminName) query.createdById = searchAdminName
         if (searchRoomClasses.length > 0) query.roomClasses = searchRoomClasses
         if (range) {
             if (range[0]) {

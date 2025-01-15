@@ -47,7 +47,6 @@ const RoomFilter = ({ floors, roomClasses, setHavingFilters, onChange, onSearch,
 
     const handleSearch = () => {
         onSearch()
-
         if (!searchRoomNumber && !searchMinPrice && !searchMaxPrice && !searchFloor && !searchRoomClass && sort === '-createdAt' && !range?.length) {
             setHavingFilters(false)
         } else {
