@@ -99,6 +99,10 @@ const BookingCard = ({
                             Mã {room!.roomNumber} - Tầng {room!.floor} - Loại {room!.roomClass}
                         </p>
                         <p className="flex items-center justify-between text-lg">
+                            <span className="font-semibold">Số khách thuê: </span>
+                            {room.numberOfGuests?.toString().padStart(2, '0')} người
+                        </p>
+                        <p className="flex items-center justify-between text-lg">
                             <span className="font-semibold">Đơn giá theo ngày: </span>
                             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(room!.unitPrice as number)}
                         </p>

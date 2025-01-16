@@ -9,9 +9,7 @@ const StatisticSection = () => {
                     <span className="text-xl font-semibold capitalize">Phòng Khách Sạn</span>
                 </div>
                 <div className="flex flex-col items-center gap-5">
-                    <span className="text-5xl font-semibold">
-                        10th<sup className="ml-3 text-2xl">+</sup>
-                    </span>
+                    <span className="text-5xl font-semibold">10th</span>
                     <span className="text-xl font-semibold capitalize">Top Khách Sạn 2024</span>
                 </div>
                 <div className="flex flex-col items-center gap-5">

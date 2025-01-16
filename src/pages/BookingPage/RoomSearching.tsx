@@ -104,6 +104,7 @@ const RoomSearching = ({ setAvailableRooms, setBookingRequirements }: RoomSearch
                     <Calendar initialFocus mode="range" defaultMonth={date?.from} selected={date} onSelect={setDate} numberOfMonths={2} locale={vi} />
                 </PopoverContent>
             </Popover>
+
             <button
                 className="flex w-[200px] items-center justify-center rounded-full bg-primary font-semibold uppercase tracking-widest text-ivory hover:bg-primary/90"
                 onClick={() => handleSearch()}

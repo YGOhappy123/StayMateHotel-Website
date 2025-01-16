@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faDraftingCompass, faHome, faPaintRoller, faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faQuoteLeft } from '@fortawesome/free-solid-svg-icons'
 import AwardsSection from '@/pages/AboutPage/AwardsSection'
 import HighlightedServicesSection from '@/pages/OurServicesPage/HighlightedServicesSection'
 
@@ -27,7 +27,7 @@ const DescriptionSection = () => {
                         </div>
                     </Link>
                 </div>
-                <div className="grid grid-cols-4 gap-[30px] pt-[40px]">
+                <div className="grid grid-cols-4 gap-[30px] pt-10">
                     <div className="relative flex flex-col items-start gap-5 pl-[50px] pr-5">
                         <div
                             className="absolute bottom-0 left-0 rounded-t-3xl bg-accent"
