@@ -3,6 +3,7 @@ const RES_MESSAGE_MAPPING = {
     EMAIL_EXISTED: 'Email đã tồn tại.',
     PHONE_NUMBER_EXISTED: 'Số điện thoại đã tồn tại.',
     USER_NOT_FOUND: 'Người dùng không tồn tại.',
+    INCORRECT_PASSWORD: 'Mật khẩu không chính xác.',
     INCORRECT_USERNAME_OR_PASSWORD: 'Tên đăng nhập hoặc mật khẩu không chính xác.',
     GOOGLE_AUTH_FAILED: 'Xác thực Google thất bại.',
     ROOM_NOT_FOUND: 'Phòng không tồn tại.',
