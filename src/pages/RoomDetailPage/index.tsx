@@ -43,8 +43,8 @@ const RoomDetailPage = () => {
                             Danh sách phòng
                         </span>
                         <FontAwesomeIcon icon={faCaretRight} />
-                        <span className="cursor-pointer" onClick={() => navigate(`/rooms?roomClass=${'VIP'}`)}>
-                            Loại phòng {'Vip'}
+                        <span className="cursor-pointer" onClick={() => navigate(`/rooms?roomClass=${room?.roomClass?.className}`)}>
+                            Loại phòng {room?.roomClass?.className}
                         </span>
                         <FontAwesomeIcon icon={faCaretRight} />
                         <span className="text-secondary">Phòng {room?.roomNumber}</span>

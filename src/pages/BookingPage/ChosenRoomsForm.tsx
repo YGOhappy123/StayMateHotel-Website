@@ -22,6 +22,8 @@ const ChosenRoomsForm = ({ availableRooms, chosenRooms, bookingRequirements }: C
     const [bookingEmail, setBookingEmail] = useState(user.email)
     const [bookingPhone, setBookingPhone] = useState(user.phoneNumber)
 
+    console.log(chosenRooms)
+
     const bookingDays = Math.abs(differenceInDays(new Date(bookingRequirements.dateRange[1]), new Date(bookingRequirements.dateRange[0])))
     const totalPrice = useMemo(() => {
         return chosenRooms.reduce((total, { index, roomId }) => {
@@ -106,6 +108,10 @@ const ChosenRoomsForm = ({ availableRooms, chosenRooms, bookingRequirements }: C
                             <p className="flex items-center justify-between text-lg">
                                 <span className="font-semibold">Loại phòng: </span>
                                 {matchingRoom!.roomClass?.className}
+                            </p>
+                            <p className="flex items-center justify-between text-lg">
+                                <span className="font-semibold">Số khách: </span>
+                                {bookingRequirements.guests[room.index].numberOfGuests.toString().padStart(2, '0')} người
                             </p>
                             <p className="flex items-center justify-between text-lg">
                                 <span className="font-semibold">Giá thuê theo ngày: </span>
