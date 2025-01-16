@@ -55,18 +55,29 @@ const EditProfilePage = () => {
                             address: formValues.address || undefined
                         }
                     })
-                    .then(() => dispatch(setUser({ ...user, ...formValues })))
+                    .then(() => updateAuthUser())
                     .catch(() => setDefaultFormValues())
             } else {
                 const { email, ...information } = formValues
                 updateAdminMutation
                     .mutateAsync({ data: information })
-                    .then(() => dispatch(setUser({ ...user, ...formValues })))
+                    .then(() => updateAuthUser())
                     .catch(() => setDefaultFormValues())
             }
         } else {
             setErrors(formErrors)
         }
+    }
+
+    const updateAuthUser = () => {
+        const newUserData = { ...user }
+        newUserData.firstName = formValues.firstName
+        newUserData.lastName = formValues.lastName
+        if (formValues.email) newUserData.email = formValues.email
+        if (formValues.phoneNumber) newUserData.phoneNumber = formValues.phoneNumber
+        if (formValues.address) newUserData.address = formValues.address
+
+        dispatch(setUser(newUserData as IUser))
     }
 
     const validateFormValues = () => {
