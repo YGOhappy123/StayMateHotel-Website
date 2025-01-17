@@ -4,7 +4,11 @@ const SORT_MAPPING = {
     '-price': { price: 'DESC' },
     '+price': { price: 'ASC' },
     '-basePrice': { basePrice: 'DESC'},
-    '+basePrice': { basePrice: 'ASC'}
+    '+basePrice': { basePrice: 'ASC'},
+    '-paymentTime': { paymentTime: 'DESC'},
+    '+paymentTime': { paymentTime: 'ASC'},
+    '-amount': { amount: 'DESC'},
+    '+amount': { amount: 'ASC'},
 }
 
 const getMappedSort = (sort: string) => {
