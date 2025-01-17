@@ -37,7 +37,7 @@ const SelectRoomAndGuestDialog = ({ closeDialog, wishedRooms, setWishedRooms }: 
             </div>
             <div className="border-b-2"></div>
             <button
-                className="flex items-center gap-3 disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-100 disabled:text-gray-600 disabled:opacity-50"
+                className="flex items-center gap-3 disabled:cursor-not-allowed disabled:text-gray-600 disabled:opacity-50"
                 disabled={internalWishedRooms.length === 3}
                 onClick={() => setInternalWishedRooms(prev => [...prev, { numberOfGuests: 1 }])}
             >

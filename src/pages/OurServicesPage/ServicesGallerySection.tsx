@@ -25,7 +25,7 @@ const ServicesGallerySection = ({ images }: ServicesGallerySectionProps) => {
                     <p className="text-balance font-serif text-5xl font-semibold leading-[1.4]">Các phòng nổi bật tại Stay Mate Hotel</p>
                 </div>
                 <div className="grid grid-cols-12 gap-[30px]">
-                    <div className="relative col-span-6 h-[320px] rounded-tl-3xl">
+                    <div className="relative col-span-6 h-[320px]">
                         <div
                             className="h-full rounded-3xl bg-cover bg-center"
                             style={{
@@ -50,7 +50,7 @@ const ServicesGallerySection = ({ images }: ServicesGallerySectionProps) => {
                         </div>
                     </div>
                     {images.gallery.top.map(imageUrl => (
-                        <div key={imageUrl} className="col-span-3 h-[320px] rounded-tl-3xl">
+                        <div key={imageUrl} className="col-span-3 h-[320px]">
                             <div
                                 className="h-full rounded-3xl bg-cover bg-center"
                                 style={{
@@ -60,7 +60,7 @@ const ServicesGallerySection = ({ images }: ServicesGallerySectionProps) => {
                         </div>
                     ))}
                     {images.gallery.bottom.map(imageUrl => (
-                        <div key={imageUrl} className="col-span-4 h-[320px] rounded-tl-3xl">
+                        <div key={imageUrl} className="col-span-4 h-[320px]">
                             <div
                                 className="h-full rounded-3xl bg-cover bg-center"
                                 style={{
@@ -73,7 +73,7 @@ const ServicesGallerySection = ({ images }: ServicesGallerySectionProps) => {
             </div>
 
             <div className="w-full max-w-container pt-[100px]">
-                <div className="relative aspect-[10/4] rounded-tl-3xl">
+                <div className="relative aspect-[10/4]">
                     <div
                         className="h-full rounded-3xl bg-cover bg-center"
                         style={{
