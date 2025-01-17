@@ -38,16 +38,18 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
         const formErrors = { ...errors }
 
         if (!name.trim()) formErrors.name = 'Tên dịch vụ không được để trống.'
-        if (!price.trim() || isNaN(Number(price)) || Number(price) <= 0) formErrors.price = 'Giá dịch vụ phải là số hợp lệ và lớn hơn 0.'
+        else if (name.trim().length > 50) formErrors.name = 'Tên dịch vụ không được vượt quá 50 ký tự.'
+        if (!price.trim()) formErrors.price = 'Giá dịch vụ không được để trống'
+        else if (isNaN(Number(price)) || Number(price) <= 0) formErrors.price = 'Giá dịch vụ phải là số hợp lệ và lớn hơn 0.'
 
         return formErrors
     }
 
     const handlePriceChange = (value: string) => {
-        if (/[a-zA-Z]/.test(value)) {
+        if (!(/[0-9]/.test(value))) {
             setErrors(prev => ({
                 ...prev,
-                price: 'Giá trị phải là số, không được chứa chữ cái.',
+                price: 'Giá dịch vụ chỉ chứa số.',
             }));
         } else {
             setErrors(prev => ({
@@ -56,6 +58,21 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
             }));
         }
         setFormValues(prev => ({ ...prev, price: value }));
+    };
+    const handleNameChange = (value: string) => {
+        const trimmedValue = value.trim();
+        if (trimmedValue.length > 50) {
+            setErrors(prev => ({
+                ...prev,
+                name: 'Tên dịch vụ không được vượt quá 50 ký tự.',
+            }));
+        } else {
+            setErrors(prev => ({
+                ...prev,
+                name: '',
+            }));
+        }
+        setFormValues(prev => ({ ...prev, name: trimmedValue }));
     };
 
     useEffect(() => {
@@ -81,18 +98,19 @@ const CreateServiceDialog = ({ isOpen, closeDialog, createNewServiceMutation }: 
             <div className="border-b-2"></div>
             <div className="grid grid-cols-1 gap-4">
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+                    <div className="mb-6">
                         <TextInput
                             fieldName="name"
                             placeholder="Tên dịch vụ"
-                            error={errors.name}
-                            value={formValues.name}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
-                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))}
+                            error={errors.name} 
+                            value={formValues.name} 
+                            onChange={(value: string) => handleNameChange(value)} 
+                            onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} 
                             labelClassName="bg-white"
                         />
                     </div>
-                    <div className="mb-4">
+
+                    <div className="mb-6">
                         <TextInput
                             fieldName="price"
                             placeholder="Giá dịch vụ (VND)"
