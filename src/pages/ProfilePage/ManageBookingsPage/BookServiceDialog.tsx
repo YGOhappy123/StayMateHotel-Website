@@ -49,6 +49,7 @@ const BookServiceDialog = ({ isOpen, closeDialog, bookingId, services, bookServi
 
         if (!serviceId) formErrors.serviceId = formErrors.serviceId || 'Loại dịch vụ không được để trống.'
         if (quantity <= 0) formErrors.quantity = formErrors.quantity || 'Số lượng không được bằng 0.'
+        if (quantity > 100) formErrors.quantity = formErrors.quantity || 'Số lượng không lớn hơn 100.'
 
         return formErrors
     }
