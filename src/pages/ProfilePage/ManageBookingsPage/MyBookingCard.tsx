@@ -98,6 +98,10 @@ const MyBookingCard = ({ booking, services, fetchMyBookingsQuery }: MyBookingCar
                                         Mã {room!.roomNumber} - Tầng {room!.floor} - Loại {room!.roomClass}
                                     </p>
                                     <p className="flex items-center justify-between text-lg">
+                                        <span className="font-semibold">Số khách thuê: </span>
+                                        {room.numberOfGuests?.toString().padStart(2, '0')} người
+                                    </p>
+                                    <p className="flex items-center justify-between text-lg">
                                         <span className="font-semibold">Đơn giá theo ngày: </span>
                                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(room.unitPrice!)}
                                     </p>
@@ -169,7 +173,7 @@ const MyBookingCard = ({ booking, services, fetchMyBookingsQuery }: MyBookingCar
 
                 <div className="h-1 bg-black/10"></div>
                 <div className="flex flex-col gap-3">
-                    <h3 className="flex items-center justify-between text-2xl font-semibold text-primary">Tổng tiền cần thanh toán</h3>
+                    <h3 className="text-2xl font-semibold text-primary">Tổng tiền cần thanh toán</h3>
                     <p className="flex items-center justify-between text-lg">
                         <span className="font-semibold">Tổng tiền thuê phòng và dịch vụ: </span>
                         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(booking.totalAmount)}
