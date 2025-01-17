@@ -51,6 +51,7 @@ const RES_MESSAGE_MAPPING = {
     SERVICE_NOT_FOUND: 'Dịch vụ không tồn tại.',
     DUPLICATE_SERVICE_NAME: 'Tên dịch vụ đã tồn tại.',
     SERVICE_CANNOT_BE_DELETED: 'Không thể xóa dịch vụ.',
+    UPDATE_BOOKING_SERVICE_SUCCESSFULLY: 'Cập nhật đơn đặt dịch vụ thành công.',
 }
 
 const getMappedMessage = (originalMessage: string) => {
