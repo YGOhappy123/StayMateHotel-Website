@@ -35,9 +35,26 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
         const formErrors = { ...errors }
 
         if (!name.trim()) formErrors.name = 'Tên tiện ích không được để trống.' 
+        else if (name.trim().length > 50) formErrors.name = 'Tên tiện ích không được vượt quá 50 ký tự.'
 
         return formErrors
     }
+
+    const handleNameChange = (value: string) => {
+        const trimmedValue = value.trim();
+        if (trimmedValue.length > 50) {
+            setErrors(prev => ({
+                ...prev,
+                name: 'Tên tiện ích không được vượt quá 50 ký tự.',
+            }));
+        } else {
+            setErrors(prev => ({
+                ...prev,
+                name: '',
+            }));
+        }
+        setFormValues(prev => ({ ...prev, name: trimmedValue }));
+    };
 
     useEffect(() => {
         if (isOpen) {
@@ -64,11 +81,10 @@ const CreateFeatureDialog = ({ isOpen, closeDialog, createNewFeatureMutation }: 
                             placeholder="Tên tiện ích"
                             error={errors.name}
                             value={formValues.name}
-                            onChange={(value: string) => setFormValues(prev => ({ ...prev, name: value }))}
+                            onChange={(value: string) => handleNameChange(value)} 
                             onFocus={() => setErrors(prev => ({ ...prev, name: '' }))} 
                             labelClassName="bg-white"
                         />
-                        {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
                     </div>
                 </form>
             </div>
