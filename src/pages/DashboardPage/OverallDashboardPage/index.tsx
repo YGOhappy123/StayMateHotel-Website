@@ -39,7 +39,7 @@ const OverallDashboardPage = () => {
     return (
         <div className="flex w-full flex-col gap-4">
             <div className="flex items-center justify-between p-4">
-                <h2 className="text-2xl font-bold">Quản lý phòng khách sạn</h2>
+                <h2 className="text-2xl font-bold">Tình hình hoạt động của khách sạn</h2>
                 <div className="flex justify-center gap-4">
                     {STATISTIC_CRITERIA_BUTTONS.map(button => (
                         <Button
