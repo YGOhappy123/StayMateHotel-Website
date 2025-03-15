@@ -1,16 +1,17 @@
-import { ColumnDef } from '@tanstack/react-table';
-import { DataTable } from '@/components/ui/DataTable';
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination';
-import dayjs from 'dayjs';
+import { ColumnDef } from '@tanstack/react-table'
+import { DataTable } from '@/components/ui/DataTable'
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/Pagination'
+import { getMappedPaymentMethod } from '@/utils/bookingStatusMapping'
+import dayjs from 'dayjs'
 
 // Define the props for the TransactionTable component
 type TransactionTableProps = {
-    transactions: IPayment[];
-    total: number;
-    page: number;
-    limit: number;
-    setPage: (page: number) => void;
-};
+    transactions: IPayment[]
+    total: number
+    page: number
+    limit: number
+    setPage: (page: number) => void
+}
 
 const TransactionTable = ({ transactions, total, page, limit, setPage }: TransactionTableProps) => {
     const columns: ColumnDef<IPayment>[] = [
@@ -26,20 +27,24 @@ const TransactionTable = ({ transactions, total, page, limit, setPage }: Transac
             accessorKey: 'amount',
             header: () => <div className="text-center">Số Tiền</div>,
             cell: ({ row }) => {
-                const amount = row.original.amount;
+                const amount = row.original.amount
 
                 return (
-                     <div className="flex justify-center">
-                         <div className="table-tag-green">
+                    <div className="flex justify-center">
+                        <div className="table-tag-green">
                             {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount as number)}
                         </div>
                     </div>
-                );
-    }
-},
+                )
+            }
+        },
         {
             accessorKey: 'method',
-            header: 'Hình Thức Thanh Toán'
+            header: 'Hình Thức Thanh Toán',
+            cell: ({ row }) => {
+                const method = row.original.method
+                return getMappedPaymentMethod(method)
+            }
         },
         {
             accessorKey: 'paymentTime',
@@ -49,9 +54,9 @@ const TransactionTable = ({ transactions, total, page, limit, setPage }: Transac
                 return dayjs(paymentTime).format('DD/MM/YYYY HH:mm:ss')
             }
         }
-    ];
+    ]
 
-    const lastPage = Math.ceil(total / limit);
+    const lastPage = Math.ceil(total / limit)
 
     return (
         <div className="flex flex-col gap-8">
@@ -74,7 +79,7 @@ const TransactionTable = ({ transactions, total, page, limit, setPage }: Transac
                 </PaginationContent>
             </Pagination>
         </div>
-    );
-};
+    )
+}
 
-export default TransactionTable;
+export default TransactionTable

@@ -5,11 +5,9 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import dayjs from '@/libs/dayjs'
 import ConfirmationDialog from '@/components/common/ConfirmationDialog'
 import Button from '@/components/common/Button'
-import featureService from '@/services/featureService'
-import fileService from '@/services/fileService'
 
 type FeatureTableProps = {
-    features: IFeature[] 
+    features: IFeature[]
     total: number
     page: number
     limit: number
@@ -18,17 +16,7 @@ type FeatureTableProps = {
     deleteFeatureMutation: any
 }
 
-
-const FeatureTable = ({
-    features,
-    total,
-    page,
-    limit,
-    setPage,
-    onSelectFeature,
-    deleteFeatureMutation
-}: FeatureTableProps) => {
-
+const FeatureTable = ({ features, total, page, limit, setPage, onSelectFeature, deleteFeatureMutation }: FeatureTableProps) => {
     const columns: ColumnDef<IFeature>[] = [
         {
             accessorKey: 'id',
@@ -40,25 +28,23 @@ const FeatureTable = ({
         },
         {
             accessorKey: 'roomClasses',
-            header: () => <div className="text-center">Loại Phòng</div>,
+            header: () => <div className="text-center">Loại Phòng Có Tiện Ích Này</div>,
             cell: ({ row }) => {
-                const roomClasses = row.original.roomClasses;
+                const roomClasses = row.original.roomClasses
 
                 return (
                     <div className="flex flex-col items-center justify-center space-y-2">
                         {roomClasses && roomClasses.length > 0 ? (
                             roomClasses.map((roomClass, index) => (
-                                <div key={index} className="flex items-center space-x-2 justify-center">
-                                    <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">
-                                        {roomClass.name}
-                                    </span>
+                                <div key={index} className="flex items-center justify-center space-x-2">
+                                    <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">{roomClass.name}</span>
                                 </div>
                             ))
                         ) : (
                             <div className="flex flex-col items-center justify-center py-4">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-gray-400 mb-1"
+                                    className="mb-1 h-6 w-6 text-gray-400"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -70,14 +56,13 @@ const FeatureTable = ({
                                         d="M9 13h6m2 0a2 2 0 00-2-2H9a2 2 0 00-2 2m5 8a7 7 0 100-14 7 7 0 000 14z"
                                     />
                                 </svg>
-                                <span className="text-gray-500 text-sm">Chưa đươc sử dụng</span>
+                                <span className="text-sm text-gray-500">Chưa đươc sử dụng</span>
                             </div>
                         )}
                     </div>
                 )
             }
         },
-
 
         {
             accessorKey: 'createdAt',
