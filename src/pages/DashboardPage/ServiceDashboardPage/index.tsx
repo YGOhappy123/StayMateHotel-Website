@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Dialog, DialogTrigger } from '@/components/ui/Dialog'
@@ -41,9 +40,7 @@ const ServiceDashboardPage = () => {
         queryFn: () => axios.get<IResponseData<IAdmin[]>>(`/admins`),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data,
-        onSuccess: data => console.log('Admins data:', data),
-        onError: error => console.error('Error fetching Admins:', error),
+        select: res => res.data
     })
     const admins = fetchAllAdminsQuery.data?.data || []
 

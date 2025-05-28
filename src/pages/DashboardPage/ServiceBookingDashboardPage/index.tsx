@@ -35,18 +35,16 @@ const ServiceBookingDashboardPage = () => {
         queryFn: () => axios.get<IResponseData<IService[]>>(`/services`),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data,
-        onSuccess: data => console.log('Room classes data:', data),
-        onError: error => console.error('Error fetching room classes:', error),
+        select: res => res.data
     })
 
     const services = fetchAllServicesQuery.data?.data || []
 
     const exportCsvFile = () => {
         getCsvBookingServicesQuery.refetch().then(res => {
-            if (!getCsvBookingServicesQuery.data) return;
-            const bookingServices = res.data?.data?.data ?? [];
-            const formattedBookingServices = bookingServices.map((bookingService) => ({
+            if (!getCsvBookingServicesQuery.data) return
+            const bookingServices = res.data?.data?.data ?? []
+            const formattedBookingServices = bookingServices.map(bookingService => ({
                 ['Mã đơn đặt dịch vụ']: bookingService.id,
                 ['Tên Dịch Vụ']: bookingService.service?.name,
                 ['Số Lượng']: bookingService.quantity,
@@ -55,8 +53,8 @@ const ServiceBookingDashboardPage = () => {
                 ['Tên Khách Hàng']: `${bookingService?.booking?.guest?.lastName} ${bookingService?.booking?.guest?.firstName}`,
                 ['Số điện thoại']: bookingService.booking?.phoneNumber,
                 ['Email']: bookingService.booking?.email,
-                ['Ngày Tạo']: dayjs(bookingService.createdAt).format('DD/MM/YYYY HH:mm'),
-            }));
+                ['Ngày Tạo']: dayjs(bookingService.createdAt).format('DD/MM/YYYY HH:mm')
+            }))
             exportToCSV(formattedBookingServices, `Danh_sách_đơn_đặt_dịch_vụ_${dayjs(Date.now()).format('DD_MM_YYYY')}`, [
                 { wch: 15 },
                 { wch: 30 },
@@ -66,10 +64,10 @@ const ServiceBookingDashboardPage = () => {
                 { wch: 15 },
                 { wch: 15 },
                 { wch: 15 },
-                { wch: 15 },
-            ]);
-        });
-    };
+                { wch: 15 }
+            ])
+        })
+    }
 
     return (
         <div className="flex w-full flex-col gap-4">

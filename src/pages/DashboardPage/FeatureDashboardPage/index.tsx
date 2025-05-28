@@ -39,9 +39,7 @@ const FeatureDashboardPage = () => {
         queryFn: () => axios.get<IResponseData<IRoomClass[]>>(`/roomClasses`),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data,
-        onSuccess: data => console.log('Room classes data:', data),
-        onError: error => console.error('Error fetching room classes:', error),
+        select: res => res.data
     })
     const roomClasses = fetchAllRoomClassesQuery.data?.data || []
 
@@ -49,39 +47,34 @@ const FeatureDashboardPage = () => {
         queryFn: () => axios.get<IResponseData<IAdmin[]>>(`/admins`),
         refetchOnWindowFocus: false,
         enabled: true,
-        select: res => res.data,
-        onSuccess: data => console.log('Admins data:', data),
-        onError: error => console.error('Error fetching Admins:', error),
+        select: res => res.data
     })
     const admins = fetchAllAdminsQuery.data?.data || []
-    
 
     useEffect(() => {
         if (isAddModalOpen || isUpdateModalOpen) {
-            //
         }
     }, [isAddModalOpen, isUpdateModalOpen])
 
     const exportCsvFile = () => {
         getCsvFeaturesQuery.refetch().then(res => {
-            if (!getCsvFeaturesQuery.data) return; 
+            if (!getCsvFeaturesQuery.data) return
             const csvFeatures = res.data?.data?.data ?? []
             const formattedFeatures = csvFeatures.map(feature => ({
                 ['Mã Tiện ích']: feature.id,
                 ['Tên Tiện ích']: feature.name,
                 ['Ngày Tạo']: dayjs(feature.createdAt).format('DD/MM/YYYY HH:mm:ss'),
-                ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`,
-            }));
+                ['Người Tạo']: `${feature.createdBy?.lastName} ${feature.createdBy?.firstName}`
+            }))
 
             exportToCSV(formattedFeatures, `SMH_Danh_sách_tiện_ích_${dayjs(Date.now()).format('DD_MM_YYYY')}`, [
                 { wch: 10 },
                 { wch: 30 },
                 { wch: 30 },
-                { wch: 30 },
-            ]);
-        });
-    };
-
+                { wch: 30 }
+            ])
+        })
+    }
 
     return (
         <div className="flex w-full flex-col gap-4">
@@ -92,9 +85,7 @@ const FeatureDashboardPage = () => {
                         <PopoverTrigger asChild>
                             <div className="relative min-w-[120px] cursor-pointer rounded-md border-2 border-solid border-black bg-black/10 px-6 py-3 font-medium text-black hover:opacity-90">
                                 Tìm kiếm
-                                {havingFilters && (
-                                    <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>
-                                )}
+                                {havingFilters && <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-600"></div>}
                             </div>
                         </PopoverTrigger>
                         <FeatureFilter
