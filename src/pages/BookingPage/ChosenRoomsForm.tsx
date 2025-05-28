@@ -22,8 +22,6 @@ const ChosenRoomsForm = ({ availableRooms, chosenRooms, bookingRequirements }: C
     const [bookingEmail, setBookingEmail] = useState(user.email)
     const [bookingPhone, setBookingPhone] = useState(user.phoneNumber)
 
-    console.log(chosenRooms)
-
     const bookingDays = Math.abs(differenceInDays(new Date(bookingRequirements.dateRange[1]), new Date(bookingRequirements.dateRange[0])))
     const totalPrice = useMemo(() => {
         return chosenRooms.reduce((total, { index, roomId }) => {
